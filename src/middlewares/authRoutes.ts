@@ -1,10 +1,9 @@
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 
-export function authRoutes(req) {
+export function authRoutes(req:NextRequest) {
     const token = req.cookies.get("token")?.value
 
-    if (!token && req.nextUrl.pathname.startsWhit('/protected')) {
-         console.log('deu erro aqui no midlleware ')
+    if (!token && req.nextUrl.pathname.startsWith('/protected')) {  
         return NextResponse.redirect(new URL("/login", req.url))
     }
 
@@ -14,5 +13,5 @@ export function authRoutes(req) {
 }
 
 export const config = {
-    matcher: ["/protected/:config"],
+    matcher: ["/protected/:path*"],
 };

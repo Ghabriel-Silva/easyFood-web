@@ -1,11 +1,12 @@
 import { Inter } from "next/font/google"
 import Provider from "./provider"
 
+
 const inter = Inter({
   subsets: ["latin"],
   display: "swap",
 })
-
+//todas as rotas recebem edições feitas
 export default function RootLayout({
   children,
 }: {
@@ -15,7 +16,6 @@ export default function RootLayout({
     <html className={inter.className} suppressHydrationWarning>
       <head />
       <body>
-        
         <Provider>{children}</Provider>
       </body>
     </html>

@@ -7,6 +7,7 @@ export default function RootLayout(props: { children: React.ReactNode }) {
   return (
     <ChakraProvider value={defaultSystem}>
       <ThemeProvider forcedTheme="light" attribute="class" disableTransitionOnChange>
+        
         {props.children}
       </ThemeProvider>
     </ChakraProvider>

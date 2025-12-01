@@ -8,12 +8,10 @@ import { toaster, Toaster } from "@/components/ui/toaster";
 import image from "@/assets/image2.jpg"
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { LoginValues } from "./type";
+import { ErrorResponseLogin } from "./type";
 
 
-interface LoginValues {
-    email: string,
-    password: string
-}
 
 export default function Login() {
 
@@ -54,7 +52,7 @@ export default function Login() {
         return toaster.promise(loginPromise, {
             loading: { title: "Atualizando...", description: "Aguarde um momento" },
             success: (data) => {
-                router.push("/config")
+                router.push("/home")
                 return {
                     title: "Sucesso!",
                     description: data.message,
@@ -62,17 +60,17 @@ export default function Login() {
                     duration: 2000,
                 }
             },
-            error: (err: any) => ({
-                title: "Erro!",
-                description: err.message || "Falha ao atualizar",
-                closable: true,
-                duration: 2000,
-            }),
+            error: (err: unknown) => {
+                const error= err as ErrorResponseLogin
+                return{
+                    title: "Erro!",
+                    closable: true,
+                    duration: 2000,
+                    description: error.message || 'Email ou senha incorretos' ,
+                }
+            },
         });
     };
-
-
-
 
     return (
         <Flex h="100vh">
