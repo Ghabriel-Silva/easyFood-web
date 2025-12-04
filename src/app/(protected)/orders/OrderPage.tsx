@@ -12,9 +12,12 @@ import {
   TablePagination,
 } from "@mui/material";
 
-import { Box, Flex, Heading, Button } from "@chakra-ui/react";
+import { Box, Flex, Heading, Button, Badge, FormatNumber, Stat, Text, HStack } from "@chakra-ui/react";
 import { MdAdd } from "react-icons/md";
-import getsStatusColor from "./themeOrders";
+import getPaymentColor, { getStatusOption } from "./themeOrders";
+import { InfoTip } from "@/components/ui/toggle-tip"
+
+
 
 
 type Order = {
@@ -71,9 +74,6 @@ export default function OrderPage({ token }: { token: string }) {
     setPage(0);
   };
 
-
-
-
   return (
     <Box >
       <Flex justify={"space-between"} pb={4}>
@@ -82,9 +82,9 @@ export default function OrderPage({ token }: { token: string }) {
       </Flex>
       <Paper>
         <TableContainer
-          sx={{ maxHeight: "700px" }}
+          sx={{ maxHeight: "auto" }}
         >
-          <Table stickyHeader aria-label="sticky table" sx={{ minWidth: 750 }}  >
+          <Table   >
             <TableHead>
               <TableRow >
                 {[
@@ -106,47 +106,78 @@ export default function OrderPage({ token }: { token: string }) {
                 ))}
               </TableRow>
             </TableHead>
-            <TableBody sx={{ backgroundColor: "#fafafa" }}>
+            <TableBody>
               {orders
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((order, index) => (
-                  <TableRow
-                    key={index}
-                  >
-                    <TableCell sx={{ fontWeight: 700 }}>
-                      {"#" + (order.id.length > 6
-                        ? order.id.slice(0, 4) + "..."
-                        : order.id)}
-                    </TableCell>
-                    <TableCell>{order.customerName}</TableCell>
-                    <TableCell>{order.customerPhone}</TableCell>
-                    <TableCell>{order.customerAddress}</TableCell>
-                    <TableCell>
-                      <Box
-                        px={1}
-                        py={1}
-                        fontSize={"12px"}
-                        borderRadius="2xl"
-                        textAlign="center"
-                        fontWeight="light"
-                        color="white"
-                        bg={getsStatusColor(order.status)}
-                      >
-                        {order.status}
-                      </Box>
-                    </TableCell>
-                    <TableCell sx={{ fontWeight: 600 }}>
-                      {order.paymentMethod}
-                    </TableCell>
-                    <TableCell sx={{ fontWeight: 700 }}>
-                      R$ {order.total}
-                    </TableCell>
-                    <TableCell>R$ {order.totalFreight}</TableCell>
-                    <TableCell sx={{ fontSize: "0.8rem" }}>
-                      {new Date(order.created_at).toLocaleString("pt-BR")}
-                    </TableCell>
-                  </TableRow>
-                ))}
+                .map((order) => {
+                  const { color, icon } = getStatusOption(order.status)
+
+                  return (
+                    <TableRow key={order.id}>
+                      <TableCell>
+                        <Badge size={'lg'} colorPalette={'blue'} variant="plain" >
+                          <Text
+                            borderBottom="1px solid"
+                            borderColor="blue.500"
+                            display="inline-block"
+                            cursor="pointer"
+                          >
+                            {"#" + (order.id.length > 6 ? order.id.slice(0, 4) : order.id)}
+                          </Text>
+                        </Badge>
+                      </TableCell>
+                      <TableCell>{order.customerName}</TableCell>
+                      <TableCell>{order.customerPhone}</TableCell>
+                      <TableCell>
+                        <HStack justify="center">
+                          {order.customerAddress && order.customerAddress.length > 15
+                            ? (
+                              <HStack>
+                                <InfoTip content={order.customerAddress} />
+                                <Text textStyle="xs">
+                                  {order.customerAddress.slice(0, 15) + "..."}
+                                </Text>
+                              </HStack>
+                            ) : (
+                              <Text textStyle="sm">
+                                {order.customerAddress}
+                              </Text>
+                            )}
+
+                        </HStack>
+                      </TableCell>
+                      <TableCell>
+                        <Badge colorPalette={color}  variant="subtle" >
+                          <Flex align="center" gap={1}>
+                            {icon} {order.status}
+                          </Flex>
+                        </Badge>
+                      </TableCell>
+                      <TableCell >
+                        <Badge variant="subtle" colorPalette={getPaymentColor(order.paymentMethod)}>
+                          {order.paymentMethod}
+                          </Badge>
+                      </TableCell>
+                      <TableCell>
+                        <Stat.Root size={"sm"}>
+                          <Stat.ValueText asChild >
+                            <FormatNumber value={parseFloat(order.total)} style="currency" currency="BRL" />
+                          </Stat.ValueText>
+                        </Stat.Root>
+                      </TableCell>
+                      <TableCell>
+                        <Stat.Root size={"sm"}>
+                          <Stat.ValueText asChild >
+                            <FormatNumber value={parseFloat(order.totalFreight)} style="currency" currency="BRL" />
+                          </Stat.ValueText>
+                        </Stat.Root>
+                      </TableCell>
+                      <TableCell>
+                        {new Date(order.created_at).toLocaleString("pt-BR")}
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
             </TableBody>
           </Table>
           {/* Paginação */}
