@@ -12,9 +12,9 @@ import {
   TablePagination,
 } from "@mui/material";
 
-import { Box, Flex, Heading, Button, Badge, FormatNumber, Stat, Text, HStack } from "@chakra-ui/react";
-import { MdAdd } from "react-icons/md";
-import getPaymentColor, { getStatusOption } from "./themeOrders";
+import { Box, Flex, Heading, Button, Badge, FormatNumber, Stat, Text, HStack, Icon, Portal, Select, createListCollection } from "@chakra-ui/react";
+import { MdAdd, MdRemoveRedEye, MdPrint } from "react-icons/md";
+import getPaymentColor, { fontSizeTableBody, fontWeigthBody, getStatusOption } from "./themeOrders";
 import { InfoTip } from "@/components/ui/toggle-tip"
 
 
@@ -89,14 +89,15 @@ export default function OrderPage({ token }: { token: string }) {
               <TableRow >
                 {[
                   "Pedido",
+                  "Criado em",
                   "Cliente",
                   "Telefone",
                   "Endereço",
                   "Status",
                   "Pagamento",
                   "Total",
-                  "Frete",
-                  "Criado em",
+                  "Nota",
+                  "Alterar Status"
                 ].map((header) => (
                   <TableCell
                     key={header}
@@ -115,65 +116,127 @@ export default function OrderPage({ token }: { token: string }) {
                   return (
                     <TableRow key={order.id}>
                       <TableCell>
-                        <Badge size={'lg'} colorPalette={'blue'} variant="plain" >
-                          <Text
+                        <Badge colorPalette={'blue'} variant="subtle" >
+                          <Flex
                             borderBottom="1px solid"
-                            borderColor="blue.500"
-                            display="inline-block"
                             cursor="pointer"
+                            textStyle={fontSizeTableBody}
+                            fontWeight={fontWeigthBody}
+                            gap={1}
+                            align={'center'}
+                            _hover={{ color: "blue.900" }}
                           >
-                            {"#" + (order.id.length > 6 ? order.id.slice(0, 4) : order.id)}
-                          </Text>
+                            <Text>
+                              {"#" + (order.id.length > 4 ? order.id.slice(0, 4) : order.id)}
+                            </Text>
+                            <Icon>
+                              <MdRemoveRedEye />
+                            </Icon>
+                          </Flex>
                         </Badge>
                       </TableCell>
-                      <TableCell>{order.customerName}</TableCell>
-                      <TableCell>{order.customerPhone}</TableCell>
+
                       <TableCell>
-                        <HStack justify="center">
+                        <Text textStyle={fontSizeTableBody} fontWeight={fontWeigthBody}>
+                          {new Date(order.created_at).toLocaleString("pt-BR")}
+                        </Text>
+                      </TableCell>
+                      <TableCell>
+                        {order.customerName
+                          ? (
+                            <Text textStyle={fontSizeTableBody} fontWeight={fontWeigthBody}>
+                              {order.customerName?.trim()}
+                            </Text>)
+                          : (
+                            <Text textStyle={fontSizeTableBody} fontWeight={fontWeigthBody} color={"red"}>
+                              Nome não informado
+                            </Text>
+                          )
+                        }
+
+                      </TableCell>
+                      <TableCell>
+                        <Text textStyle={fontSizeTableBody} fontWeight={fontWeigthBody}>
+                          {order.customerPhone}
+                        </Text>
+                      </TableCell>
+                      <TableCell>
+                        <HStack >
                           {order.customerAddress && order.customerAddress.length > 15
                             ? (
                               <HStack>
                                 <InfoTip content={order.customerAddress} />
-                                <Text textStyle="xs">
+                                <Text textStyle={fontSizeTableBody}>
                                   {order.customerAddress.slice(0, 15) + "..."}
                                 </Text>
                               </HStack>
                             ) : (
-                              <Text textStyle="sm">
+                              <Text textStyle={fontSizeTableBody}>
                                 {order.customerAddress}
                               </Text>
                             )}
-
                         </HStack>
                       </TableCell>
                       <TableCell>
-                        <Badge colorPalette={color}  variant="subtle" >
-                          <Flex align="center" gap={1}>
+                        <Badge colorPalette={color} variant="subtle" >
+                          <Flex align="center" gap={1} textStyle={fontSizeTableBody} fontWeight={fontWeigthBody}>
                             {icon} {order.status}
                           </Flex>
                         </Badge>
                       </TableCell>
                       <TableCell >
                         <Badge variant="subtle" colorPalette={getPaymentColor(order.paymentMethod)}>
-                          {order.paymentMethod}
-                          </Badge>
+                          <Text textStyle={fontSizeTableBody} fontWeight={fontWeigthBody}>
+                            {order.paymentMethod
+                            }
+                          </Text>
+                        </Badge>
                       </TableCell>
                       <TableCell>
-                        <Stat.Root size={"sm"}>
-                          <Stat.ValueText asChild >
-                            <FormatNumber value={parseFloat(order.total)} style="currency" currency="BRL" />
+                        <Stat.Root >
+                          <Stat.ValueText >
+                            <Text textStyle={fontSizeTableBody} fontWeight={fontWeigthBody}>
+                              <FormatNumber value={parseFloat(order.total)} style="currency" currency="BRL" />
+                            </Text>
                           </Stat.ValueText>
                         </Stat.Root>
                       </TableCell>
                       <TableCell>
-                        <Stat.Root size={"sm"}>
-                          <Stat.ValueText asChild >
-                            <FormatNumber value={parseFloat(order.totalFreight)} style="currency" currency="BRL" />
-                          </Stat.ValueText>
-                        </Stat.Root>
+                        <Icon _hover={{ color: "blue.900" }} cursor={"pointer"}>
+                          <MdPrint />
+                        </Icon>
                       </TableCell>
+
                       <TableCell>
-                        {new Date(order.created_at).toLocaleString("pt-BR")}
+                        <Select.Root
+                          collection={animeMovies}
+                          defaultValue={["spirited_away"]}
+                          size="sm"
+                          width="320px"
+                        >
+                          <Select.HiddenSelect />
+                          <Select.Control>
+                            <Select.Trigger>
+                              <Select.ValueText placeholder="Select Status do Pedidos" />
+                            </Select.Trigger>
+                            <Select.IndicatorGroup>
+                              <Select.ClearTrigger />
+                              <Select.Indicator />
+                            </Select.IndicatorGroup>
+                          </Select.Control>
+                          <Portal>
+                            <Select.Positioner>
+                              <Select.Content>
+                                {animeMovies.items.map((anime) => (
+                                  <Select.Item item={anime} key={anime.value}>
+                                    {anime.label}
+                                    <Select.ItemIndicator />
+                                  </Select.Item>
+                                ))}
+                              </Select.Content>
+                            </Select.Positioner>
+                          </Portal>
+                        </Select.Root>
                       </TableCell>
                     </TableRow>
                   );
@@ -195,3 +258,13 @@ export default function OrderPage({ token }: { token: string }) {
     </Box>
   );
 }
+
+
+const animeMovies = createListCollection({
+  items: [
+    { label: "Spirited Away", value: "spirited_away" },
+    { label: "My Neighbor Totoro", value: "my_neighbor_totoro" },
+    { label: "Akira", value: "akira" },
+    
+  ],
+})

@@ -38,5 +38,9 @@ export default function getPaymentColor(payment: string) {
   }
 }
 
+type  fontSizeTable = 'xs'| 'sm ' | 'md' | 'lg' 
+type  fontWeigthTable = 'light'| 'normal' | 'normal' | 'semibold' | 'bold'
 
-export  const fontSizeTable:string = 'sm'
+
+export  const fontSizeTableBody:fontSizeTable = "xs"
+export  const fontWeigthBody:fontWeigthTable = 'normal'
