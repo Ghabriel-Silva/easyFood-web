@@ -1,4 +1,4 @@
-import { ISetStatusReq } from "@/interfaces/orders-set-status";
+import { ISetStatusReq } from "@/app/(protected)/orders/interfaces/orders-set-status";
 import { toaster } from "@/components/ui/toaster";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 

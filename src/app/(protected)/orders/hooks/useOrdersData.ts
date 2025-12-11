@@ -1,4 +1,4 @@
-import { IOrderResponse } from "@/interfaces/orders-data";
+import { IOrderResponse } from "@/app/(protected)/orders/interfaces/orders-data";
 import { useQuery } from "@tanstack/react-query";
 
 

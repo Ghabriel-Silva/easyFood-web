@@ -1,5 +1,5 @@
 import { cookies } from "next/headers";
-import OrderPage from "./OrderPage";
+import OrderPage from "./components/OrderPage";
 import { redirect } from "next/navigation";
 
 

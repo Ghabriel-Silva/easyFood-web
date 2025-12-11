@@ -38,6 +38,12 @@ export default function getPaymentColor(payment: string) {
   }
 }
 
+export function getRandonColor(obj: Record<string, string>): string {
+    const colors = Object.values(obj)
+    const randonIndex = Math.floor(Math.random() * colors.length) 
+    return colors[randonIndex]
+}
+
 type fontSizeTable = 'xs' | 'sm ' | 'md' | 'lg'
 type fontWeigthTable = 'light' | 'normal' | 'medium' | 'semibold' | 'bold'
 
