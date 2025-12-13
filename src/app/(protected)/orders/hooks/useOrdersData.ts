@@ -9,7 +9,9 @@ const fetchData = async (token: string): Promise<IOrderResponse> => {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({}),
+        body: JSON.stringify({
+            startDate: new Date()
+        }),
     });
     console.log(" Chamou API /order/filter");
     return res.json()

@@ -13,11 +13,14 @@ import {
 } from "@mui/material";
 
 import { HStack, Badge, Flex, Text, Stat, FormatNumber } from "@chakra-ui/react";
-import getPaymentColor, { fontSizeTableBody, fontWeigthBody, getStatusOption } from "@/app/(protected)/orders/helpers/helpersOrders";
+import { fontSizeTableBody, fontWeigthBody } from "@/app/(protected)/orders/helpers/themes";
+
 import { InfoTip } from "@/components/ui/toggle-tip";
 import SelectStatus from "./SelectStatus";
 import { TableOrdersProps } from "../interfaces/table-orders-props";
-import { DialogOrder } from "./DialogOrder";
+import { DialogOrder } from "./DialogOrderInfo";
+import { getStatusOption } from "../helpers/status";
+import getPaymentColor from "../helpers/payment";
 
 
 export default function TableOrders({

@@ -4,6 +4,7 @@ export interface IOrderItem {
     quantity: number;
     price: string;
     subtotal: string;
+    product: IProductInfo
 }
 
 export interface IOrder {
@@ -28,4 +29,15 @@ export interface IOrderResponse {
     cache: null,
     data: IOrder[]
 }
-
+export interface IProductInfo {
+    id: string;
+    name: string;
+    price: string;
+    quantity: number;
+    expirationDate: string | null;
+    isAvailable: boolean;
+    description: string;
+    category_id: string | null;
+    created_at: string;
+    updated_at: string;
+}
