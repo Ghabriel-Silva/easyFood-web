@@ -1,13 +1,13 @@
 "use client";
 
 import React from "react";
-import { Box, Flex, Heading, Button, HStack, Spinner, Text, AbsoluteCenter, Alert} from "@chakra-ui/react";
-import { MdAdd } from "react-icons/md";
+import { Box, Flex, Heading,  HStack, Spinner, Text, AbsoluteCenter, Alert } from "@chakra-ui/react";
 
 import TableOrders from "./TableOrders";
 import { useOrdersData } from "@/app/(protected)/orders/hooks/useOrdersData";
 import { useOrdersMutade } from "@/app/(protected)/orders/hooks/useOrdersMutade";
 import { Toaster } from "@/components/ui/toaster";
+import { CreateOrders } from "./CreateOrders";
 
 interface OrderPageProps {
   token: string;
@@ -21,7 +21,7 @@ export default function OrderPage({ token }: OrderPageProps) {
   const { mutate: mutateStatus } = useOrdersMutade(token);
 
   const updateOrderStatus = (orderId: string, novoStatus: string) => mutateStatus({ orderId, novoStatus });
-  
+
   const handleChangePage = (_event: unknown, newPage: number) => setPage(newPage);
   const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
     setRowsPerPage(parseInt(event.target.value, 10));
@@ -41,7 +41,7 @@ export default function OrderPage({ token }: OrderPageProps) {
 
       <Flex justify="space-between" pb={4}>
         <Heading size="xl" fontWeight="medium">Pedidos</Heading>
-        <Button bg="blue.600" borderRadius="lg">Novo Pedido <MdAdd /></Button>
+        <CreateOrders />
         <Toaster />
       </Flex>
 

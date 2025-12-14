@@ -39,7 +39,7 @@ export default function TableOrders({
     updateOrderStatus,
 }: TableOrdersProps) {
     return (
-        <Paper>
+        <Paper >
             <TableContainer>
                 <Table>
                     <TableHead>
