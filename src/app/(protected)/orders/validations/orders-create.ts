@@ -1,3 +1,4 @@
+import { transformeNumber } from "@/helpers/tranformeNumber";
 import * as yup from "yup";
 
 
@@ -22,41 +23,48 @@ export const OrderCreateSchema = yup.object({
         .transform((value) => (value?.trim() === "" ? null : value))
         .notRequired(),
 
-    
-
-    // status: yup
-    //     .string()
-    //     .oneOf(['Pendente', 'Preparando', 'Completo', 'Entregue', 'Cancelado'], "Status inválido")
-    //     .notRequired(),
+    status: yup
+        .string()
+        .oneOf(['Pendente', 'Preparando', 'Completo', 'Entregue', 'Cancelado'], "Status inválido")
+        .notRequired(),
 
 
-    // isFreightApplied: yup
-    //     .boolean()
-    //     .typeError("O valor deve ser booleano")
-    //     .required("O campo é obrigatório"),
+    isFreightApplied: yup
+        .boolean()
+        .transform((value, originalValue) => {
+            if (originalValue === "true") return true
+            if (originalValue === "false") return false
+            return value
+        })
+        .typeError("O valor deve ser booleano")
+        .required("O campo é obrigatório"),
 
-    // customFreight: yup
-    //     .number()
-    //     .typeError('O frete deve ser um número')
-    //     .min(0, 'O frete deve ser positivo')
-    //     .notRequired(),
+    customFreight: yup
+        .number()
+        .transform(transformeNumber)
+        .typeError('O frete deve ser um número')
+        .min(0, 'O frete deve ser positivo')
+        .notRequired(),
 
-    // additionalValue: yup
-    //     .number()
-    //     .typeError('O valor adicional deve ser um número')
-    //     .min(0, 'O valor adicional deve ser positivo')
-    //     .notRequired(),
+    additionalValue: yup
+        .number()
+        .transform(transformeNumber)
+        .typeError('O valor adicional deve ser um número')
+        .min(0, 'O valor adicional deve ser positivo')
+        .notRequired(),
 
-    // discountValue: yup
-    //     .number()
-    //     .typeError('O valor de desconto deve ser um número')
-    //     .positive('O valor de desconto deve ser positivo')
-    //     .notRequired(),
+    discountValue: yup
+        .number()
+        .transform(transformeNumber)
+        .typeError('O valor de desconto deve ser um número')
+        .notRequired(),
 
-    // observations: yup
-    //     .string()
-    //     .max(600, 'O endereço deve ter no máximo 200 caracteres')
-    //     .notRequired(),
+    observations: yup
+        .string()
+        .max(600, 'Oberservações deve ter no máximo 200 caracteres')
+        .notRequired(),
+
+
     // items: yup
     //     .array()
     //     .of(

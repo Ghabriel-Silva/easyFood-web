@@ -50,7 +50,7 @@ export default function Login() {
 
 
         return toaster.promise(loginPromise, {
-            loading: { title: "Atualizando...", description: "Aguarde um momento" },
+            loading: { title: "Validando Login...", description: "Aguarde um momento" },
             success: (data) => {
                 router.push("/orders")
                 return {
