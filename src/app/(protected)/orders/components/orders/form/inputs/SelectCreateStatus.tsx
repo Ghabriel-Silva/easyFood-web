@@ -4,19 +4,14 @@ import {
     Select,
     createListCollection,
 } from "@chakra-ui/react"
+import { PropsSelect } from "@/app/(protected)/orders/interfaces/props-select"
 
 
-interface PropsSelectCreate {
-    name: string
-    value: string,
-    onValueChange: (value: string) => void
-}
 
 
-export const SelectCreateStatus = ({ value, onValueChange }: PropsSelectCreate) => {
+export const SelectCreateStatus = ({ value, onValueChange }: PropsSelect) => {
     return (
 
-     
             <Select.Root
                 collection={status}
                 value={value ? [value] : []}

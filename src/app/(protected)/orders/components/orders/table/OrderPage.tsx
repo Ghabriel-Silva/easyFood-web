@@ -7,7 +7,7 @@ import TableOrders from "./TableOrders";
 import { useOrdersData } from "@/app/(protected)/orders/hooks/useOrdersData";
 import { useOrdersMutade } from "@/app/(protected)/orders/hooks/useOrdersMutade";
 import { Toaster } from "@/components/ui/toaster";
-import { CreateOrders } from "./CreateOrders";
+import { CreateOrders } from "@/app/(protected)/orders/components/orders/dialogs/DialogCreateOrders";
 
 interface OrderPageProps {
   token: string;

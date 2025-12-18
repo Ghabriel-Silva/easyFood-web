@@ -28,6 +28,11 @@ export const OrderCreateSchema = yup.object({
         .oneOf(['Pendente', 'Preparando', 'Completo', 'Entregue', 'Cancelado'], "Status inválido")
         .notRequired(),
 
+    paymentMethod: yup
+        .string()
+        .oneOf(['Dinheiro', 'Cartão', 'Pix', 'Outros'], "Forma de pagamento inválida")
+        .required('Forma de pagamento obrigatória!'),
+
 
     isFreightApplied: yup
         .boolean()

@@ -1,14 +1,11 @@
 'usee client'
 
 import { createListCollection,  Select } from "@chakra-ui/react"
+import { PropsSelect } from "@/app/(protected)/orders/interfaces/props-select"
 
-interface PropsFreteSelect {
-    name: string,
-    value: string,
-    onValueChange: (e: string) => void
-}
 
-export const SelectFrete = ({ value, onValueChange }: PropsFreteSelect) => {
+
+export const SelectFrete = ({ value, onValueChange }: PropsSelect) => {
     return (
         <Select.Root
             collection={status}

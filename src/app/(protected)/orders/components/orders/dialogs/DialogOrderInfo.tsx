@@ -16,17 +16,17 @@ import {
     Stat
 } from "@chakra-ui/react"
 
-import { IOrder } from "../interfaces/orders-data"
-import { fontText} from "../../../../themes"
-import { getRandonColor } from "../helpers/getRandonColor"
-import { getStatusOption } from "../helpers/status"
-import getPaymentColor from "../helpers/payment"
-import { calculoPercentualAdicional } from "../helpers/percent"
-import { DialogOrderItems } from "./DialogOrderItems"
+import { IOrder } from "@/app/(protected)/orders/interfaces/orders-data"
+import { fontText} from "@/themes"
+import { getRandonColor } from "@/app/(protected)/orders/helpers/getRandonColor"
+import { getStatusOption } from"@/app/(protected)/orders/helpers/status"
+import getPaymentColor from "@/app/(protected)/orders/helpers/payment"
+import { calculoPercentualAdicional } from "@/app/(protected)/orders/helpers/percent"
+import { DialogOrderItems } from "@/app/(protected)/orders/components/orders/dialogs/DialogOrderItems"
 
 
-import { TableText } from "@/app/(protected)/orders/components/ui/TableText"
-import { TableLabel } from "@/app/(protected)/orders/components/ui/TableLabel"
+import { TableText } from "@/app/(protected)/orders/components/ui/Table/TableText"
+import { TableLabel } from "@/app/(protected)/orders/components/ui/Table/TableLabel"
 
 interface DialogProps {
     order: IOrder

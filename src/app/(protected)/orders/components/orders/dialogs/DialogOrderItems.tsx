@@ -9,7 +9,7 @@ import {
 } from "@chakra-ui/react"
 import { MdArrowForwardIos } from "react-icons/md"
 import { useState } from "react"
-import { IOrderItem } from "../interfaces/orders-data"
+import { IOrderItem } from "@/app/(protected)/orders/interfaces/orders-data"
 
 // 👇 importa suas configs
 import {

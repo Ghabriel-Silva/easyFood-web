@@ -21,14 +21,14 @@ import {
 } from "@chakra-ui/react";
 
 import { InfoTip } from "@/components/ui/toggle-tip";
-import { TableText } from "@/app/(protected)/orders/components/ui/TableText";
+import { TableText } from "@/app/(protected)/orders/components/ui/Table/TableText";
 
-import SelectStatus from "./ui/SelectStatus";
-import { TableOrdersProps } from "../interfaces/table-orders-props";
-import { DialogOrder } from "./DialogOrderInfo";
-import { getStatusOption } from "../helpers/status";
-import getPaymentColor from "../helpers/payment";
-import { fontText } from "../../../../themes";
+import SelectStatus from "@/app/(protected)/orders/components/ui/SelectStatus";
+import { TableOrdersProps } from "@/app/(protected)/orders/interfaces/table-orders-props";
+import { DialogOrder } from  "@/app/(protected)/orders/components/orders/dialogs/DialogOrderInfo";
+import { getStatusOption } from "@/app/(protected)/orders/helpers/status";
+import getPaymentColor from "@/app/(protected)/orders/helpers/payment";
+import { fontText } from "@/themes";
 
 export default function TableOrders({
     orders,
@@ -39,7 +39,7 @@ export default function TableOrders({
     updateOrderStatus,
 }: TableOrdersProps) {
     return (
-        <Paper >
+        <Paper>
             <TableContainer>
                 <Table>
                     <TableHead>
