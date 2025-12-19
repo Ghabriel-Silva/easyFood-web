@@ -1,15 +1,17 @@
 "use client"
 import { useForm, Controller } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
-import { Button, Input, Stack, InputGroup, Textarea, Field, HStack } from "@chakra-ui/react"
+import { Button, Input, Stack, InputGroup, Textarea, Field, HStack, Text, VStack } from "@chakra-ui/react"
 import { withMask } from "use-mask-input"
 
 import { OrderCreateSchema } from "@/app/(protected)/orders/validations/orders-create"
-import { SelectCreateStatus } from "@/app/(protected)/orders/components/orders/form/inputs/SelectCreateStatus"
-import { SelectFrete } from  "@/app/(protected)/orders/components/orders/form/inputs/SelectFrete"
-import { FormField } from  "@/app/(protected)/orders/components/orders/form/inputs/FormField"
-import { FormFieldOptional } from "@/app/(protected)/orders/components/orders/form/FormFieldOptional"
-import { SelectPayment } from  "@/app/(protected)/orders/components/orders/form/inputs/SelectPayment"
+import { SelectCreateStatus } from "@/app/(protected)/orders/components/orders/form/index"
+import { SelectFrete } from "@/app/(protected)/orders/components/orders/form/index"
+import { FormField } from "@/app/(protected)/orders/components/orders/form/index"
+import { FormFieldOptional } from "@/app/(protected)/orders/components/orders/form/index"
+import { SelectPayment } from "@/app/(protected)/orders/components/orders/form/index"
+import { MdAdd } from "react-icons/md";
+
 
 
 export const FormCreateOrders = () => {
@@ -27,7 +29,15 @@ export const FormCreateOrders = () => {
 
     const onSubmit = handleSubmit((data) => {
         console.log(data)
-        reset()
+        reset(
+            {
+                paymentMethod: undefined,
+                isFreightApplied: undefined,
+            },
+            {
+                keepErrors: false,
+            }
+        )
     })
 
     return (
@@ -37,7 +47,7 @@ export const FormCreateOrders = () => {
                 <HStack flexWrap="wrap" >
 
                     <FormField label="Cliente" error={errors.customerName?.message}>
-                        <Input {...register("customerName")} />
+                        <Input {...register("customerName")} placeholder="ex: Maria db" />
                     </FormField>
                     <FormField label="Telefone" error={errors.customerPhone?.message}>
                         <Controller
@@ -55,7 +65,7 @@ export const FormCreateOrders = () => {
                         />
                     </FormField>
                     <FormField label="Endereço" error={errors.customerAddress?.message}>
-                        <Input {...register("customerAddress")} />
+                        <Input   {...register("customerAddress")} placeholder="ex: Rua das rosas 01" />
                     </FormField>
                 </HStack>
 
@@ -84,7 +94,9 @@ export const FormCreateOrders = () => {
                                 <SelectFrete
                                     name={field.name}
                                     value={field.value ? 'true' : 'false'}
-                                    onValueChange={field.onChange}
+                                    onValueChange={(value) => {
+                                        field.onChange(value === 'true') //"true" === "true"   // true
+                                    }}
                                 />
                             )}
                         />
@@ -94,11 +106,14 @@ export const FormCreateOrders = () => {
                         <Controller
                             control={control}
                             name="paymentMethod"
+                            defaultValue={undefined}
                             render={({ field }) => (
                                 <SelectPayment
                                     name={field.name}
-                                    value={field.value} //estado inicial é "" depois que o estado muda, o React executa novamente: field.value === "pix"
-                                    onValueChange={field.onChange} //Usuário clica no select onValueChange({ value: ["pix"] }) 
+                                    value={field.value ?? ""} //estado inicial é "" depois que o estado muda, o React executa novamente: field.value === "pix"
+                                    onValueChange={(value) => {
+                                        field.onChange(value)
+                                    }} //Usuário clica no select onValueChange({ value: ["pix"] }) 
                                 >
                                 </SelectPayment>
                             )}
@@ -150,12 +165,32 @@ export const FormCreateOrders = () => {
                         </InputGroup>
                     </FormField>
 
-                    <FormField label="Obeservações" error={errors.observations?.message}>
-                        <Textarea {...register("observations")} placeholder="Comment..." />
+                    <FormField label="Obeservações" error={errors.observations?.message} >
+                        <Textarea  {...register("observations")} placeholder="Comment" />
                         <Field.HelperText>Max 600 characteres.</Field.HelperText>
                     </FormField>
+
                 </FormFieldOptional>
 
+                <Stack bg={'gray.100'} p={2} w="100%" borderRadius={"sm"} gap={4} >
+                    <Text>Produto/Quantidade</Text>
+                    <HStack justifyContent={"space-between"} flexWrap={'wrap'}>
+                        <VStack flex={"1"}>
+                            <FormField label="Produto" error={errors.customerName?.message}>
+                                <Input placeholder="ex: Maria db" />
+                            </FormField>
+                        </VStack>
+                        <VStack>
+                            <FormField label="Quantidade" error={errors.customerName?.message}>
+                                <Input placeholder="ex: Maria db" />
+                            </FormField>
+                        </VStack>
+                    </HStack>
+                    <Button  size="xs" colorPalette="green" variant="outline" w={"120px"}>
+                        <MdAdd />
+                        Add Produto
+                    </Button>
+                </Stack>
 
 
 

@@ -1,4 +1,4 @@
-export default function getPaymentColor(payment: string) {
+export  function getPaymentColor(payment: string) {
   switch (payment) {
     case "Dinheiro":
       return "green";

@@ -3,11 +3,11 @@
 import React from "react";
 import { Box, Flex, Heading,  HStack, Spinner, Text, AbsoluteCenter, Alert } from "@chakra-ui/react";
 
-import TableOrders from "./TableOrders";
-import { useOrdersData } from "@/app/(protected)/orders/hooks/useOrdersData";
-import { useOrdersMutade } from "@/app/(protected)/orders/hooks/useOrdersMutade";
+import {TableOrders} from "@/app/(protected)/orders/components/orders/table/index";
+import { useOrdersData } from "@/app/(protected)/orders/hooks/index";
+import { useOrdersMutade } from "@/app/(protected)/orders/hooks/index";
 import { Toaster } from "@/components/ui/toaster";
-import { CreateOrders } from "@/app/(protected)/orders/components/orders/dialogs/DialogCreateOrders";
+import { CreateOrders } from "@/app/(protected)/orders/components/orders/dialogs/index";
 
 interface OrderPageProps {
   token: string;

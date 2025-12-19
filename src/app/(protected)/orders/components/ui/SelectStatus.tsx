@@ -1,10 +1,7 @@
 
 import { useState } from "react";
 import { fontText, fontWeigthText } from "@/themes";
-import { FONT_SIZE_MAP } from "@/app/(protected)/orders/helpers/mapFontSize";
-
-
-
+import { FONT_SIZE_MAP } from "@/app/(protected)/orders/helpers/index";
 
 type SelectStatusProps = {
     status: string,

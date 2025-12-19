@@ -28,7 +28,7 @@ export const FormFieldOptional = ({ children }: PropsChildren) => {
                 <Text>Info adicionais</Text>
             </Collapsible.Trigger>
             <Collapsible.Content>
-                <HStack   flexWrap="wrap">
+                <HStack  flexWrap="wrap">
                     {children}
                 </HStack>
             </Collapsible.Content>

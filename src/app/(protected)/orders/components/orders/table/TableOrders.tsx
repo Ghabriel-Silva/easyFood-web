@@ -21,13 +21,13 @@ import {
 } from "@chakra-ui/react";
 
 import { InfoTip } from "@/components/ui/toggle-tip";
-import { TableText } from "@/app/(protected)/orders/components/ui/Table/TableText";
+import { TableText } from "@/app/(protected)/orders/components/ui/index";
 
-import SelectStatus from "@/app/(protected)/orders/components/ui/SelectStatus";
+import {SelectStatus} from "@/app/(protected)/orders/components/ui/index";
 import { TableOrdersProps } from "@/app/(protected)/orders/interfaces/table-orders-props";
-import { DialogOrder } from  "@/app/(protected)/orders/components/orders/dialogs/DialogOrderInfo";
-import { getStatusOption } from "@/app/(protected)/orders/helpers/status";
-import getPaymentColor from "@/app/(protected)/orders/helpers/payment";
+import { DialogOrder } from  "@/app/(protected)/orders/components/orders/dialogs/index";
+import { getStatusOption } from "@/app/(protected)/orders/helpers/index";
+import {getPaymentColor} from "@/app/(protected)/orders/helpers/index";
 import { fontText } from "@/themes";
 
 export default function TableOrders({

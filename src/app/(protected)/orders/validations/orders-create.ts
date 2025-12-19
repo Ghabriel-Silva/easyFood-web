@@ -31,7 +31,7 @@ export const OrderCreateSchema = yup.object({
     paymentMethod: yup
         .string()
         .oneOf(['Dinheiro', 'Cartão', 'Pix', 'Outros'], "Forma de pagamento inválida")
-        .required('Forma de pagamento obrigatória!'),
+        .required("Selecione o método de pagamento"),
 
 
     isFreightApplied: yup
@@ -66,7 +66,7 @@ export const OrderCreateSchema = yup.object({
 
     observations: yup
         .string()
-        .max(600, 'Oberservações deve ter no máximo 200 caracteres')
+        .max(600, 'Oberservações deve ter no máximo 600 caracteres')
         .notRequired(),
 
 

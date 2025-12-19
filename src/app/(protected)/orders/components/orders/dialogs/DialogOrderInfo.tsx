@@ -18,15 +18,15 @@ import {
 
 import { IOrder } from "@/app/(protected)/orders/interfaces/orders-data"
 import { fontText} from "@/themes"
-import { getRandonColor } from "@/app/(protected)/orders/helpers/getRandonColor"
-import { getStatusOption } from"@/app/(protected)/orders/helpers/status"
-import getPaymentColor from "@/app/(protected)/orders/helpers/payment"
-import { calculoPercentualAdicional } from "@/app/(protected)/orders/helpers/percent"
-import { DialogOrderItems } from "@/app/(protected)/orders/components/orders/dialogs/DialogOrderItems"
+import { getRandonColor } from "@/app/(protected)/orders/helpers/index"
+import { getStatusOption } from"@/app/(protected)/orders/helpers/index"
+import {getPaymentColor} from "@/app/(protected)/orders/helpers/index"
+import { calculoPercentualAdicional } from "@/app/(protected)/orders/helpers/index"
+import { DialogOrderItems } from "@/app/(protected)/orders/components/orders/dialogs/index"
 
 
-import { TableText } from "@/app/(protected)/orders/components/ui/Table/TableText"
-import { TableLabel } from "@/app/(protected)/orders/components/ui/Table/TableLabel"
+import { TableText } from "@/app/(protected)/orders/components/ui/index"
+import { TableLabel } from "@/app/(protected)/orders/components/ui/index"
 
 interface DialogProps {
     order: IOrder

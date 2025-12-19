@@ -1,6 +1,6 @@
 import { Button, Dialog, CloseButton, } from "@chakra-ui/react";
 import { MdAdd } from "react-icons/md";
-import { FormCreateOrders } from "@/app/(protected)/orders/components/orders/form/FormCreateOrders";
+import { FormCreateOrders } from "@/app/(protected)/orders/components/orders/form/index";
 
 export const CreateOrders = () => {
     return (

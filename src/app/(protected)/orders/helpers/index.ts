@@ -1,0 +1,6 @@
+export {getRandonColor}  from './getRandonColor'
+export {FONT_SIZE_MAP}  from './mapFontSize'
+export {getPaymentColor}  from './payment'
+export {calculoPercentualAdicional}  from './percent'
+export {calculoPercentualDescon}  from './percent'
+export {getStatusOption}  from './status'
