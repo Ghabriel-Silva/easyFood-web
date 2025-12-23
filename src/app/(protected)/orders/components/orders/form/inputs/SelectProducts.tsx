@@ -1,11 +1,13 @@
 "use client"
 
 import { useMemo, useState } from "react"
-import { Select, Spinner, createListCollection, Field, Button, Stack, Span, HStack, NumberInput, IconButton } from "@chakra-ui/react"
+import { Select, Spinner, createListCollection, Field, Button, Stack, Span, HStack } from "@chakra-ui/react"
 import { ToggleTip } from "@/components/ui/toggle-tip"
 import { useOrdersCreate } from "@/app/(protected)/orders/hooks/index"
 import { Product } from "@/app/(protected)/orders/interfaces/porducts";
-import { LuInfo, LuMinus, LuPlus } from "react-icons/lu"
+import { LuInfo } from "react-icons/lu"
+import { InputQuantity } from "./InputQuantity"
+import { fontSizeTitleLabel } from "@/themes"
 
 interface SelectProductsProps {
     token: string
@@ -14,6 +16,7 @@ interface SelectProductsProps {
 export const SelectProducts = ({ token }: SelectProductsProps) => {
 
     const [selectProduct, setSelectProduct] = useState<Product | null>(null)
+    const [inputDissabledQt, setInputDisabledQt] = useState<boolean>(true)
 
     const { data, isLoading, isError } = useOrdersCreate(token);
 
@@ -23,7 +26,7 @@ export const SelectProducts = ({ token }: SelectProductsProps) => {
             items: (data ?? []).map((product) => ({
                 ...product,
                 disabled:
-                    product.quantity === 0 ||
+                    product.quantity === 0 || //Desabilitando info adcionais do select se tiverem esses parametros
                     product.quantity === undefined,
             })),
             itemToString: (product) => product.name, //Texto que o usuário vai ver na  tela ao selecionar
@@ -34,23 +37,23 @@ export const SelectProducts = ({ token }: SelectProductsProps) => {
 
 
     return (
-        <HStack align={"end"} width={"full"}>
-            <Field.Root invalid={isError}>
+        <HStack align={"end"} gap={4} width={"full"}>
+            <Field.Root invalid={isError} flex={1}>
                 <Select.Root
                     collection={collection}
-                    size="sm"
-                    width="320px"
+                    width="100%"
                     onValueChange={(e) => {
                         const productId = e.value[0]
                         const product = collection.items.find(
                             (p) => p.id === productId
                         )
                         setSelectProduct(product ?? null)
+                        setInputDisabledQt(false)
                     }}
                 >
                     <Select.HiddenSelect />
-                    <Select.Label>Produto</Select.Label>
-                    <Select.Control>
+                    <Select.Label fontSize={fontSizeTitleLabel}>Produto</Select.Label>
+                    <Select.Control >
                         <Select.Trigger>
                             <Select.ValueText placeholder="Selecione um produto" />
                         </Select.Trigger>
@@ -61,7 +64,7 @@ export const SelectProducts = ({ token }: SelectProductsProps) => {
                         </Select.IndicatorGroup>
                     </Select.Control>
                     <Select.Positioner>
-                        <Select.Content>
+                        <Select.Content >
                             {collection.items.map((product) => (
                                 <Select.Item
                                     item={product}
@@ -104,34 +107,9 @@ export const SelectProducts = ({ token }: SelectProductsProps) => {
                 )}
             </Field.Root>
 
-            {selectProduct?.uni_medida === 'un' && (
-                <NumberInput.Root defaultValue="0" unstyled spinOnPress={false}
-                    min={0}
-                    max={selectProduct.quantity ?? 10}
-                >
-                    <HStack gap="2">
-                        <NumberInput.DecrementTrigger asChild>
-                            <IconButton variant="outline" size="sm">
-                                <LuMinus />
-                            </IconButton>
-                        </NumberInput.DecrementTrigger>
-                        <NumberInput.ValueText textAlign="center" fontSize="lg" minW="3ch" />
-                        <NumberInput.IncrementTrigger asChild>
-                            <IconButton variant="outline" size="sm">
-                                <LuPlus />
-                            </IconButton>
-                        </NumberInput.IncrementTrigger>
-                    </HStack>
-                </NumberInput.Root>
-            )}
-            {selectProduct?.uni_medida !== 'uni' && (
-                <NumberInput.Root
-                min={0} max={selectProduct?.quantity ??  20}
-                >
-                    <NumberInput.Control />
-                    <NumberInput.Input />
-                </NumberInput.Root>
-            )}
+            
+                <InputQuantity  infoProducts={selectProduct} disabled={inputDissabledQt} />
+            
         </HStack>
     )
 }

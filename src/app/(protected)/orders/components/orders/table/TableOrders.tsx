@@ -23,11 +23,11 @@ import {
 import { InfoTip } from "@/components/ui/toggle-tip";
 import { TableText } from "@/app/(protected)/orders/components/ui/index";
 
-import {SelectStatus} from "@/app/(protected)/orders/components/ui/index";
+import { SelectStatus } from "@/app/(protected)/orders/components/ui/index";
 import { TableOrdersProps } from "@/app/(protected)/orders/interfaces/table-orders-props";
-import { DialogOrder } from  "@/app/(protected)/orders/components/orders/dialogs/index";
+import { DialogOrder } from "@/app/(protected)/orders/components/orders/dialogs/index";
 import { getStatusOption } from "@/app/(protected)/orders/helpers/index";
-import {getPaymentColor} from "@/app/(protected)/orders/helpers/index";
+import { getPaymentColor } from "@/app/(protected)/orders/helpers/index";
 import { fontText } from "@/themes";
 
 export default function TableOrders({

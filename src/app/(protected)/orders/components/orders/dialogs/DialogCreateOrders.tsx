@@ -9,18 +9,18 @@ export const CreateOrders = ({ token }: CreateOrdersProps) => {
     return (
         <Dialog.Root size={"lg"}>
             <Dialog.Trigger asChild>
-                <Button bg="blue.600" borderRadius="lg">Novo Pedido <MdAdd /></Button>
+                <Button bg="blue.600" borderRadius="lg">Novo Pedido<MdAdd /></Button>
             </Dialog.Trigger>
-            <Dialog.Backdrop />
+            <Dialog.Backdrop/>
             <Dialog.Positioner>
                 <Dialog.Content>
-                    <Dialog.CloseTrigger />
+                    <Dialog.CloseTrigger/>
                     <Dialog.Header>
                         <Dialog.Title>
                             Add Pedido
                         </Dialog.Title>
                     </Dialog.Header>
-                    {/* Componete formulario */}
+                    {/*Aqui rederizo o Formulario  */}
                     <Dialog.Body>
                         <FormCreateOrders token={token} />
                     </Dialog.Body>
