@@ -172,9 +172,12 @@ export const FormCreateOrders = ({ token }: CreateOrdersProps) => {
                         <Textarea  {...register("observations")} placeholder="Comment" />
                         <Field.HelperText>Max 600 characteres.</Field.HelperText>
                     </FormField>
+
+                
                 </FormFieldOptional>
                 
                 <FormGetProducts token={token} /> 
+                
                 <Button type="submit" >Submit</Button>
             </Stack>
         </form>

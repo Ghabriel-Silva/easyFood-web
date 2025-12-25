@@ -9,7 +9,7 @@ export const FormGetProducts = ({ token }: CreateOrdersProps) => {
 
         <Stack width={"full"}>
             <Text>Produto/Quantidade</Text>
-            <HStack  >
+            <HStack>
                 <SelectProducts token={token} />
             </HStack>
             <Button size="xs" colorPalette="green" variant="outline" w={"120px"}>

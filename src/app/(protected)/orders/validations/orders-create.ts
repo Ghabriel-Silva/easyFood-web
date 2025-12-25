@@ -70,33 +70,33 @@ export const OrderCreateSchema = yup.object({
         .notRequired(),
 
 
-    // items: yup
-    //     .array()
-    //     .of(
-    //         yup.object({
-    //             name: yup
-    //                 .string()
-    //                 .required('O nome do produto é obrigatório'),
+    items: yup
+        .array()
+        .of(
+            yup.object({
+                name: yup
+                    .string()
+                    .required('O nome do produto é obrigatório'),
 
-    //             product_id: yup
-    //                 .string()
-    //                 .required('O produto é obrigatório'),
+                product_id: yup
+                    .string()
+                    .required('O produto é obrigatório'),
 
-    //             quantity: yup
-    //                 .number()
-    //                 .integer('A quantidade deve ser um número inteiro')
-    //                 .min(1, 'A quantidade deve ser no mínimo 1')
-    //                 .required('A quantidade é obrigatória'),
+                quantity: yup
+                    .number()
+                    .integer('A quantidade deve ser um número inteiro')
+                    .min(1, 'A quantidade deve ser no mínimo 1')
+                    .required('A quantidade é obrigatória'),
 
-    //             price: yup
-    //                 .number()
-    //                 .typeError('O preço deve ser um número')
-    //                 .positive('O preço deve ser positivo')
-    //                 .required('O preço é obrigatório'),
-    //         })
-    //     )
-    //     .min(1, 'É necessário informar pelo menos um item no pedido')
-    //     .required('O campo items é obrigatório'),
+                price: yup
+                    .number()
+                    .typeError('O preço deve ser um número')
+                    .positive('O preço deve ser positivo')
+                    .required('O preço é obrigatório'),
+            })
+        )
+        .min(1, 'É necessário informar pelo menos um item no pedido')
+        .required('O campo items é obrigatório'),
 })
 
 export type OrderCreateSchemaInterface = yup.InferType<typeof OrderCreateSchema>

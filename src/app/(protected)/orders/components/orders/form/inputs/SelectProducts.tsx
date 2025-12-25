@@ -1,6 +1,6 @@
 "use client"
 
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { Select, Spinner, createListCollection, Field, Button, Stack, Span, HStack } from "@chakra-ui/react"
 import { ToggleTip } from "@/components/ui/toggle-tip"
 import { useOrdersCreate } from "@/app/(protected)/orders/hooks/index"
@@ -13,10 +13,29 @@ interface SelectProductsProps {
     token: string
 }
 
+
 export const SelectProducts = ({ token }: SelectProductsProps) => {
 
     const [selectProduct, setSelectProduct] = useState<Product | null>(null)
     const [inputDissabledQt, setInputDisabledQt] = useState<boolean>(true)
+
+    //Estado para pegar  os dados dentro do select e quantidade 
+    const [inputItems, setInputItems] = useState({
+        name: "",
+        product_id: "",
+        quantity: '',
+        price: ''
+    })
+    useEffect(() => {
+        console.log("inputItems atualizado:", inputItems)
+    }, [inputItems])
+
+    const handleQuantityChange = (value: string) => {
+        setInputItems(prev => ({
+            ...prev,
+            quantity: value
+        }))
+    }
 
     const { data, isLoading, isError } = useOrdersCreate(token);
 
@@ -43,12 +62,19 @@ export const SelectProducts = ({ token }: SelectProductsProps) => {
                     collection={collection}
                     width="100%"
                     onValueChange={(e) => {
+
                         const productId = e.value[0]
                         const product = collection.items.find(
                             (p) => p.id === productId
                         )
                         setSelectProduct(product ?? null)
                         setInputDisabledQt(false)
+                        setInputItems({
+                            name: product?.name ?? "",
+                            product_id: product?.id ?? "",
+                            price: product?.price?.toString() ?? "",
+                            quantity: "" // limpa quando troca o produto
+                        })
                     }}
                 >
                     <Select.HiddenSelect />
@@ -107,9 +133,14 @@ export const SelectProducts = ({ token }: SelectProductsProps) => {
                 )}
             </Field.Root>
 
-            
-                <InputQuantity  infoProducts={selectProduct} disabled={inputDissabledQt} />
-            
+
+            <InputQuantity
+                infoProducts={selectProduct}
+                disabled={inputDissabledQt}
+                value={inputItems.quantity}
+                onchangeQuantity={handleQuantityChange}
+            />
+
         </HStack>
     )
 }
