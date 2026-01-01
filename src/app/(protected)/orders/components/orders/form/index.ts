@@ -5,4 +5,6 @@ export { SelectCreateStatus } from './inputs/SelectCreateStatus'
 export { SelectFrete } from './inputs/SelectFrete'
 export { SelectPayment } from './inputs/SelectPayment'
 export {  SelectProducts} from './inputs/SelectProducts'
+export {FormFather } from './FormFather'
+export {InputField } from './inputsOrders/InputField'
 

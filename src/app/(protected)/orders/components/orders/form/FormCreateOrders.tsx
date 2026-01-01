@@ -1,5 +1,5 @@
 "use client"
-import { useForm, Controller, useFieldArray } from "react-hook-form"
+import { useForm, Controller, useFieldArray, FormProvider } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { Button, Input, Stack, InputGroup, Textarea, Field, HStack, Badge, Text, Alert, VStack } from "@chakra-ui/react"
 import { withMask } from "use-mask-input"
@@ -42,12 +42,19 @@ export const FormCreateOrders = ({ token }: CreateOrdersProps) => {
             isFreightApplied: false,
         },
     })
+    const methods = useForm({
+        resolver: yupResolver(OrderCreateSchema),
+        defaultValues: {
+            items: [],
+            isFreightApplied: false,
+        },
+    })
 
     const {
         fields, append, remove, } = useFieldArray({
             control,
             name: "items",
-        }) //Isso conecta o React form ao campo items
+        }) 
 
     const selectProducts = fields.map(item => item.product_id)
     const totalProdutos = fields.reduce((acc, item) => acc + item.quantity * item.price, 0);
@@ -77,194 +84,179 @@ export const FormCreateOrders = ({ token }: CreateOrdersProps) => {
     })
 
     return (
-        <form onSubmit={onSubmit}>
-            <Stack gap="4" align="flex-start" >
-
-                <HStack flexWrap="wrap" >
-
-                    <FormField label="Cliente" error={errors.customerName?.message}>
-                        <Input {...register("customerName")} placeholder="ex: Maria db" />
-                    </FormField>
-                    <FormField label="Telefone" error={errors.customerPhone?.message}>
-                        <Controller
-                            control={control}
-                            name="customerPhone"
-                            render={({ field }) => (
+        <FormProvider {...methods}>
+            <form onSubmit={onSubmit}>
+                <Stack gap="4" align="flex-start" >
+                    <HStack flexWrap="wrap" >
+                        <FormField label="Cliente" error={errors.customerName?.message}>
+                            <Input {...register("customerName")} placeholder="ex: Maria db" />
+                        </FormField>
+                        <FormField label="Telefone" error={errors.customerPhone?.message}>
+                            <Controller
+                                control={control}
+                                name="customerPhone"
+                                render={({ field }) => (
+                                    <Input
+                                        {...field}
+                                        value={field.value ?? ""}
+                                        placeholder="(99) 99999-9999"
+                                        ref={withMask("(99) 99999-9999")}
+                                    />
+                                )}
+                            />
+                        </FormField>
+                        <FormField label="Endereço" error={errors.customerAddress?.message}>
+                            <Input   {...register("customerAddress")} placeholder="ex: Rua das rosas 01" />
+                        </FormField>
+                    </HStack>
+                    <HStack flexWrap="wrap" width={'100%'}>
+                        <FormField label="Status" error={errors.status?.message}>
+                            <Controller
+                                control={control}
+                                name="status"
+                                defaultValue="Pendente"
+                                render={({ field }) => (
+                                    <SelectCreateStatus
+                                        name={field.name}
+                                        value={field.value ?? ""}
+                                        onValueChange={field.onChange}
+                                    />
+                                )}
+                            />
+                        </FormField>
+                        <FormField label="Frete" error={errors.isFreightApplied?.message}>
+                            <Controller
+                                control={control}
+                                name="isFreightApplied"
+                                defaultValue={false}
+                                render={({ field }) => (
+                                    <SelectFrete
+                                        name={field.name}
+                                        value={field.value ? 'true' : 'false'}
+                                        onValueChange={(value) => {
+                                            const newValue = value === 'true'
+                                            field.onChange(value === 'true') //"true" === "true"   // true
+                                            setFrete(newValue)
+                                        }}
+                                    />
+                                )}
+                            />
+                        </FormField>
+                        <FormField label="Método pagamento" error={errors.paymentMethod?.message}>
+                            <Controller
+                                control={control}
+                                name="paymentMethod"
+                                defaultValue={undefined}
+                                render={({ field }) => (
+                                    <SelectPayment
+                                        name={field.name}
+                                        value={field.value ?? ""} //estado inicial é "" depois que o estado muda, o React executa novamente: field.value === "pix"
+                                        onValueChange={(value) => {
+                                            field.onChange(value)
+                                        }} //Usuário clica no select onValueChange({ value: ["pix"] })
+                                    >
+                                    </SelectPayment>
+                                )}
+                            />
+                        </FormField>
+                    </HStack>
+                    <FormFieldOptional >
+                        <FormField label="Frete Customizado" error={errors.customFreight?.message}>
+                            <InputGroup startAddon="R$" endAddon="BRL">
                                 <Input
-                                    {...field}
-                                    value={field.value ?? ""}
-                                    placeholder="(99) 99999-9999"
-                                    ref={withMask("(99) 99999-9999")}
+                                    defaultValue={""}
+                                    placeholder="0,00"
+                                    {...register("customFreight", {
+                                        onChange: (e) => {
+                                            const valor: number = e.target.value = e.target.value.replace(/[^0-9.]/g, "")
+                                            setFreteValor(Number(valor))
+                                        },
+                                    })}
                                 />
-                            )}
-                        />
-                    </FormField>
-                    <FormField label="Endereço" error={errors.customerAddress?.message}>
-                        <Input   {...register("customerAddress")} placeholder="ex: Rua das rosas 01" />
-                    </FormField>
-                </HStack>
-
-
-                <HStack flexWrap="wrap" width={'100%'}>
-                    <FormField label="Status" error={errors.status?.message}>
-                        <Controller
-                            control={control}
-                            name="status"
-                            defaultValue="Pendente"
-                            render={({ field }) => (
-                                <SelectCreateStatus
-                                    name={field.name}
-                                    value={field.value ?? ""}
-                                    onValueChange={field.onChange}
+                            </InputGroup>
+                        </FormField>
+                        <FormField label="Valor adicional" error={errors.additionalValue?.message}>
+                            <InputGroup startAddon="R$" endAddon="BRL">
+                                <Input
+                                    placeholder="0,00"
+                                    {...register("additionalValue", {
+                                        onChange: (e) => {
+                                            const valor: number = e.target.value = e.target.value.replace(/[^0-9.]/g, "")
+                                            setAdicionalValor(Number(valor))
+                                        },
+                                        required: true
+                                    })}
                                 />
-                            )}
-                        />
-                    </FormField>
-                    <FormField label="Frete" error={errors.isFreightApplied?.message}>
-                        <Controller
-                            control={control}
-                            name="isFreightApplied"
-                            defaultValue={false}
-                            render={({ field }) => (
-                                <SelectFrete
-                                    name={field.name}
-                                    value={field.value ? 'true' : 'false'}
-                                    onValueChange={(value) => {
-                                        const newValue = value === 'true'
-                                        field.onChange(value === 'true') //"true" === "true"   // true
-                                        setFrete(newValue)
-
-
-                                    }}
+                            </InputGroup>
+                        </FormField>
+                        <FormField label="Desconto  valor" error={errors.discountValue?.message}>
+                            <InputGroup startAddon="R$" endAddon="BRL">
+                                <Input
+                                    placeholder="0,00"
+                                    {...register("discountValue", {
+                                        onChange: (e) => {
+                                            const valor: number = e.target.value = e.target.value.replace(/[^0-9.]/g, "")
+                                            setdesconteValor(Number(valor))
+                                        },
+                                        required: true
+                                    })}
                                 />
-                            )}
-                        />
-                    </FormField>
-
-                    <FormField label="Método pagamento" error={errors.paymentMethod?.message}>
-                        <Controller
-                            control={control}
-                            name="paymentMethod"
-                            defaultValue={undefined}
-                            render={({ field }) => (
-                                <SelectPayment
-                                    name={field.name}
-                                    value={field.value ?? ""} //estado inicial é "" depois que o estado muda, o React executa novamente: field.value === "pix"
-                                    onValueChange={(value) => {
-                                        field.onChange(value)
-                                    }} //Usuário clica no select onValueChange({ value: ["pix"] }) 
-                                >
-                                </SelectPayment>
-                            )}
-                        />
-                    </FormField>
-                </HStack>
-
-
-                <FormFieldOptional >
-                    <FormField label="Frete Customizado" error={errors.customFreight?.message}>
-                        <InputGroup startAddon="R$" endAddon="BRL">
-                            <Input
-                                defaultValue={""}
-                                placeholder="0,00"
-                                {...register("customFreight", {
-                                    onChange: (e) => {
-                                        const valor: number = e.target.value = e.target.value.replace(/[^0-9.]/g, "")
-                                        setFreteValor(Number(valor))
-                                    },
-                                })}
+                            </InputGroup>
+                        </FormField>
+                        <FormField label="Obeservações" error={errors.observations?.message} >
+                            <Textarea  {...register("observations")} placeholder="Comment" />
+                            <Field.HelperText>Max 600 characteres.</Field.HelperText>
+                        </FormField>
+                    </FormFieldOptional>
+                    <FormField
+                        label="Produtos / Quantidade"
+                        error={errors.items?.message}
+                    >
+                        <Stack gap={3} width="100%">
+                            <SelectProducts
+                                token={token}
+                                onAddItem={(item) => append(item, { shouldFocus: true })}
+                                selectedProductIds={selectProducts}
                             />
-                        </InputGroup>
-                    </FormField>
-
-                    <FormField label="Valor adicional" error={errors.additionalValue?.message}>
-                        <InputGroup startAddon="R$" endAddon="BRL">
-                            <Input
-                                placeholder="0,00"
-                                {...register("additionalValue", {
-                                    onChange: (e) => {
-                                        const valor: number = e.target.value = e.target.value.replace(/[^0-9.]/g, "")
-                                        setAdicionalValor(Number(valor))
-                                    },
-                                    required: true
-                                })}
-                            />
-                        </InputGroup>
-                    </FormField>
-
-                    <FormField label="Desconto  valor" error={errors.discountValue?.message}>
-                        <InputGroup startAddon="R$" endAddon="BRL">
-                            <Input
-                                placeholder="0,00"
-                                {...register("discountValue", {
-                                    onChange: (e) => {
-                                        const valor: number = e.target.value = e.target.value.replace(/[^0-9.]/g, "")
-                                        setdesconteValor(Number(valor))
-                                    },
-                                    required: true
-                                })}
-                            />
-                        </InputGroup>
-                    </FormField>
-
-                    <FormField label="Obeservações" error={errors.observations?.message} >
-                        <Textarea  {...register("observations")} placeholder="Comment" />
-                        <Field.HelperText>Max 600 characteres.</Field.HelperText>
-                    </FormField>
-                </FormFieldOptional>
-
-                <FormField
-                    label="Produtos / Quantidade"
-                    error={errors.items?.message}
-                >
-                    <Stack gap={3} width="100%">
-                        <SelectProducts
-                            token={token}
-                            onAddItem={(item) => append(item)}
-                            selectedProductIds={selectProducts}
-                        />
-
-                        {fields.length > 0 && (
-                            <Stack gap={4} width="100%">
-                                {fields.map((item, index) => {
-                                    const itemsTotal = Number(item.quantity * item.price);
-
-                                    return (
-                                        <HStack
-                                            key={item.id}
-                                            justify="space-between"
-                                            width="100%"
-                                            padding={4}
-                                            borderRadius="lg"
-                                            boxShadow="sm"
-                                            _hover={{ boxShadow: "md", bg: "gray.50" }}
-                                            flexWrap={{ base: "wrap", md: "nowrap" }}
-                                        >
-                                            <Stack gap={1} flex="1" minW={{ base: "60%", md: "auto" }}>
-                                                <Text fontWeight="semibold">{item.name}</Text>
-
-                                                <HStack gap={2} flexWrap="wrap">
-                                                    <Badge colorPalette="purple">Qtde: {item.quantity}</Badge>
-                                                    <Badge colorPalette="green">Preço: R$ {item.price.toFixed(2)}</Badge>
-                                                    <Badge colorPalette="blue">Total: R$ {itemsTotal.toFixed(2)}</Badge>
-                                                </HStack>
-                                            </Stack>
-
-                                            <Button
-                                                size="xs"
-                                                variant={"ghost"}
-                                                colorPalette="red"
-                                                onClick={() => remove(index)}
-                                                _hover={{ bg: "red.50" }}
+                            {fields.length > 0 && (
+                                <Stack gap={4} width="100%">
+                                    {fields.map((item, index) => {
+                                        const itemsTotal = Number(item.quantity * item.price);
+                                        return (
+                                            <HStack
+                                                key={item.id}
+                                                justify="space-between"
+                                                width="100%"
+                                                padding={4}
+                                                borderRadius="lg"
+                                                boxShadow="sm"
+                                                _hover={{ boxShadow: "md", bg: "gray.50" }}
+                                                flexWrap={{ base: "wrap", md: "nowrap" }}
                                             >
-                                                Remover
-                                            </Button>
-                                        </HStack>
-                                    );
-                                })}
-                            </Stack>
-                        )}
-                    </Stack>
+                                                <Stack gap={1} flex="1" minW={{ base: "60%", md: "auto" }}>
+                                                    <Text fontWeight="semibold">{item.name}</Text>
+                                                    <HStack gap={2} flexWrap="wrap">
+                                                        <Badge colorPalette="purple">Qtde: { } {item.quantity.toFixed(3)}</Badge>
+                                                        <Badge colorPalette="green">Preço: R$ {item.price.toFixed(2)}</Badge>
+                                                        <Badge colorPalette="blue">Total: R$ {itemsTotal.toFixed(2)}</Badge>
+                                                    </HStack>
+                                                </Stack>
+                                                <Button
+                                                    size="xs"
+                                                    variant={"ghost"}
+                                                    colorPalette="red"
+                                                    onClick={() => remove(index)}
+                                                    _hover={{ bg: "red.50" }}
+                                                >
+                                                    Remover
+                                                </Button>
+                                            </HStack>
+                                        );
+                                    })}
+                                </Stack>
+                            )}
+                        </Stack>
+                    </FormField>
                     <VStack
                         w={"100%"}
                         pt={4}
@@ -281,11 +273,11 @@ export const FormCreateOrders = ({ token }: CreateOrdersProps) => {
                             </Alert.Root>
                         )}
                     </VStack>
-                </FormField>
-                <Button type="submit" colorPalette={"green"}>
-                    Criar Pedido
-                </Button>
-            </Stack>
-        </form>
+                    <Button type="submit" colorPalette={"green"}>
+                        Criar Pedido
+                    </Button>
+                </Stack>
+            </form>
+        </FormProvider>
     )
 }

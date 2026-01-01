@@ -19,6 +19,7 @@ import { LuInfo } from "react-icons/lu"
 import { InputQuantity } from "./InputQuantity"
 import { fontSizeTitleLabel } from "@/themes"
 import { MdAdd } from "react-icons/md";
+import { useFormContext } from "react-hook-form"
 
 
 interface SelectProductsProps {
@@ -29,8 +30,16 @@ interface SelectProductsProps {
 }
 
 export const SelectProducts = ({ token, selectedProductIds, onAddItem }: SelectProductsProps) => {
+    const {
+        control,
+        setValue,
+        getValues,
+        trigger,
+        formState: { errors },
+    } = useFormContext()
+
+
     const [selectedProduct, setSelectedProduct] = useState<Product | null>(null) // Armazenar os estado de produtos que vem quando o select é selecionado
-    const [quantity, setQuantity] = useState("")  //Armazenar a quantidade 
     const [inputDisabledQt, setInputDisabledQt] = useState(true) //Habilitar e desabilitar o campo de quantidade 
 
 
@@ -52,20 +61,27 @@ export const SelectProducts = ({ token, selectedProductIds, onAddItem }: SelectP
     }, [data, selectedProductIds])
 
     const handleAddItem = () => {
-        if (!selectedProduct || !quantity) return
+        if (!selectedProduct) return
+
+        const quantity = Number(getValues("quantity"))
+
+        // validação simples de UI (não é Yup)
+        if (!quantity || quantity <= 0) return
 
         onAddItem({
             name: selectedProduct.name,
             product_id: selectedProduct.id,
-            quantity: Number(quantity),
+            quantity,
             price: Number(selectedProduct.price),
-        }) //A props recebe esses valores e é passado para o componente pai
+        })
 
-        // reset UI depois que executar o Add de item reseto os valores do input
+        // reset
         setSelectedProduct(null)
-        setQuantity("")
         setInputDisabledQt(true)
+        setValue("quantity", "")
     }
+
+
 
     return (
         <HStack align="end" gap={4} width="full" flexWrap={'wrap'}>
@@ -79,7 +95,7 @@ export const SelectProducts = ({ token, selectedProductIds, onAddItem }: SelectP
                         const productId = e.value[0] //Aqui recebo o id 
                         const product = collection.items.find(p => p.id === productId) // pegando info de products pelo id que veio no e.value[0]
                         setSelectedProduct(product ?? null) //Armazenando no stat o valor do product selecionado 
-                        setQuantity("")
+                        setValue('quantity', "")
                         setInputDisabledQt(false)
                     }}
                 >
@@ -143,12 +159,11 @@ export const SelectProducts = ({ token, selectedProductIds, onAddItem }: SelectP
             </Field.Root>
 
 
-            <HStack justifyContent={"space-around"} width={{base:'100%', md:'50%'}} >
+            <HStack justifyContent={"space-around"} width={{ base: '100%', md: '50%' }} >
                 <InputQuantity
                     infoProducts={selectedProduct}
                     disabled={inputDisabledQt}  //quando seleciono  um valor no select ja passo por props para o input quantidade
-                    value={quantity}
-                    onchangeQuantity={setQuantity}//Set quantidade recebe o valor que vem do onValueChange do input de quantidade e captura o valor
+
                 />
                 <IconButton
                     colorPalette={'green'}

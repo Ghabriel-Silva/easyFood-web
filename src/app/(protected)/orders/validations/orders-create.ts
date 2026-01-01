@@ -85,7 +85,7 @@ export const OrderCreateSchema = yup.object({
                 quantity: yup
                     .number()
                     .integer('A quantidade deve ser um número inteiro')
-                    .min(1, 'A quantidade deve ser no mínimo 1')
+                    .moreThan(0, "Quantidade deve ser maior que zero")             
                     .required('A quantidade é obrigatória'),
 
                 price: yup

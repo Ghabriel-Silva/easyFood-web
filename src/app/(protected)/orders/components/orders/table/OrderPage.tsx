@@ -1,13 +1,14 @@
 "use client";
 
 import React from "react";
-import { Box, Flex, Heading,  HStack, Spinner, Text, AbsoluteCenter, Alert } from "@chakra-ui/react";
+import { Box, Flex, Heading, HStack, Spinner, Text, AbsoluteCenter, Alert } from "@chakra-ui/react";
 
-import {TableOrders} from "@/app/(protected)/orders/components/orders/table/index";
+import { TableOrders } from "@/app/(protected)/orders/components/orders/table/index";
 import { useOrdersData } from "@/app/(protected)/orders/hooks/index";
 import { useOrdersMutade } from "@/app/(protected)/orders/hooks/index";
 import { Toaster } from "@/components/ui/toaster";
 import { CreateOrders } from "@/app/(protected)/orders/components/orders/dialogs/index";
+import { ButtonCreateOrders } from "../dialogs/DialogCreateOrdersButton";
 
 interface OrderPageProps {
   token: string;
@@ -42,6 +43,7 @@ export default function OrderPage({ token }: OrderPageProps) {
       <Flex justify="space-between" pb={4}>
         <Heading size="xl" fontWeight="medium">Pedidos</Heading>
         <CreateOrders token={token} />
+        <ButtonCreateOrders token={token} />
         <Toaster />
       </Flex>
 
