@@ -2,14 +2,7 @@ import { Button, Dialog, CloseButton, } from "@chakra-ui/react";
 import { MdAdd } from "react-icons/md";
 import { FormFather } from "@/app/(protected)/orders/components/orders/form/FormFather"
 
-
-
-
-
-interface CreateOrdersProps {
-    token: string,
-}
-export const ButtonCreateOrders = ({ token }: CreateOrdersProps) => {
+export const ButtonCreateOrders = () => {
     return (
         <Dialog.Root size={"lg"} closeOnInteractOutside={false} >
             <Dialog.Trigger asChild>
@@ -26,7 +19,7 @@ export const ButtonCreateOrders = ({ token }: CreateOrdersProps) => {
                     </Dialog.Header>
                     <Dialog.Body>
                         {/*Aqui rederizo o Formulario  */}
-                    <FormFather token={token} />
+                    <FormFather  />
                     </Dialog.Body>
                     <Dialog.CloseTrigger asChild>
                         <CloseButton size="sm" />

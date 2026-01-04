@@ -7,19 +7,16 @@ import { TableOrders } from "@/app/(protected)/orders/components/orders/table/in
 import { useOrdersData } from "@/app/(protected)/orders/hooks/index";
 import { useOrdersMutade } from "@/app/(protected)/orders/hooks/index";
 import { Toaster } from "@/components/ui/toaster";
-import { CreateOrders } from "@/app/(protected)/orders/components/orders/dialogs/index";
 import { ButtonCreateOrders } from "../dialogs/DialogCreateOrdersButton";
 
-interface OrderPageProps {
-  token: string;
-}
 
-export default function OrderPage({ token }: OrderPageProps) {
+
+export default function OrderPage() {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
-  const { data, isLoading, isError } = useOrdersData(token);
-  const { mutate: mutateStatus } = useOrdersMutade(token);
+  const { data, isLoading, isError } = useOrdersData();
+  const { mutate: mutateStatus } = useOrdersMutade();
 
   const updateOrderStatus = (orderId: string, novoStatus: string) => mutateStatus({ orderId, novoStatus });
 
@@ -42,8 +39,7 @@ export default function OrderPage({ token }: OrderPageProps) {
 
       <Flex justify="space-between" pb={4}>
         <Heading size="xl" fontWeight="medium">Pedidos</Heading>
-        <CreateOrders token={token} />
-        <ButtonCreateOrders token={token} />
+        <ButtonCreateOrders  />
         <Toaster />
       </Flex>
 

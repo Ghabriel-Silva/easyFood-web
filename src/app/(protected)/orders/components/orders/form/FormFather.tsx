@@ -1,3 +1,4 @@
+"use client"
 import {
     Button, HStack, Stack
 
@@ -14,6 +15,9 @@ import { SelectStatus } from "./inputsOrders/SelectStatus"
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { OrderFormSchema, OrderFormSchemaInterface } from "../../../validations/orders-form"
+import { FormCreateOrders } from "."
+import { SelectProducts } from "./FormCreateOrders"
+
 
 export const FormFather = () => {
     const methods = useForm({
@@ -99,6 +103,13 @@ export const FormFather = () => {
                             <TextArea placeholder="ex: Retirar cebola..." autoresize />
                         </FormField>
                     </FieldOptional>
+
+                    <FormField label="Produtos/Quantidade">
+                       <SelectProducts/>
+                    </FormField>
+
+
+
                     <Button type="submit">Enviar</Button>
                 </Stack>
             </form>

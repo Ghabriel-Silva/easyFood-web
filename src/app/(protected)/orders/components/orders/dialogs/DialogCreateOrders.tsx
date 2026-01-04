@@ -3,10 +3,7 @@ import { MdAdd } from "react-icons/md";
 import { FormCreateOrders } from "@/app/(protected)/orders/components/orders/form/index";
 
 
-interface CreateOrdersProps {
-    token: string,
-}
-export const CreateOrders = ({ token }: CreateOrdersProps) => {
+export const CreateOrders = () => {
     return (
         <Dialog.Root size={"lg"} closeOnInteractOutside={false} >
             <Dialog.Trigger asChild>
@@ -23,7 +20,7 @@ export const CreateOrders = ({ token }: CreateOrdersProps) => {
                     </Dialog.Header>
                     {/*Aqui rederizo o Formulario  */}
                     <Dialog.Body>
-                        <FormCreateOrders token={token} />
+                        <FormCreateOrders />
                     </Dialog.Body>              
                     <Dialog.CloseTrigger asChild>
                         <CloseButton size="sm" />

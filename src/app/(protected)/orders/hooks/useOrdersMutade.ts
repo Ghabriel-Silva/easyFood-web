@@ -6,12 +6,12 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 const URL_API = process.env.NEXT_PUBLIC_URL_API
 
 
-const setNewStatus = async (orderId: string, novoStatus: string, token: string) => {
+const setNewStatus = async (orderId: string, novoStatus: string, ) => {
     const res = await fetch(`${URL_API}/order/${orderId}/status`, {
         method: "PATCH",
+         credentials: 'include',
         headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json"
         },
         body: JSON.stringify({
             status: novoStatus
@@ -24,15 +24,15 @@ const setNewStatus = async (orderId: string, novoStatus: string, token: string) 
 }
 
 
-export function useOrdersMutade(token: string) {
+export function useOrdersMutade() {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: ({ orderId, novoStatus, }: ISetStatusReq) => setNewStatus(orderId, novoStatus, token),
+        mutationFn: ({ orderId, novoStatus, }: ISetStatusReq) => setNewStatus(orderId, novoStatus),
 
         onSuccess: (_, variables) => {
             queryClient.invalidateQueries({
-                queryKey: ["order-data", token],
+                queryKey: ["order-data"],
             });
             return toaster.create({
                 title: `Status do Pedido ${variables.orderId.slice(0, 4)}  atualizado`,

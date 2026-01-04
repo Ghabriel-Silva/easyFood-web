@@ -23,13 +23,12 @@ import { useFormContext } from "react-hook-form"
 
 
 interface SelectProductsProps {
-    token: string
     selectedProductIds: string[]
     onAddItem: (item: OrderItem) => void //Espero essa propeidade item que tenha esses valores 
 
 }
 
-export const SelectProducts = ({ token, selectedProductIds, onAddItem }: SelectProductsProps) => {
+export const SelectProducts = ({  selectedProductIds, onAddItem }: SelectProductsProps) => {
     const {
         control,
         setValue,
@@ -44,7 +43,7 @@ export const SelectProducts = ({ token, selectedProductIds, onAddItem }: SelectP
 
 
     //React query busca os dados quando entro no select products
-    const { data, isLoading, isError } = useOrdersCreate(token)
+    const { data, isLoading, isError } = useOrdersCreate()
 
     const collection = useMemo(() => {
         console.log('mudou')

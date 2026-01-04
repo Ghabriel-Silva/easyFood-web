@@ -3,12 +3,12 @@ import { useQuery } from "@tanstack/react-query";
 
 
 
-const fetchData = async (token: string): Promise<IOrderResponse> => {
+const fetchData = async (): Promise<IOrderResponse> => {
     const res = await fetch("http://localhost:8080/order/filter", {
         method: "POST",
+        credentials: 'include',
         headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json"
         },
         body: JSON.stringify({
             // startDate: new Date().toISOString().split("T")[0]
@@ -18,10 +18,10 @@ const fetchData = async (token: string): Promise<IOrderResponse> => {
     return res.json()
 }
 
-export function useOrdersData(token: string) {
+export function useOrdersData() {
     return useQuery<IOrderResponse>({
-        queryFn: () => fetchData(token),
-        queryKey: ['order-data', token],
+        queryFn: fetchData,
+        queryKey: ['order-data'],
         staleTime: 5 * 60 * 1000,
         refetchInterval: 5 * 60 * 1000,
         refetchOnWindowFocus: "always",

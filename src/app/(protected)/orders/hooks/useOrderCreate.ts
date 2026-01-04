@@ -2,12 +2,13 @@ import { useQuery } from "@tanstack/react-query";
 import { Product } from "../interfaces/porducts";
 
 
-const fetchData = async (token: string): Promise<Product[]> => {
+const fetchData = async (): Promise<Product[]> => {
     const resp = await fetch("http://localhost:8080/product?status=active&price=maior", {
         method: "GET",
+        credentials:'include',
         headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
+           
         }
     })
 
@@ -16,10 +17,10 @@ const fetchData = async (token: string): Promise<Product[]> => {
     return json.data
 }
 
-export function useOrdersCreate(token: string) {
+export function useOrdersCreate() {
     return useQuery<Product[]>({
-        queryFn: (() => fetchData(token)),
-        queryKey: ['product-data', token],
+        queryFn:  fetchData,
+        queryKey: ['product-data'],
         staleTime: 0,
         refetchOnWindowFocus: true,
     })
