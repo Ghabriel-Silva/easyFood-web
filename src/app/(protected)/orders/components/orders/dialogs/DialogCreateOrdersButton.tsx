@@ -2,30 +2,33 @@ import { Button, Dialog, CloseButton, Spinner } from "@chakra-ui/react";
 import { MdAdd } from "react-icons/md";
 import { FormFather } from "@/app/(protected)/orders/components/orders/form/FormFather"
 import { useOrdersCreate } from "../../../hooks/useOrdersCreate";
+import { useState } from "react";
 
 export const ButtonCreateOrders = () => {
+    const [open, setOpen] = useState(false)
 
     const { isPending } = useOrdersCreate()
+
     return (
-        <Dialog.Root size={"lg"} closeOnInteractOutside={false} >
+        <Dialog.Root size={"lg"} closeOnInteractOutside={false}  open={open}  onOpenChange={(detais)=>setOpen(detais.open)} >
             <Dialog.Trigger asChild>
-                <Button bg="blue.600" borderRadius="lg">Criar pedido novo<MdAdd /></Button>
+                <Button bg="blue.600" borderRadius="lg">Criar novo pedido<MdAdd /></Button>
             </Dialog.Trigger>
             <Dialog.Backdrop />
             <Dialog.Positioner>
                 <Dialog.Content>
                     <Dialog.CloseTrigger />
                     <Dialog.Header>
-                        <Dialog.Title>
-                            {isPending && (
-                                <Spinner size="sm" />
+                        {isPending && (
+                                <Spinner size="md"  />
                             )}
+                        <Dialog.Title>   
                             Add Pedido
                         </Dialog.Title>
                     </Dialog.Header>
                     <Dialog.Body>
                         {/*Aqui rederizo o Formulario  */}
-                        <FormFather />
+                        <FormFather success={()=>setOpen(false)} />
 
                     </Dialog.Body>
                     <Dialog.CloseTrigger asChild>

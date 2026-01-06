@@ -13,7 +13,8 @@ import {
     VStack,
     Center,
     FormatNumber,
-    Stat
+    Stat,
+    Box
 } from "@chakra-ui/react"
 
 import { IOrder } from "@/app/(protected)/orders/interfaces/orders-data"
@@ -23,6 +24,8 @@ import { getStatusOption } from "@/app/(protected)/orders/helpers/index"
 import { getPaymentColor } from "@/app/(protected)/orders/helpers/index"
 import { calculoPercentualAdicional } from "@/app/(protected)/orders/helpers/index"
 import { DialogOrderItems } from "@/app/(protected)/orders/components/orders/dialogs/index"
+import { InfoNull } from "../../ui/InfoNull";
+
 
 
 import { TableText } from "@/app/(protected)/orders/components/ui/index"
@@ -141,13 +144,16 @@ export const DialogOrder: React.FC<DialogProps> = ({ order }) => {
                                     </HStack>
 
                                     {/* Endereço / Telefone / Pagamento */}
-                                    <HStack gap={6} wrap="wrap">
+                                    <HStack gap={6} wrap="wrap"  align={'start'}>
                                         <DataList.Item>
                                             <DataList.ItemLabel>
                                                 <TableLabel>Endereço</TableLabel>
                                             </DataList.ItemLabel>
                                             <DataList.ItemValue>
-                                                <TableText>{order.customerAddress}</TableText>
+                                                <Box>
+                                                    {!order.customerAddress && (<InfoNull />)}
+                                                    <TableText>{order.customerAddress}</TableText>
+                                                </Box>
                                             </DataList.ItemValue>
                                         </DataList.Item>
 
@@ -156,7 +162,10 @@ export const DialogOrder: React.FC<DialogProps> = ({ order }) => {
                                                 <TableLabel>Telefone</TableLabel>
                                             </DataList.ItemLabel>
                                             <DataList.ItemValue>
-                                                <TableText>{order.customerPhone}</TableText>
+                                                <Box>
+                                                    {!order.customerPhone && (<InfoNull />)}
+                                                    <TableText>{order.customerPhone}</TableText>
+                                                </Box>
                                             </DataList.ItemValue>
                                         </DataList.Item>
 

@@ -17,9 +17,13 @@ import { OrderFormSchema, OrderFormSchemaInterface } from "../../../validations/
 import { SelectProductsQt } from "./SelectProductsQt"
 import { useOrdersCreate } from "../../../hooks/useOrdersCreate"
 
+type ForFatherProps = {
+    success: () => void
+}
+
+export const FormFather = ({ success }: ForFatherProps) => {
 
 
-export const FormFather = () => {
     const methods = useForm({
         resolver: yupResolver(OrderFormSchema),
         mode: 'onBlur',
@@ -32,15 +36,31 @@ export const FormFather = () => {
     const {
         register,
         handleSubmit,
+        reset,
         formState: { errors }
     } = methods
 
-    const { mutate} = useOrdersCreate()
+    const { mutate } = useOrdersCreate()
 
     const OnSubmite: SubmitHandler<OrderFormSchemaInterface> = (data: OrderFormSchemaInterface) => {
+        mutate(data, {
 
-        mutate(data)
-        console.log(data)
+            onSuccess: () => {
+                reset({
+                    customerName: '',
+                    customerPhone: null,
+                    customerAddress: '',
+                    paymentMethod: undefined,
+                    status: 'Pendente',
+                    items: [], 
+                    customFreight: null,
+                    additionalValue: null,
+                    discountValue: null,
+                })
+                success()
+            }
+        })
+
     }
 
 
@@ -95,7 +115,7 @@ export const FormFather = () => {
                     </FieldOptional>
 
                     <SelectProductsQt />
-                    <Button type="submit">Enviar</Button>
+                    <Button type="submit"   >Enviar</Button>
                 </Stack>
             </form>
         </FormProvider>
