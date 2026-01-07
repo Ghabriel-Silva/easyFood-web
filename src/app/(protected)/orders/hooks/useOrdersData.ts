@@ -11,7 +11,7 @@ const fetchData = async (): Promise<IOrderResponse> => {
             "Content-Type": "application/json"
         },
         body: JSON.stringify({
-            startDate: new Date().toISOString().split("T")[0]
+            // startDate: new Date().toISOString().split("T")[0]
         }),
     });
     console.log(" Chamou API /order/filter");

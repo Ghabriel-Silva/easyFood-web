@@ -25,7 +25,7 @@ export const SelectStatus = () => {
                     }}
                     collection={status}
                     size="sm"
-                    positioning={{ placement: "bottom" }}
+                  
                 >
                     <Select.HiddenSelect />
                     <Select.Control>

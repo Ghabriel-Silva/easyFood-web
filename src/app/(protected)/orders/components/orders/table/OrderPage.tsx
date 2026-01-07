@@ -7,7 +7,9 @@ import { TableOrders } from "@/app/(protected)/orders/components/orders/table/in
 import { useOrdersData } from "@/app/(protected)/orders/hooks/index";
 import { useOrdersMutade } from "@/app/(protected)/orders/hooks/index";
 import { Toaster } from "@/components/ui/toaster";
-import { ButtonCreateOrders } from "../dialogs/DialogCreateOrdersButton";
+import { ButtonCreateOrders } from "@/app/(protected)/orders/components/orders/dialogs/DialogCreateOrdersButton";
+import { FilterContainer } from "@/app/(protected)/orders/components/orders/filters/FilterContainer";
+import { OpcionalView } from "@/app/(protected)/orders/components/ui/index";
 
 
 
@@ -37,11 +39,14 @@ export default function OrderPage() {
         </AbsoluteCenter>
       )}
 
-      <Flex justify="space-between" pb={4}>
-        <Heading size="xl" fontWeight="medium">Pedidos</Heading>
-        <ButtonCreateOrders  />
-        <Toaster />
-      </Flex>
+          <Flex justify="space-between"  >
+            <Heading size="xl" fontWeight="medium">Pedidos</Heading>
+            <ButtonCreateOrders />
+            <Toaster />
+          </Flex>
+          <OpcionalView title="Filtrar Pedidos">
+            <FilterContainer />
+          </OpcionalView>
 
       {!isLoading && (
         <>

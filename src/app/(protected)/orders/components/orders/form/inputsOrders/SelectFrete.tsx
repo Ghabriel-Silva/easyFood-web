@@ -23,7 +23,7 @@ export const SelectFrete = () => {
                     }}
                     collection={status}
                     size="sm"
-                    positioning={{ placement: "bottom" }}
+                    
                 >
                     <Select.HiddenSelect />
                     <Select.Control>

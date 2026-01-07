@@ -20,7 +20,7 @@ export const SelectPayment = () => {
                     }}
                     collection={payment}
                     size="sm"
-                    positioning={{ placement: "bottom" }}
+                  
 
                 >
                     <Select.HiddenSelect />
