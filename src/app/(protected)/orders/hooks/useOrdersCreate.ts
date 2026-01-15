@@ -3,14 +3,11 @@ import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { toaster } from "@/components/ui/toaster"
 import { IOrder } from "../interfaces/orders-data"
 import { OrderFormSchemaInterface } from "../validations/orders-form"
+import { ApiError } from "@/interfaces/api-error"
 const URL_API = process.env.NEXT_PUBLIC_URL_API
 
 
-type ApiError = {
-    status: string
-    statusCode: number
-    message: string
-}
+
 
 const createOrders = async (data: OrderFormSchemaInterface) => {
     const res = await fetch(`${URL_API}/order`, {

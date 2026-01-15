@@ -34,7 +34,7 @@ export const SelectProductsQt = () => {
         name: 'items'
     })
 
-    const { data, isLoading, isError } = useOrdersGetProducts()
+    const { data, isLoading, isError, error } = useOrdersGetProducts()
 
 
     const [tempProductId, setTempProductId] = useState<string>("")
@@ -213,11 +213,12 @@ export const SelectProductsQt = () => {
                     Nenhum produto adicionado ainda.
                 </Text>
             )}
-            {isError && (
+            {error && (
                 <Text color="red" fontSize="sm" textAlign="center" py={4}>
-                    Erro ao carregar produtos, atualize e tente novamente.
+                    {error.message}
                 </Text>
             )}
+
 
         </Stack>
     )
