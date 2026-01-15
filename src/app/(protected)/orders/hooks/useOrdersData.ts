@@ -30,8 +30,6 @@ const fetchData = async (filters: FilterOrderSchemaInterface): Promise<IOrderRes
 
         throw error
     }
-
-    console.log("Chamou API /order/filter");
     return res.json();
 }
 
