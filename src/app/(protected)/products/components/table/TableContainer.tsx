@@ -1,3 +1,4 @@
+"use-client"
 import MUIDataTable from "mui-datatables";
 
 
@@ -45,7 +46,8 @@ export const TableContainer = () => {
     ];
 
     const options = {
-        filterType: 'checkbox',
+        elevation: 1,
+        selectableRows: "none",
         sort: true,
         download: false,
         filter: false,
@@ -53,18 +55,41 @@ export const TableContainer = () => {
         searchable: false,
         search: false,
         rowsPerPageOptions: [10, 25, 50],
-        print:false, 
+        print: false,
+        responsive: 'standard',
+        storageKey: 'tabela-produtos',
+        textLabels: {
+            pagination: {
+                next: "Próxima Página",
+                previous: "Página Anterior",
+                rowsPerPage: "Linhas por página:", // O que você tentou fazer antes
+                displayRows: "de",
+            },
+            body: {
+                noMatch: "Nenhum registro encontrado",
+                toolTip: "Classificar",
+            },
+            toolbar: {
+                // 1. Muda o texto que aparece ao passar o mouse (Tooltip) no ícone da barra
+                viewColumns: "Exibir Colunas",
+            },
+            viewColumns: {
+                // 2. Muda o título que aparece dentro do menu/modal que abre
+                title: "Mostrar/Ocultar Colunas",
+                titleAria: "Mostrar/Ocultar Colunas da Tabela",
+            },
+        }
 
-        
+
     };
     return (
 
 
         <MUIDataTable
-            title={"Employee List"}
             data={data}
             columns={columns}
             options={options}
+
 
         />
     )
