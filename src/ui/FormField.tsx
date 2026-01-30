@@ -1,4 +1,4 @@
-import { ColorLabel, fontSizeTitleLabel } from "@/themes"
+import { ColorLabel, fontSizeTitleLabel } from "@/theme/ChakraUI/themes"
 import { Field } from "@chakra-ui/react"
 
 interface FormFieldProps {

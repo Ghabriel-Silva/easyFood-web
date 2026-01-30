@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
-import ConfigPage from "./ConfigPage";
+import {ConfigPage} from "./ConfigPage";
 
 export default async function Config() {
     const cookieStore = await  cookies();

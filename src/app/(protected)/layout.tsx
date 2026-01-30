@@ -16,6 +16,9 @@ import {
     MdLogout,
 } from "react-icons/md";
 
+import { ColorModeButton } from "@/components/ui/color-mode"
+
+
 //apenas login recebe as edições feitas aqui
 export default function RootLayout({
     children,
@@ -101,7 +104,7 @@ export default function RootLayout({
                                     </Text>
                                 </Flex>
                                 <Icon
-                                    cursor="pointer"
+                                    cursor={"e-resize"}
                                     onClick={() => setSlider(prev => !prev)}
                                     color="fg.muted"
                                     _hover={{ color: "accent.fg" }}
@@ -185,7 +188,9 @@ export default function RootLayout({
                                 Sair
                             </Text>
                         </Flex>
+                        <ColorModeButton />
                     </Stack>
+
                 </Box>
                 <Box flex="1" overflowY="auto" py={6} px={4} >
                     {children}

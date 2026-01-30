@@ -1,6 +1,6 @@
 "use client"
 import {
-    Button, HStack, Stack,
+ HStack, Stack,
 } from "@chakra-ui/react"
 import { FormField, OpcionalView } from "@/ui/index"
 import { GroupInput, TextArea, TextInput, WithMaskInput, SelectPayment, SelectFrete, SelectStatus, SelectProductsQt } from "@/app/(protected)/orders/components/orders/form/index"
@@ -10,11 +10,12 @@ import { OrderFormSchema, OrderFormSchemaInterface } from "@/app/(protected)/ord
 import { useOrdersCreate } from "@/app/(protected)/orders/hooks/useOrdersCreate"
 
 type ForFatherProps = {
+    formRef:React.RefObject<HTMLFormElement | null>
     success: () => void
 
 }
 
-export const FormFather = ({ success }: ForFatherProps) => {
+export const FormFather = ({ success, formRef }: ForFatherProps) => {
 
 
     const methods = useForm({
@@ -60,7 +61,7 @@ export const FormFather = ({ success }: ForFatherProps) => {
 
     return (
         <FormProvider {...methods} >
-            <form onSubmit={handleSubmit(OnSubmite)}>
+            <form ref={formRef} onSubmit={handleSubmit(OnSubmite)}>
                 <Stack
                     gap={4}>
                     <HStack flexWrap="wrap" align="flex-start" >
@@ -88,7 +89,7 @@ export const FormFather = ({ success }: ForFatherProps) => {
                             <SelectStatus />
                         </FormField>
                     </HStack>
-                    <OpcionalView title="Info adicionais" openDefault={true}>
+                    <OpcionalView title="Info adicionais" >
                         <HStack flexWrap="wrap" align="flex-start">
                             <FormField label="Frete adicional" error={errors.customFreight?.message}>
                                 <GroupInput name="customFreight" />
@@ -104,9 +105,7 @@ export const FormFather = ({ success }: ForFatherProps) => {
                             <TextArea {...register('observations')} placeholder="ex: Retirar cebola..." autoresize />
                         </FormField>
                     </OpcionalView>
-
-                    <SelectProductsQt />
-                    <Button type="submit"   >Enviar</Button>
+                    <SelectProductsQt />                
                 </Stack>
             </form>
         </FormProvider>

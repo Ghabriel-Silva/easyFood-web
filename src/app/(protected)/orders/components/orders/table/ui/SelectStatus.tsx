@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { fontText, fontWeigthText } from "@/themes";
+import { fontText, fontWeigthText } from "@/theme/ChakraUI/themes";
 import { FONT_SIZE_MAP } from "@/app/(protected)/orders/helpers/index";
 
 type SelectStatusProps = {

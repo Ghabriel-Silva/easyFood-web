@@ -3,7 +3,7 @@
 import { Collapsible, Text, useBreakpointValue } from "@chakra-ui/react"
 import { ReactNode } from "react"
 import { LuChevronRight } from "react-icons/lu"
-import { fontSizeTitleLabel } from "@/themes"
+import { fontSizeTitleLabel } from "@/theme/ChakraUI/themes"
 
 interface PropsChildren {
     children: ReactNode

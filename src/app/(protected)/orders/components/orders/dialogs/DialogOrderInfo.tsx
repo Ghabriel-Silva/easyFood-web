@@ -17,7 +17,7 @@ import {
 } from "@chakra-ui/react"
 
 import { IOrder } from "@/app/(protected)/orders/interfaces/orders-data"
-import { fontText } from "@/themes"
+import { fontText } from "@/theme/ChakraUI/themes"
 import { calculoPercentualDescon, getRandonColor } from "@/app/(protected)/orders/helpers/index"
 import { getStatusOption } from "@/app/(protected)/orders/helpers/index"
 import { getPaymentColor } from "@/app/(protected)/orders/helpers/index"

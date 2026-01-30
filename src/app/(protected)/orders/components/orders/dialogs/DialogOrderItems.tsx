@@ -16,7 +16,7 @@ import {
     fontWeigthText,
     ColorLabel,
     fontSizeTitleLabel
-} from "@/themes"
+} from "@/theme/ChakraUI/themes"
 import { tranformeUniMedida } from "@/helpers/transformeUniMedida"
 import {tranformeQuantity  } from "@/helpers/transformeQuantity"
 

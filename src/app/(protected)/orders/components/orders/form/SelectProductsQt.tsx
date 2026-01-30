@@ -1,6 +1,6 @@
 import { useOrdersGetProducts } from "@/app/(protected)/orders/hooks/index"
 import { OrderFormSchemaInterface } from "@/app/(protected)/orders/validations/orders-form"
-import { fontSizeTitleLabel } from "@/themes"
+import { fontSizeTitleLabel } from "@/theme/ChakraUI/themes"
 import { FormField } from "@/ui/index"
 import {
     Button,
@@ -17,7 +17,7 @@ import {
 } from "@chakra-ui/react"
 import { useMemo, useState } from "react"
 import { useFieldArray, useFormContext, useFormState, useWatch } from "react-hook-form"
-import { Product } from "@/app/(protected)/orders/interfaces/products"
+import { Product } from "@/app/(protected)/products/interfaces/products"
 import { LuTrash2, LuPlus } from "react-icons/lu"
 import { tranformeUniMedida } from "@/helpers/transformeUniMedida"
 import { tranformeQuantity } from "@/helpers/transformeQuantity"

@@ -33,7 +33,8 @@ import { TableOrdersProps } from "@/app/(protected)/orders/interfaces/table-orde
 import { DialogOrder } from "@/app/(protected)/orders/components/orders/dialogs/index";
 import { getStatusOption } from "@/app/(protected)/orders/helpers/index";
 import { getPaymentColor } from "@/app/(protected)/orders/helpers/index";
-import { fontText } from "@/themes";
+import { fontText } from "@/theme/ChakraUI/themes";
+import { MuiThemeProvider } from "@/theme/MuiDatables/providers/MuiThemeProvider";
 
 export default function TableOrders({
     orders,
@@ -74,7 +75,6 @@ export default function TableOrders({
                                 borderWidth="1px"
                                 borderRadius="lg"
                                 p={4}
-                                bg="white"
                                 boxShadow="sm"
                             >
                                 {/* Header */}
@@ -170,186 +170,178 @@ export default function TableOrders({
 
 
             {!isMobile && (
-                <Paper sx={{ width: "100%", overflow: "hidden"}}>
-                    <TableContainer
-                        sx={{
-                            maxHeight: "calc(100vh - 310px)",
-                            borderRadius: "8px",
-                        }}
-                    >
-                        <Table stickyHeader>
-                            <TableHead>
-                                <TableRow>
-                                    {[
-                                        "Nº Pedido / Data",
-                                        "Cliente",
-                                        "Telefone",
-                                        "Endereço",
-                                        "Status",
-                                        "Pagamento",
-                                        "Total",
-                                        "Alterar Status",
-                                    ].map((header) => (
-                                        <TableCell key={header}>{header}</TableCell>
-                                    ))}
-                                </TableRow>
-                            </TableHead>
-
-                            <TableBody>
-                                {paginatedOrders.map((order) => {
-                                    const { color, icon } = getStatusOption(order.status);
-
-                                    return (
-                                        <TableRow key={order.id} hover>
-                                            <TableCell>
-                                                <HStack>
-                                                    <DialogOrder order={order} />
-                                                    <Badge
-                                                        colorPalette="blue"
-                                                        variant="subtle"
-                                                        _hover={{ bg: "blue.200" }}
-                                                    >
-                                                        <Center cursor="pointer" w="32px">
-                                                            <MdPrint
-                                                                size={14}
-                                                                onClick={() =>
-                                                                    handleClick(order.id)
-                                                                }
-                                                            />
-                                                        </Center>
-                                                    </Badge>
-                                                </HStack>
-                                            </TableCell>
-
-                                            <TableCell>
-                                                <HStack width="150px" gap={0}>
-                                                    {!order.customerName && <InfoNull />}
-                                                    {order.customerName &&
-                                                        (order.customerName.length > 10 ? (
-                                                            <>
-                                                                <InfoTip
-                                                                    content={order.customerName}
-                                                                />
-                                                                <TableText>
-                                                                    {order.customerName.slice(
-                                                                        0,
-                                                                        15
-                                                                    )}
-                                                                </TableText>
-                                                            </>
-                                                        ) : (
-                                                            <TableText>
-                                                                {order.customerName}
-                                                            </TableText>
-                                                        ))}
-                                                </HStack>
-                                            </TableCell>
-
-                                            <TableCell>
-                                                {order.customerPhone ?? <InfoNull />}
-                                            </TableCell>
-
-                                            <TableCell>
-                                                <HStack width="160px">
-                                                    {!order.customerAddress && <InfoNull />}
-                                                    {order.customerAddress &&
-                                                        (order.customerAddress.length >
-                                                            15 ? (
-                                                            <>
-                                                                <InfoTip
-                                                                    content={
-                                                                        order.customerAddress
+                <MuiThemeProvider >
+                    <Paper sx={{ width: "100%", overflow: "hidden"}}>
+                        <TableContainer
+                            sx={{
+                                maxHeight: "calc(100vh - 330px)",
+                                borderRadius: "8px",
+                            }}
+                        >
+                            <Table stickyHeader>
+                                <TableHead>
+                                    <TableRow>
+                                        {[
+                                            "Nº Pedido / Data",
+                                            "Cliente",
+                                            "Telefone",
+                                            "Endereço",
+                                            "Status",
+                                            "Pagamento",
+                                            "Total",
+                                            "Alterar Status",
+                                        ].map((header) => (
+                                            <TableCell key={header}>{header}</TableCell>
+                                        ))}
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {paginatedOrders.map((order) => {
+                                        const { color, icon } = getStatusOption(order.status);
+                                        return (
+                                            <TableRow key={order.id} hover>
+                                                <TableCell>
+                                                    <HStack>
+                                                        <DialogOrder order={order} />
+                                                        <Badge
+                                                            colorPalette="blue"
+                                                            variant="subtle"
+                                                            _hover={{ bg: "blue.200" }}
+                                                        >
+                                                            <Center cursor="pointer" w="32px">
+                                                                <MdPrint
+                                                                    size={14}
+                                                                    onClick={() =>
+                                                                        handleClick(order.id)
                                                                     }
                                                                 />
+                                                            </Center>
+                                                        </Badge>
+                                                    </HStack>
+                                                </TableCell>
+                                                <TableCell>
+                                                    <HStack width="150px" gap={0}>
+                                                        {!order.customerName && <InfoNull />}
+                                                        {order.customerName &&
+                                                            (order.customerName.length > 10 ? (
+                                                                <>
+                                                                    <InfoTip
+                                                                        content={order.customerName}
+                                                                    />
+                                                                    <TableText>
+                                                                        {order.customerName.slice(
+                                                                            0,
+                                                                            15
+                                                                        )}
+                                                                    </TableText>
+                                                                </>
+                                                            ) : (
                                                                 <TableText>
-                                                                    {order.customerAddress.slice(
-                                                                        0,
-                                                                        15
-                                                                    )}
-                                                                    ...
+                                                                    {order.customerName}
                                                                 </TableText>
-                                                            </>
-                                                        ) : (
+                                                            ))}
+                                                    </HStack>
+                                                </TableCell>
+                                                <TableCell>
+                                                    {order.customerPhone ?? <InfoNull />}
+                                                </TableCell>
+                                                <TableCell>
+                                                    <HStack width="160px">
+                                                        {!order.customerAddress && <InfoNull />}
+                                                        {order.customerAddress &&
+                                                            (order.customerAddress.length >
+                                                                15 ? (
+                                                                <>
+                                                                    <InfoTip
+                                                                        content={
+                                                                            order.customerAddress
+                                                                        }
+                                                                    />
+                                                                    <TableText>
+                                                                        {order.customerAddress.slice(
+                                                                            0,
+                                                                            15
+                                                                        )}
+                                                                        ...
+                                                                    </TableText>
+                                                                </>
+                                                            ) : (
+                                                                <TableText>
+                                                                    {order.customerAddress}
+                                                                </TableText>
+                                                            ))}
+                                                    </HStack>
+                                                </TableCell>
+                                                <TableCell>
+                                                    <Badge
+                                                        colorPalette={color}
+                                                        variant="subtle"
+                                                    >
+                                                        <Flex align="center" gap={1}>
+                                                            {icon}
                                                             <TableText>
-                                                                {order.customerAddress}
+                                                                {order.status.toUpperCase()}
                                                             </TableText>
-                                                        ))}
-                                                </HStack>
-                                            </TableCell>
-
-                                            <TableCell>
-                                                <Badge
-                                                    colorPalette={color}
-                                                    variant="subtle"
-                                                >
-                                                    <Flex align="center" gap={1}>
-                                                        {icon}
-                                                        <TableText>
-                                                            {order.status.toUpperCase()}
-                                                        </TableText>
-                                                    </Flex>
-                                                </Badge>
-                                            </TableCell>
-
-                                            <TableCell>
-                                                <Badge
-                                                    variant="subtle"
-                                                    colorPalette={getPaymentColor(
-                                                        order.paymentMethod
-                                                    )}
-                                                >
-                                                    <TableText>
-                                                        {order.paymentMethod.toUpperCase()}
-                                                    </TableText>
-                                                </Badge>
-                                            </TableCell>
-
-                                            <TableCell>
-                                                <Stat.Root>
-                                                    <Stat.ValueText
-                                                        fontSize={fontText}
+                                                        </Flex>
+                                                    </Badge>
+                                                </TableCell>
+                                                <TableCell>
+                                                    <Badge
+                                                        variant="subtle"
+                                                        colorPalette={getPaymentColor(
+                                                            order.paymentMethod
+                                                        )}
                                                     >
                                                         <TableText>
-                                                            <FormatNumber
-                                                                value={parseFloat(
-                                                                    order.total
-                                                                )}
-                                                                style="currency"
-                                                                currency="BRL"
-                                                            />
+                                                            {order.paymentMethod.toUpperCase()}
                                                         </TableText>
-                                                    </Stat.ValueText>
-                                                </Stat.Root>
-                                            </TableCell>
-
-                                            <TableCell>
-                                                <SelectStatus
-                                                    status={order.status}
-                                                    newStatus={(novoStatus) =>
-                                                        updateOrderStatus(
-                                                            order.id,
-                                                            novoStatus
-                                                        )
-                                                    }
-                                                />
-                                            </TableCell>
-                                        </TableRow>
-                                    );
-                                })}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
-
-                    <TablePagination
-                        rowsPerPageOptions={[5, 10, 25, 50]}
-                        component="div"
-                        count={orders.length}
-                        rowsPerPage={rowsPerPage}
-                        page={page}
-                        onPageChange={handleChangePage}
-                        onRowsPerPageChange={handleChangeRowsPerPage}
-                    />
-                </Paper>
+                                                    </Badge>
+                                                </TableCell>
+                                                <TableCell>
+                                                    <Stat.Root>
+                                                        <Stat.ValueText
+                                                            fontSize={fontText}
+                                                        >
+                                                            <TableText>
+                                                                <FormatNumber
+                                                                    value={parseFloat(
+                                                                        order.total
+                                                                    )}
+                                                                    style="currency"
+                                                                    currency="BRL"
+                                                                />
+                                                            </TableText>
+                                                        </Stat.ValueText>
+                                                    </Stat.Root>
+                                                </TableCell>
+                                                <TableCell>
+                                                    <SelectStatus
+                                                        status={order.status}
+                                                        newStatus={(novoStatus) =>
+                                                            updateOrderStatus(
+                                                                order.id,
+                                                                novoStatus
+                                                            )
+                                                        }
+                                                    />
+                                                </TableCell>
+                                            </TableRow>
+                                        );
+                                    })}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+                        <TablePagination
+                            rowsPerPageOptions={[5, 10, 25, 50]}
+                            component="div"
+                            count={orders.length}
+                            rowsPerPage={rowsPerPage}
+                            page={page}
+                            onPageChange={handleChangePage}
+                            onRowsPerPageChange={handleChangeRowsPerPage}
+                        />
+                    </Paper>
+                </MuiThemeProvider>
             )}
         </>
     );

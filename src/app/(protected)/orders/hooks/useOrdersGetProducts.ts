@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query"
-import {ProductsResponse } from "../interfaces/products"
+import {ProductsResponse } from "../../products/interfaces/products"
 
 const fetchData = async (): Promise<ProductsResponse> => {
     const res = await fetch(
@@ -13,7 +13,6 @@ const fetchData = async (): Promise<ProductsResponse> => {
         }
     )
     const body = await res.json()
-    console.log(body)
 
     if (!res.ok) {
         throw new Error(body.message || "Erro ao buscar produtos")
