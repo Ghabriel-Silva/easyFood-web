@@ -2,7 +2,7 @@
 
 import { Box, Button, Flex, Heading,  } from "@chakra-ui/react"
 import { MdAdd } from "react-icons/md";
-import { TableContainer } from "@/app/(protected)/products/components/index";
+import { TableContainer } from "@/app/(protected)/products/components/table/index";
 
 
 export const ProductsPage = () => {

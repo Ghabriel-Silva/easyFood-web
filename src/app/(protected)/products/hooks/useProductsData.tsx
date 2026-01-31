@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import {Product} from "../interfaces/products";
+import { IProductOutput } from "../interfaces/products";
 
 
-const ProductsData = async (): Promise<Product[]> => {
+const ProductsData = async (): Promise<IProductOutput[]> => {
     const response = await fetch(`${process.env.NEXT_PUBLIC_URL_API}/product`, {
         method: 'GET',
         credentials: "include",
@@ -15,14 +15,14 @@ const ProductsData = async (): Promise<Product[]> => {
     if (!response.ok) {
         throw new Error(body.message || "Erro ao buscar produtos")
     }
- 
+
     console.log(body.data.products)
-    return body.data.products 
+    return body.data.products
 }
 
 
 export function useProductsData() {
-    return useQuery<Product[], Error>({
+    return useQuery<IProductOutput[], Error>({
         queryKey: ["product-data"],
         queryFn: ProductsData,
         refetchOnWindowFocus: true,

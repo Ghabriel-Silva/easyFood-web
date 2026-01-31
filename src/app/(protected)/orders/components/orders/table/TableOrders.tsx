@@ -83,13 +83,13 @@ export default function TableOrders({
                                         <DialogOrder order={order} />
                                         <Badge
                                             colorPalette="blue"
-                                            variant="subtle"
-                                            _hover={{ bg: "blue.200" }}
+                                            variant="subtle"                                         
                                         >
-                                            <Center cursor="pointer" w="32px">
+                                            <Center cursor="pointer" w="32px"  _active={{ color: "blue.500"}}>
                                                 <MdPrint
+
                                                     size={14}
-                                                    onClick={() => handleClick(order.id)}
+                                                    onClick={() => handleClick(order.id)} //Impresão do pedido nota
                                                 />
                                             </Center>
                                         </Badge>
@@ -105,7 +105,7 @@ export default function TableOrders({
 
                                 </Flex>
 
-                               
+
                                 <Box fontSize="sm">
                                     <Box fontSize="sm">
                                         <HStack gap={2}>
@@ -171,7 +171,7 @@ export default function TableOrders({
 
             {!isMobile && (
                 <MuiThemeProvider >
-                    <Paper sx={{ width: "100%", overflow: "hidden"}}>
+                    <Paper sx={{ width: "100%", overflow: "hidden" }}>
                         <TableContainer
                             sx={{
                                 maxHeight: "calc(100vh - 330px)",
@@ -206,7 +206,7 @@ export default function TableOrders({
                                                         <Badge
                                                             colorPalette="blue"
                                                             variant="subtle"
-                                                            _hover={{ bg: "blue.200" }}
+                                                            _hover={{ color: "blue.500"}}
                                                         >
                                                             <Center cursor="pointer" w="32px">
                                                                 <MdPrint

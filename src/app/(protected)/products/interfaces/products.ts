@@ -15,6 +15,28 @@ export interface Product {
   updated_at: string
 }
 
+export interface IProductOutput {
+  id: string;
+  name: string;
+  price: number;
+  quantity?: number | null;
+  uni_medida: UniMedida
+  expirationDate: string | null
+  isAvailable: boolean;
+  description?: string | null;
+  created_at: Date;
+  updated_at: Date;
+  company: {
+    id: string;
+    name: string;
+  };
+  category: {
+    id: string;
+    name: string;
+  } | null;
+}
+
+
 export interface OrderItem {
   name: string
   product_id: string
@@ -23,7 +45,7 @@ export interface OrderItem {
 }
 
 export interface frete {
-  defaultFreight:string
+  defaultFreight: string
 }
 
 export interface ProductsResponse {
