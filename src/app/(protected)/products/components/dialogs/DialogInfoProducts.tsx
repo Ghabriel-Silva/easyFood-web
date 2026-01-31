@@ -1,9 +1,9 @@
 import { Button, CloseButton, Dialog, Portal, Badge, HStack, Icon, Stack, Box, SimpleGrid, Flex } from "@chakra-ui/react"
 import { TableText, TableLabel } from "@/ui/index";
 import { MdVisibility } from "react-icons/md";
-import { IProductOutput, Product } from "../../../interfaces/products";
+import { IProductOutput} from "../../interfaces/products";
 import { tranformeUniMedida } from "@/helpers/transformeUniMedida";
-import { ValidadeMensage } from "@/app/(protected)/products/components/table/index";
+import { ValidadeMensage } from "@/app/(protected)/products/components/index"
 interface PropsDialog {
     product: IProductOutput
 
@@ -34,8 +34,6 @@ export const DialogInfoProducts = ({ product }: PropsDialog) => {
                             <Stack gap={6}>
 
                                 <SimpleGrid columns={2} gap={4}>
-
-
                                     <Box>
                                         <TableLabel>Produto</TableLabel>
                                         <TableText >

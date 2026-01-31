@@ -7,7 +7,7 @@ import { MdCheckCircle, MdHighlightOff } from "react-icons/md";
 import { Tooltip } from "@/components/ui/tooltip"
 import { InfoTip } from "@/components/ui/toggle-tip";
 import { InfoNull, FullScreenLoading } from "@/ui/index";
-import { DialogInfoProducts } from "@/app/(protected)/products/components/table/index";
+import { DialogInfoProducts } from "@/app/(protected)/products/components/index";
 
 export const TableContainer = () => {
 

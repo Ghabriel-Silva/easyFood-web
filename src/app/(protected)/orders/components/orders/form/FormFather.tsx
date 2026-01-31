@@ -16,8 +16,7 @@ type ForFatherProps = {
 }
 
 export const FormFather = ({ success, formRef }: ForFatherProps) => {
-
-
+    
     const methods = useForm({
         resolver: yupResolver(OrderFormSchema),
         mode: 'onBlur',
@@ -37,7 +36,6 @@ export const FormFather = ({ success, formRef }: ForFatherProps) => {
     const { mutate } = useOrdersCreate()
 
     const OnSubmite: SubmitHandler<OrderFormSchemaInterface> = (data: OrderFormSchemaInterface) => {
-        console.log(data)
         mutate(data, {
             onSuccess: () => {
                 reset({

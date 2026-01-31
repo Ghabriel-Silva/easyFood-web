@@ -37,11 +37,10 @@ export const ButtonCreateOrders = () => {
                     </Dialog.Body>
                     <Dialog.Footer>
                         <Dialog.ActionTrigger asChild>
-                            <Button colorPalette={"red"} variant={"subtle"}>Cancelar</Button>
+                            <Button variant={"outline"}>Cancelar</Button>
                         </Dialog.ActionTrigger>
                         <Button
                             onClick={() => formRef.current?.requestSubmit()}
-                            colorPalette={"green"}
                         >Geral Pedido</Button>
                     </Dialog.Footer>
                     <Dialog.CloseTrigger asChild>
