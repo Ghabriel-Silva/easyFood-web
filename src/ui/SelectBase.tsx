@@ -3,28 +3,35 @@
 
 import { Select, createListCollection, Portal } from "@chakra-ui/react"
 
-interface SelectBaseProps {
+type SelectBaseProps = {
     onChange: (value: string[]) => void
     value: string[] | null | undefined
     placeholder?: string
     items: { label: string; value: string }[]
+    isMultiple?: boolean,
+    size?: "sm" | "md" | "lg",
+    close?: true | false
 }
 
 export function SelectBase({
-    value ,
+    value,
     onChange,
     placeholder,
-    items
+    items,
+    isMultiple,
+    size = 'sm', 
+    close = false
 }: SelectBaseProps) {
     const collection = createListCollection({ items })
 
     return (
         <Select.Root
-            multiple
+            closeOnSelect={close}
+            multiple={isMultiple ?? true}
             value={value ?? []}
             onValueChange={(details) => onChange(details.value)} //Mostra o valor selecionado ochange contem o valor do array
             collection={collection}
-            size="sm"
+            size={size}
         >
             <Select.HiddenSelect />
 
