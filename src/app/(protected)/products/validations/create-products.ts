@@ -40,7 +40,6 @@ export const CreateProductsSchema = yup.object({
                 if (value < new Date()) return false
                 console.log(value)
             }
-
         )
         .typeError("Data invalida"),
     description: yup

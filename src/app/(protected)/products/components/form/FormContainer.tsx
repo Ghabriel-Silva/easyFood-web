@@ -7,7 +7,7 @@ import { FormField } from "@/ui/index"
 import { Switch } from "@chakra-ui/react"
 import { HiCheck, HiX } from "react-icons/hi"
 import { useState } from "react"
-import { UniMedidaSelect } from "@/app/(protected)/products/components/index"
+import { UniMedidaSelect , SwitchInput} from "@/app/(protected)/products/components/index"
 
 
 
@@ -50,18 +50,7 @@ export const FormContainer = () => {
                     </HStack>
                     <HStack align={"flex-end"}>
                         <FormField label={`Quantidade: ${checked ? "Sim" : "Não"}`} >
-                            <Switch.Root size="lg" checked={checked}
-                                colorPalette={"blue"}
-                                onCheckedChange={(e) => setChecked(e.checked)}>
-                                <Switch.HiddenInput />
-                                <Switch.Control>
-                                    <Switch.Thumb>
-                                        <Switch.ThumbIndicator fallback={<HiX color="black" />}>
-                                            <HiCheck />
-                                        </Switch.ThumbIndicator>
-                                    </Switch.Thumb>
-                                </Switch.Control>
-                            </Switch.Root>
+                            <SwitchInput checked={checked} onChange={setChecked} />
                         </FormField>
                     </HStack>
                     <HStack align={"start"}> 
