@@ -17,10 +17,17 @@ export const CreateProductsSchema = yup.object({
         .required(),
     quantity: yup
         .number()
+        .transform((value, originalValue) => {
+            if (!originalValue) return undefined
+            if (typeof originalValue === "string") {
+
+                const parsed = Number(originalValue.replace(",", "."))
+                return isNaN(parsed) ? undefined : parsed
+            }
+            return value
+        })
         .typeError("A quantida tem que ser um numero")
-        .transform(transformeNumber)
         .moreThan(0, 'A quantida deve ser maior que 0')
-        .optional()
         .nullable(),
     uni_Medida: yup
         .mixed<UniMedida>()
@@ -36,9 +43,16 @@ export const CreateProductsSchema = yup.object({
             'data-validate-is-before-today',
             'A data de validade não pode ser anterior ao dia de hoje',
             (value) => {
-                if (!value) return true
-                if (value < new Date()) return false
-                console.log(value)
+                if (!value) return true 
+                const dV = new Date(value)
+                const hoje = new Date()
+                const resetTime = (d: Date) => new Date(d.getFullYear(), d.getMonth(), d.getDate())
+
+                const diffDays: number = Math.floor(
+                    (resetTime(dV).getTime() - resetTime(hoje).getTime()) / (1000 * 60 * 60 * 24)
+                )
+
+                return diffDays >= 0 // true se for maior ou igual a 0 e retorna false se for menor
             }
         )
         .typeError("Data invalida"),
@@ -47,9 +61,9 @@ export const CreateProductsSchema = yup.object({
         .max(600, 'Oberservações deve ter no máximo 600 caracteres')
         .notRequired(),
 
-    category_id: yup
-        .string()
-        .required('Categoria é obrigatória')
+    // category_id: yup
+    //     .string()
+    //     .required('Categoria é obrigatória')
 })
 
 export type CreateProductsInterface = yup.InferType<typeof CreateProductsSchema>
