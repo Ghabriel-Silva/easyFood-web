@@ -111,7 +111,8 @@ export const FormContainer = () => {
                                     control={control}
                                     name="quantity"
                                     render={({ field }) => (
-                                        <NumberInput.Root                                        
+                                        <NumberInput.Root
+                        
                                             min={0}
                                             step={1}
                                             formatOptions={{
