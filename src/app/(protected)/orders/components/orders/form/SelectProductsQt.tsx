@@ -41,7 +41,8 @@ export const SelectProductsQt = () => {
     const { fields, append, remove } = useFieldArray({
         control,
         name: 'items'
-    })
+    }) 
+    
 
     const { data, isLoading, isError } = useOrdersGetProducts()
 

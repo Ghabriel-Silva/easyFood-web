@@ -6,7 +6,7 @@ import { tranformeUniMedida } from "@/helpers/transformeUniMedida";
 import { MdCheckCircle, MdHighlightOff } from "react-icons/md";
 import { Tooltip } from "@/components/ui/tooltip"
 import { InfoTip } from "@/components/ui/toggle-tip";
-import { InfoNull, FullScreenLoading } from "@/ui/index";
+import { InfoNull, FullScreenLoading, StatEmpaty } from "@/ui/index";
 import { DialogInfoProducts } from "@/app/(protected)/products/components/index";
 
 export const TableContainer = () => {
@@ -15,7 +15,7 @@ export const TableContainer = () => {
     const { data, isLoading, isError } = useProductsData()
 
     if (isLoading) return <FullScreenLoading />
-    if (isError) return <p>Erro ao carregar dados</p>;
+    const errorApi = isError && <StatEmpaty title="Nenhum produto encontrado" description="Não foi possível carregar os dados. Tente atualizar a página ou volte mais tarde." />
 
     const columns = [
         {
@@ -26,7 +26,7 @@ export const TableContainer = () => {
                     if (!data) return null
                     const row = data[dataIndex]
                     return (
-                        < DialogInfoProducts product={row}  />
+                        < DialogInfoProducts product={row} />
                     )
 
                 }
@@ -152,7 +152,7 @@ export const TableContainer = () => {
                 displayRows: "de",
             },
             body: {
-                noMatch: "Nenhum registro encontrado",
+                noMatch: errorApi,
                 toolTip: "Classificar",
             },
             toolbar: {
@@ -178,6 +178,7 @@ export const TableContainer = () => {
                 columns={columns}
                 options={options}
             />
+
         </MuiThemeProvider>
     )
 }

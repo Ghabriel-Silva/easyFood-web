@@ -18,11 +18,10 @@ export const CreateProductsSchema = yup.object({
     quantity: yup
         .number()
         .transform((value, originalValue) => {
-            if (!originalValue) return undefined
+            if (!originalValue) return null
             if (typeof originalValue === "string") {
-
                 const parsed = Number(originalValue.replace(",", "."))
-                return isNaN(parsed) ? undefined : parsed
+                return isNaN(parsed) ? null : parsed
             }
             return value
         })
@@ -61,9 +60,9 @@ export const CreateProductsSchema = yup.object({
         .max(600, 'Oberservações deve ter no máximo 600 caracteres')
         .notRequired(),
 
-    // category_id: yup
-    //     .string()
-    //     .required('Categoria é obrigatória')
+    category_id: yup
+        .string()
+        .required('Categoria é obrigatória')
 })
 
 export type CreateProductsInterface = yup.InferType<typeof CreateProductsSchema>

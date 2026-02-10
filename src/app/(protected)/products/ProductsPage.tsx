@@ -5,6 +5,7 @@ import { DialogCreateProducts, TableContainer } from "@/app/(protected)/products
 
 
 export const ProductsPage = () => {
+    
     return (
         <Box>
             <Flex justify="space-between"  >

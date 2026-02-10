@@ -1,22 +1,24 @@
-import { Controller, FormProvider, SubmitHandler, useForm, useWatch } from "react-hook-form"
+import { FormProvider, SubmitHandler, useForm, useWatch } from "react-hook-form"
 import { CreateProductsInterface, CreateProductsSchema } from "../../validations/create-products"
 import { yupResolver } from "@hookform/resolvers/yup"
-import { HStack, Input, Stack, InputGroup, NumberInput, Button, Textarea } from "@chakra-ui/react"
-import { FormField } from "@/ui/index"
+import { HStack, Input, Stack, InputGroup,Textarea } from "@chakra-ui/react"
+import { FormField, OpcionalView } from "@/ui/index"
 import { useState } from "react"
-import { UniMedidaSelect, SwitchInput } from "@/app/(protected)/products/components/index"
+import { UniMedidaSelect, SwitchInput, QuantityInput } from "@/app/(protected)/products/components/index"
+import { SelectCategoryInput } from "./inputs/SelectCategoryInput"
 
+type formFather = {
+    formRef: React.RefObject<HTMLFormElement | null>
+}
 
-
-
-export const FormContainer = () => {
+export const FormContainer = ({ formRef }: formFather) => {
     const methods = useForm({
         resolver: yupResolver(CreateProductsSchema),
         mode: 'onBlur',
         defaultValues: {
-            quantity: null,
             expirationDate: null,
-            description: null
+            description: null,
+            quantity: null,
         }
     })
 
@@ -24,7 +26,6 @@ export const FormContainer = () => {
 
         register,
         handleSubmit,
-        reset,
         control,
         formState: { errors }
     } = methods
@@ -39,9 +40,7 @@ export const FormContainer = () => {
         name: "quantity"
     })
 
-
-
-    const OnSubmit: SubmitHandler<CreateProductsInterface> = (data: unknown) => {
+    const OnSubmit: SubmitHandler<CreateProductsInterface> = (data: CreateProductsInterface) => {
         if (!data) return
         console.log(data)
     }
@@ -50,9 +49,9 @@ export const FormContainer = () => {
     const [checked, setChecked] = useState(false)
     return (
         <FormProvider {...methods}>
-            <form noValidate onSubmit={handleSubmit(OnSubmit)} >
+            <form ref={formRef} noValidate onSubmit={handleSubmit(OnSubmit)} >
                 <Stack>
-                    <HStack align={"start"}>
+                    <HStack align={"start"} flexWrap={"wrap"}>
                         <FormField error={errors.name?.message} label="Nome" isRequired={true}>
                             <Input {...register('name')} placeholder="X-Calabresa" />
                         </FormField>
@@ -62,71 +61,25 @@ export const FormContainer = () => {
                             </InputGroup>
                         </FormField>
                     </HStack>
-
+                    <FormField isRequired label="Categoria" error={errors.category_id?.message}>
+                        <SelectCategoryInput />
+                    </FormField>
                     <HStack align={"start"}>
                         <FormField label={`Quantidade: ${checked ? "Sim" : "Não"}`} >
                             <SwitchInput checked={checked} disabled={typeof quantity === "number" && quantity > 0} onChange={setChecked} />
                         </FormField>
                     </HStack>
 
-                    <HStack>
+                    <HStack flexWrap={"wrap"}>
                         <FormField label="Uni Medida" error={errors.uni_Medida?.message} isRequired={true}>
                             <UniMedidaSelect />
                         </FormField>
                         {["kg", "g", "none"].includes(uni_Medida) && checked && (
-                            <FormField label="Quantidade" error={errors.quantity?.message}>
-                                <Controller
-                                    control={control}
-                                    name="quantity"
-                                    render={({ field }) => {
-                                        const value = field.value != null && Number.isFinite(field.value)
-                                            ? field.value.toString()
-                                            : ""
-                                        return (
-                                            <NumberInput.Root                                        
-                                                step={0.1}
-                                                formatOptions={{
-                                                    minimumFractionDigits: 3,
-                                                    maximumFractionDigits: 3,
-                                                }}
-                                                value={value}
-                                                onValueChange={(details) => {
-                                                    const stringVal = details.value
-                                                    const parsed = Number(stringVal.replace(",", "."))
-                                                    field.onChange(isNaN(parsed) ? undefined : parsed)
-                                                }}
-                                            >
-                                                <NumberInput.Control />
-                                                <NumberInput.Input placeholder="0.000" />
-                                            </NumberInput.Root>
-                                        )
-                                    }}
-                                />
-                            </FormField>
+                            <QuantityInput typeInput="Input-Decimal" />
                         )
                         }
                         {["l", "un", "porcao", "fatia", "pedaco", "combo", "none"].includes(uni_Medida) && checked && (
-                            <FormField label="Quantidade" error={errors.quantity?.message}>
-                                <Controller
-                                    control={control}
-                                    name="quantity"
-                                    render={({ field }) => (
-                                        <NumberInput.Root
-                        
-                                            min={0}
-                                            step={1}
-                                            formatOptions={{
-                                                maximumFractionDigits: 0,
-                                            }}
-                                            value={field.value?.toString()}
-                                            onValueChange={(e) => field.onChange(e.valueAsNumber)}
-                                        >
-                                            <NumberInput.Control />
-                                            <NumberInput.Input placeholder="0" />
-                                        </NumberInput.Root>
-                                    )}
-                                />
-                            </FormField>
+                            <QuantityInput typeInput="Input-Interger" />
                         )}
                     </HStack>
                     <HStack>
@@ -134,13 +87,12 @@ export const FormContainer = () => {
                             <Input type="date" {...register('expirationDate')} />
                         </FormField>
                     </HStack>
-                    <HStack>
-                        <FormField label="Descrição" error={errors.description?.message} textHelper="Max 500 caracteres.">
+                    <OpcionalView title="Info Adicionais">
+                        <FormField label="Descrição" error={errors.description?.message} textHelper="Max 600 caracteres.">
                             <Textarea {...register("description")} placeholder="Prensado artesanal com queijo..." variant="outline" />
                         </FormField>
-                    </HStack>
+                    </OpcionalView>
                 </Stack>
-                <Button type="submit">Enviar</Button>
             </form>
         </FormProvider>
     )

@@ -11,12 +11,10 @@ const ProductsData = async (): Promise<IProductOutput[]> => {
         }
     })
     const body = await response.json()
-    console.log(body.data.products)
     if (!response.ok) {
         throw new Error(body.message || "Erro ao buscar produtos")
     }
 
-    console.log(body.data.products)
     return body.data.products
 }
 
@@ -26,6 +24,6 @@ export function useProductsData() {
         queryKey: ["product-data"],
         queryFn: ProductsData,
         refetchOnWindowFocus: true,
-        retry: 3,
+        retry: 1,
     })
 }

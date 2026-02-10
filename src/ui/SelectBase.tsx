@@ -1,7 +1,7 @@
 // SelectBase.tsx
 "use client"
 
-import { Select, createListCollection, Portal } from "@chakra-ui/react"
+import { Select, createListCollection, Portal, Spinner } from "@chakra-ui/react"
 
 type SelectBaseProps = {
     onChange: (value: string[]) => void
@@ -11,6 +11,9 @@ type SelectBaseProps = {
     isMultiple?: boolean,
     size?: "sm" | "md" | "lg",
     close?: true | false
+    isLoading?: boolean,
+    isError?: boolean,
+    mesageError?: string
 }
 
 export function SelectBase({
@@ -19,13 +22,17 @@ export function SelectBase({
     placeholder,
     items,
     isMultiple,
-    size = 'sm', 
-    close = false
+    size = 'sm',
+    close = false,
+    isLoading,
+    isError,
+    mesageError
 }: SelectBaseProps) {
     const collection = createListCollection({ items })
 
     return (
         <Select.Root
+            invalid={isError}
             closeOnSelect={close}
             multiple={isMultiple ?? true}
             value={value ?? []}
@@ -37,10 +44,13 @@ export function SelectBase({
 
             <Select.Control>
                 <Select.Trigger>
-                    <Select.ValueText placeholder={placeholder} />
+                    <Select.ValueText placeholder={isError ? mesageError :  placeholder} />
                 </Select.Trigger>
 
                 <Select.IndicatorGroup>
+                    {isLoading && (
+                        <Spinner size="xs" borderWidth="1.5px" color="fg.muted" />
+                    )}
                     <Select.ClearTrigger />
                     <Select.Indicator />
                 </Select.IndicatorGroup>
