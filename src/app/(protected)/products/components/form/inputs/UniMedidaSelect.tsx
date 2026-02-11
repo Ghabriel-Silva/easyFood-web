@@ -7,7 +7,7 @@ export const UniMedidaSelect = () => {
     const { control } = useFormContext<CreateProductsInterface>()
     return (  
             <Controller
-                name="uni_Medida"
+                name="uni_medida"
                 control={control}
                 render={({ field }) => (
                     <SelectBase

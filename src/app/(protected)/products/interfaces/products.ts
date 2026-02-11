@@ -54,3 +54,9 @@ export interface ProductsResponse {
   fromCache: boolean
 }
 
+export interface ProductCreateResponse {
+  message: string,
+  cache: boolean,
+  data: boolean
+}
+

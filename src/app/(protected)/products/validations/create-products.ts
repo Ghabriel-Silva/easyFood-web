@@ -28,7 +28,7 @@ export const CreateProductsSchema = yup.object({
         .typeError("A quantida tem que ser um numero")
         .moreThan(0, 'A quantida deve ser maior que 0')
         .nullable(),
-    uni_Medida: yup
+    uni_medida: yup
         .mixed<UniMedida>()
         .oneOf(Object.values(UniMedida))
         .required("A Unidade de medida é obrigatória"),

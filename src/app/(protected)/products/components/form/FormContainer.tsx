@@ -1,11 +1,13 @@
 import { FormProvider, SubmitHandler, useForm, useWatch } from "react-hook-form"
 import { CreateProductsInterface, CreateProductsSchema } from "../../validations/create-products"
 import { yupResolver } from "@hookform/resolvers/yup"
-import { HStack, Input, Stack, InputGroup,Textarea } from "@chakra-ui/react"
+import { HStack, Input, Stack, InputGroup, Textarea } from "@chakra-ui/react"
+import { Toaster, toaster } from "@/components/ui/toaster";
 import { FormField, OpcionalView } from "@/ui/index"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { UniMedidaSelect, SwitchInput, QuantityInput } from "@/app/(protected)/products/components/index"
 import { SelectCategoryInput } from "./inputs/SelectCategoryInput"
+import { UseProductsCreate } from "../../hooks/useProductsCreate"
 
 type formFather = {
     formRef: React.RefObject<HTMLFormElement | null>
@@ -19,6 +21,7 @@ export const FormContainer = ({ formRef }: formFather) => {
             expirationDate: null,
             description: null,
             quantity: null,
+            category_id:'sswswsw'
         }
     })
 
@@ -32,7 +35,7 @@ export const FormContainer = ({ formRef }: formFather) => {
 
     const uni_Medida = useWatch({
         control,
-        name: "uni_Medida",
+        name: "uni_medida",
     })
 
     const quantity = useWatch({
@@ -40,17 +43,18 @@ export const FormContainer = ({ formRef }: formFather) => {
         name: "quantity"
     })
 
-    const OnSubmit: SubmitHandler<CreateProductsInterface> = (data: CreateProductsInterface) => {
-        if (!data) return
-        console.log(data)
-    }
+    const { mutate, error, isPending } = UseProductsCreate()
 
+    const OnSubmit: SubmitHandler<CreateProductsInterface> = (data: CreateProductsInterface) => {
+        mutate(data)
+    }
 
     const [checked, setChecked] = useState(false)
     return (
         <FormProvider {...methods}>
             <form ref={formRef} noValidate onSubmit={handleSubmit(OnSubmit)} >
                 <Stack>
+                    < Toaster />
                     <HStack align={"start"} flexWrap={"wrap"}>
                         <FormField error={errors.name?.message} label="Nome" isRequired={true}>
                             <Input {...register('name')} placeholder="X-Calabresa" />
@@ -71,7 +75,7 @@ export const FormContainer = ({ formRef }: formFather) => {
                     </HStack>
 
                     <HStack flexWrap={"wrap"}>
-                        <FormField label="Uni Medida" error={errors.uni_Medida?.message} isRequired={true}>
+                        <FormField label="Uni Medida" error={errors.uni_medida?.message} isRequired={true}>
                             <UniMedidaSelect />
                         </FormField>
                         {["kg", "g", "none"].includes(uni_Medida) && checked && (

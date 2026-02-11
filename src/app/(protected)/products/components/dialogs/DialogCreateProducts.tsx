@@ -1,11 +1,12 @@
-import { Button, CloseButton, Dialog, Portal } from "@chakra-ui/react"
+import { Button, CloseButton, Dialog, Portal, Spinner } from "@chakra-ui/react"
 import { MdAdd } from "react-icons/md";
 import { FormContainer } from "@/app/(protected)/products/components/index";
 import { useRef } from "react";
+import { UseProductsCreate } from "../../hooks/useProductsCreate";
 
 
 export const DialogCreateProducts = () => {
-
+    const { isPending } = UseProductsCreate()
     const formRef = useRef<HTMLFormElement>(null)
     return (
         <Dialog.Root closeOnInteractOutside={false} trapFocus={false}>
@@ -17,6 +18,10 @@ export const DialogCreateProducts = () => {
                 <Dialog.Positioner>
                     <Dialog.Content>
                         <Dialog.Header>
+                            {isPending && (
+                                <Spinner size="md" />
+                            )}
+
                             <Dialog.Title>Add Produto</Dialog.Title>
                         </Dialog.Header>
                         <Dialog.Body>
