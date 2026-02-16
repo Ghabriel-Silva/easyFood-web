@@ -19,6 +19,7 @@ export const QuantityInput = ({
                 type="number"
                 step="0.01"
                 min={0.01}
+                w={"100%"}
                 placeholder="Ex: 0.500"
                 value={value}
                 onChange={(e) => onChange(e.target.value)}
@@ -29,6 +30,7 @@ export const QuantityInput = ({
     // Para unidades → NumberInput
     return (
         <NumberInput.Root
+            w={"100%"}
             min={1}
             max={50}
             value={value}

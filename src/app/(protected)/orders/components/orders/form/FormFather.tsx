@@ -59,7 +59,7 @@ export const FormFather = ({ success, formRef }: ForFatherProps) => {
 
     return (
         <FormProvider {...methods} >
-            <form ref={formRef} onSubmit={handleSubmit(OnSubmite)}>
+            <form ref={formRef} onSubmit={handleSubmit(OnSubmite)}  noValidate >
                 <Stack
                     gap={4}>
                     <HStack flexWrap="wrap" align="flex-start" >
@@ -75,11 +75,11 @@ export const FormFather = ({ success, formRef }: ForFatherProps) => {
                     </HStack>
                     <HStack flexWrap={'wrap'} align="flex-start">
 
-                        <FormField label="Método Pagamento" error={errors.paymentMethod?.message}>
+                        <FormField label="Método Pagamento" isRequired error={errors.paymentMethod?.message}>
                             <SelectPayment />
                         </FormField>
 
-                        <FormField label="Frete" error={errors.isFreightApplied?.message}>
+                        <FormField label="Frete" isRequired error={errors.isFreightApplied?.message}>
                             <SelectFrete />
                         </FormField>
 

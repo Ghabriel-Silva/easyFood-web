@@ -4,13 +4,12 @@ import { HiCheck, HiX } from "react-icons/hi"
 
 interface PropsSwitch {
     checked: boolean,
-    disabled:boolean,
     onChange: (value:boolean) => void
 }
-export const SwitchInput = ({checked, disabled, onChange}:PropsSwitch) => {
+export const SwitchInput = ({checked, onChange}:PropsSwitch) => {
 
     return (
-        <Switch.Root size="lg" disabled={disabled} checked={checked}
+        <Switch.Root size="lg"  checked={checked}
             colorPalette={"blue"}
             onCheckedChange={(e) => onChange(e.checked)}>
             <Switch.HiddenInput />

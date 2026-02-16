@@ -26,7 +26,7 @@ export const CreateProductsSchema = yup.object({
             return value
         })
         .typeError("A quantida tem que ser um numero")
-        .moreThan(0, 'A quantida deve ser maior que 0')
+        .min(0,"A quantidade não pode ser negativa")
         .nullable(),
     uni_medida: yup
         .mixed<UniMedida>()

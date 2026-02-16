@@ -32,7 +32,7 @@ export function UseProductsCreate() {
             return toaster.create({
                 description: `Produto  ${variables.name} criado com sucesso`,
                 closable: true,
-                duration: 2000,
+                duration: 4000,
                 type: 'success'
             })
         },
@@ -40,7 +40,7 @@ export function UseProductsCreate() {
             return toaster.create({
                 description: `${error.message} ${variables.name}`,
                 closable: true,
-                duration: 2000,
+                duration: 4000,
                 type: 'error'
             })
         }

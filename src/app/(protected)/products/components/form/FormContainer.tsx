@@ -2,18 +2,22 @@ import { FormProvider, SubmitHandler, useForm, useWatch } from "react-hook-form"
 import { CreateProductsInterface, CreateProductsSchema } from "../../validations/create-products"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { HStack, Input, Stack, InputGroup, Textarea } from "@chakra-ui/react"
-import { Toaster, toaster } from "@/components/ui/toaster";
+import { Toaster } from "@/components/ui/toaster";
 import { FormField, OpcionalView } from "@/ui/index"
 import { useEffect, useState } from "react"
 import { UniMedidaSelect, SwitchInput, QuantityInput } from "@/app/(protected)/products/components/index"
 import { SelectCategoryInput } from "./inputs/SelectCategoryInput"
 import { UseProductsCreate } from "../../hooks/useProductsCreate"
 
+
 type formFather = {
     formRef: React.RefObject<HTMLFormElement | null>
+    success: () => void
 }
 
-export const FormContainer = ({ formRef }: formFather) => {
+export const FormContainer = ({ formRef , success}: formFather) => {
+    const [checked, setChecked] = useState(false)
+
     const methods = useForm({
         resolver: yupResolver(CreateProductsSchema),
         mode: 'onBlur',
@@ -21,35 +25,42 @@ export const FormContainer = ({ formRef }: formFather) => {
             expirationDate: null,
             description: null,
             quantity: null,
-            category_id:'sswswsw'
+            category_id: 'sswswsw'
         }
     })
 
     const {
-
+        reset,
         register,
         handleSubmit,
         control,
+        setValue,
         formState: { errors }
     } = methods
+
+    useEffect(() => {
+        if (!checked) {
+            setValue('quantity', null, { shouldValidate: true })
+        }
+    }, [checked])
 
     const uni_Medida = useWatch({
         control,
         name: "uni_medida",
     })
 
-    const quantity = useWatch({
-        control,
-        name: "quantity"
-    })
-
-    const { mutate, error, isPending } = UseProductsCreate()
+    const { mutate } = UseProductsCreate()
 
     const OnSubmit: SubmitHandler<CreateProductsInterface> = (data: CreateProductsInterface) => {
-        mutate(data)
+        mutate(data, {
+            onSuccess: () => {
+                reset()
+                success()
+            }
+        })
     }
 
-    const [checked, setChecked] = useState(false)
+
     return (
         <FormProvider {...methods}>
             <form ref={formRef} noValidate onSubmit={handleSubmit(OnSubmit)} >
@@ -70,7 +81,7 @@ export const FormContainer = ({ formRef }: formFather) => {
                     </FormField>
                     <HStack align={"start"}>
                         <FormField label={`Quantidade: ${checked ? "Sim" : "Não"}`} >
-                            <SwitchInput checked={checked} disabled={typeof quantity === "number" && quantity > 0} onChange={setChecked} />
+                            <SwitchInput checked={checked} onChange={setChecked} />
                         </FormField>
                     </HStack>
 

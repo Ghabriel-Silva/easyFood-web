@@ -24,7 +24,7 @@ import { tranformeQuantity } from "@/helpers/transformeQuantity"
 import { QuantityInput } from "@/app/(protected)/orders/components/orders/form/index"
 import { UniMedida } from "@/interfaces/type-uni-medida"
 import { sumOrderTotal } from "../../../helpers/sumOrderTotal"
-import {OrderSummary } from "./inputsOrders/ValorTotal"
+import { OrderSummary } from "./inputsOrders/ValorTotal"
 import { parseBrazilianNumber } from "@/helpers/parseBrasilianNumber"
 
 
@@ -41,8 +41,8 @@ export const SelectProductsQt = () => {
     const { fields, append, remove } = useFieldArray({
         control,
         name: 'items'
-    }) 
-    
+    })
+
 
     const { data, isLoading, isError } = useOrdersGetProducts()
 
@@ -138,7 +138,7 @@ export const SelectProductsQt = () => {
             >
                 <Text fontWeight="medium" fontSize={fontSizeTitleLabel}>Adicionar Produtos</Text>
 
-                <FormField error={errors.items?.message} fullWidth={true} >
+                <FormField error={errors.items?.message} fullWidth={true}  >
                     <HStack align="end" gap={3} flexWrap={{ base: "wrap", md: "nowrap" }} w={"100%"}>
                         {/*  SELEÇÃO DE PRODUTO */}
                         <Field.Root flex={3} >
@@ -158,7 +158,9 @@ export const SelectProductsQt = () => {
 
                             >
                                 <Select.HiddenSelect />
-                                <Select.Label fontSize="sm">Produto</Select.Label>
+                                <FormField isRequired label="Produto">
+                                    <Select.Label fontSize="sm"></Select.Label>
+                                </FormField>
                                 <Select.Control bg="bg">
                                     <Select.Trigger>
                                         <Select.ValueText placeholder="Selecione um produto..." />
@@ -169,9 +171,9 @@ export const SelectProductsQt = () => {
                                     </Select.IndicatorGroup>
                                 </Select.Control>
                                 <Select.Positioner>
-                                    <Select.Content>
+                                    <Select.Content >
                                         {collection.items.map((product) => (
-                                            <Select.Item item={product} key={product.id}>
+                                            <Select.Item item={product} key={product.id} >
                                                 <Stack gap="1">
                                                     {/* Nome do produto */}
                                                     <Select.ItemText fontWeight="medium">
@@ -191,7 +193,7 @@ export const SelectProductsQt = () => {
                                                             </Span>
                                                         ) : product.quantity === null ? (
                                                             <Span color="blue.500" fontWeight="medium">
-                                                                Estoque ilimitado
+                                                                Ilimitado
                                                             </Span>
                                                         ) : (
                                                             <Span color="green.500" fontWeight="medium">
@@ -223,14 +225,16 @@ export const SelectProductsQt = () => {
                             </Select.Root>
                         </Field.Root>
                         {/* QUANTIDADE (Disabled até selecionar produto) */}
-                        <Field.Root flex={1} disabled={!isProductSelected}  >
-                            <Field.Label fontSize="sm">Qtd</Field.Label>
-                            <QuantityInput
-                                uniMedida={uniMedidaSelecionada}
-                                value={tempQuantity}
-                                onChange={setTempQuantity}
-                            />
+                        <Field.Root flex={1} disabled={!isProductSelected} >
+                            <FormField isRequired label="Qtd">
+                                <QuantityInput
+                                    uniMedida={uniMedidaSelecionada}
+                                    value={tempQuantity}
+                                    onChange={setTempQuantity}
+                                />
+                            </FormField>
                         </Field.Root>
+
                         {/* BOTÃO ADICIONAR (Disabled até tudo estar válido) */}
                         <Button
                             colorPalette="green"
@@ -302,7 +306,7 @@ export const SelectProductsQt = () => {
                     </Text>
                 )}
 
-            <OrderSummary total={total}/>
+            <OrderSummary total={total} />
         </Stack>
 
     )

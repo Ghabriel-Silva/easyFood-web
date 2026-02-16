@@ -1,7 +1,8 @@
-import { NumberInput } from "@chakra-ui/react"
+import { NumberInput, IconButton, HStack } from "@chakra-ui/react"
 import { Controller, useFormContext } from "react-hook-form"
 import { CreateProductsInterface } from "../../../validations/create-products"
 import { FormField } from "@/ui/index"
+import { LuMinus, LuPlus } from "react-icons/lu"
 
 type NameInput = "Input-Interger" | "Input-Decimal"
 
@@ -57,15 +58,26 @@ export const QuantityInput = ({ typeInput }: PropsQuantity) => {
                         min={0}
                         step={1}
                         formatOptions={{
-                            maximumFractionDigits: 0,
+                            maximumFractionDigits: 1,
                         }}
                         value={field.value?.toString() ?? ""}
                         onValueChange={(details) => {
                             field.onChange(details.value)
                         }}
                     >
-                        <NumberInput.Control />
-                        <NumberInput.Input placeholder="0" />
+                        <HStack gap="2">
+                            <NumberInput.DecrementTrigger asChild>
+                                <IconButton variant="outline" size="sm">
+                                    <LuMinus />
+                                </IconButton>
+                            </NumberInput.DecrementTrigger>
+                            <NumberInput.ValueText textAlign="center" fontSize="lg" minW="3ch" />
+                            <NumberInput.IncrementTrigger asChild>
+                                <IconButton variant="outline" size="sm">
+                                    <LuPlus />
+                                </IconButton>
+                            </NumberInput.IncrementTrigger>
+                        </HStack>
                     </NumberInput.Root>
                 )}
             />

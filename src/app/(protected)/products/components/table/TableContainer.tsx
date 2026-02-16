@@ -1,3 +1,5 @@
+"use client"
+
 import { MuiThemeProvider } from "@/theme/MuiDatables/providers/MuiThemeProvider";
 import MUIDataTable from "mui-datatables";
 import { useProductsData } from "../../hooks/useProductsData";
@@ -6,12 +8,10 @@ import { tranformeUniMedida } from "@/helpers/transformeUniMedida";
 import { MdCheckCircle, MdHighlightOff } from "react-icons/md";
 import { Tooltip } from "@/components/ui/tooltip"
 import { InfoTip } from "@/components/ui/toggle-tip";
-import { InfoNull, FullScreenLoading, StatEmpaty } from "@/ui/index";
+import { InfoNull, FullScreenLoading, StatEmpaty,} from "@/ui/index";
 import { DialogInfoProducts } from "@/app/(protected)/products/components/index";
 
 export const TableContainer = () => {
-
-
     const { data, isLoading, isError } = useProductsData()
 
     if (isLoading) return <FullScreenLoading />
@@ -77,13 +77,14 @@ export const TableContainer = () => {
                 },
             }
         },
+        //Coluna description
         {
             name: "description",
             label: "Descrição",
             options: {
                 customBodyRender: (value: string | null) => {
                     return (
-                        value === null ? (
+                        !value   ? (
                             <HStack maxW={"200px"} justifyContent={"center"}>
                                 <InfoNull />
                             </HStack>

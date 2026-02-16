@@ -7,7 +7,7 @@ const URL_API = process.env.NEXT_PUBLIC_URL_API
 
 const fetchData = async (filters: FilterOrderSchemaInterface): Promise<IOrderResponse> => {
     const today: Date = getDateToFilter(0)
-    const berforeToday: Date = getDateToFilter(20)
+    const berforeToday: Date = getDateToFilter(1)
 
 
     const filterDefault = {

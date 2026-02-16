@@ -114,7 +114,6 @@ export default function RootLayout({
                                     <BsLayoutSidebarInset />
                                 </Icon>
                             </Flex>
-
                             <Stack pt={6} gap={4} >
                                 {items.map((item, index) => {
                                     const isActive = pathname === item.link
@@ -163,6 +162,9 @@ export default function RootLayout({
                                 })}
                             </Stack>
                         </Box>
+                        <Flex justifyContent={"flex-start"}>
+                            <ColorModeButton />
+                        </Flex>
                         <Flex
                             align="center"
                             px="2"
@@ -188,7 +190,7 @@ export default function RootLayout({
                                 Sair
                             </Text>
                         </Flex>
-                        <ColorModeButton />
+
                     </Stack>
 
                 </Box>
