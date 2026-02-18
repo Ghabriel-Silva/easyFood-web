@@ -42,7 +42,7 @@ export const FormContainer = ({ formRef , success}: formFather) => {
         if (!checked) {
             setValue('quantity', null, { shouldValidate: true })
         }
-    }, [checked])
+    }, [checked, setValue])
 
     const uni_Medida = useWatch({
         control,

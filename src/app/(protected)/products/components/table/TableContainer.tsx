@@ -8,8 +8,12 @@ import { tranformeUniMedida } from "@/helpers/transformeUniMedida";
 import { MdCheckCircle, MdHighlightOff } from "react-icons/md";
 import { Tooltip } from "@/components/ui/tooltip"
 import { InfoTip } from "@/components/ui/toggle-tip";
-import { InfoNull, FullScreenLoading, StatEmpaty,} from "@/ui/index";
+import { InfoNull, FullScreenLoading, StatEmpaty, } from "@/ui/index";
 import { DialogInfoProducts } from "@/app/(protected)/products/components/index";
+
+import { PopovelFilter } from "../filters/PopoverFilter";
+
+
 
 export const TableContainer = () => {
     const { data, isLoading, isError } = useProductsData()
@@ -84,7 +88,7 @@ export const TableContainer = () => {
             options: {
                 customBodyRender: (value: string | null) => {
                     return (
-                        !value   ? (
+                        !value ? (
                             <HStack maxW={"200px"} justifyContent={"center"}>
                                 <InfoNull />
                             </HStack>
@@ -133,18 +137,21 @@ export const TableContainer = () => {
 
 
     const options = {
-        tableBodyHeight: 'calc(100vh - 205px)',
-        responsive: 'stacked',
-        elevation: 1,
+        tableBodyHeight: "calc(100vh - 220px)",
+        responsive: "standard",
         selectableRows: "none",
+        elevation: 0,
         sort: true,
         download: true,
         filter: false,
         searchable: false,
         search: true,
-        rowsPerPageOptions: [10, 25, 50],
+        rowsPerPageOptions: [5, 10, 25, 50],
         print: false,
         storageKey: 'tabela-produtos',
+        customToolbar: () => (           
+                <PopovelFilter />           
+        ),
         textLabels: {
             pagination: {
                 next: "Próxima Página",
@@ -175,9 +182,9 @@ export const TableContainer = () => {
 
         <MuiThemeProvider>
             <MUIDataTable
+                options={options}
                 data={data}
                 columns={columns}
-                options={options}
             />
 
         </MuiThemeProvider>

@@ -7,18 +7,23 @@ import { fontSizeTitleLabel } from "@/theme/ChakraUI/themes"
 
 interface PropsChildren {
     children: ReactNode
-    openDefault?: boolean,
-    title?: string,
+    openDefault?: boolean | { sm?: boolean; md?: boolean; lg?: boolean }
+    title?: string
 }
 
 export const OpcionalView = ({ children, title, openDefault }: PropsChildren) => {
-    const isOpen = useBreakpointValue({
-        sm: false,
-        md: openDefault,
-        lg: openDefault,
-    })
+    const isOpen = useBreakpointValue(
+        typeof openDefault === "object"
+            ? openDefault
+            : {
+                sm: false,
+                md: openDefault,
+                lg: openDefault,
+            }
+    )
+
     return (
-        <Collapsible.Root width="100%" open={isOpen} >
+        <Collapsible.Root width="100%" defaultOpen={isOpen}>
             <Collapsible.Trigger
                 paddingY="3"
                 display="flex"
@@ -32,11 +37,11 @@ export const OpcionalView = ({ children, title, openDefault }: PropsChildren) =>
                 >
                     <LuChevronRight />
                 </Collapsible.Indicator>
+
                 <Text>{title}</Text>
             </Collapsible.Trigger>
-            <Collapsible.Content>
-                {children}
-            </Collapsible.Content>
+
+            <Collapsible.Content>{children}</Collapsible.Content>
         </Collapsible.Root>
     )
 }
