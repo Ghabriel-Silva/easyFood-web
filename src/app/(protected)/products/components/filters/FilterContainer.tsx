@@ -37,7 +37,7 @@ export const FilterContainer = () => {
                             </FormField>
                         </Flex>
                         <HStack>
-                            <ButtonFilter textDefault="Filtrar Produtos" />
+                            <ButtonFilter size="xs" textDefault="Filtrar Produtos" />
                         </HStack>
                     </Box>
                 </form>

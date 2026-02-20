@@ -9,8 +9,8 @@ type SelectBaseProps = {
     placeholder?: string
     items: { label: string; value: string }[]
     isMultiple?: boolean,
-    size?: "sm" | "md" | "lg",
     close?: true | false
+    size?: "sm" | "md" | "lg" | 'xs',
     isLoading?: boolean,
     isError?: boolean,
     mesageError?: string
@@ -44,7 +44,7 @@ export function SelectBase({
 
             <Select.Control>
                 <Select.Trigger>
-                    <Select.ValueText placeholder={isError ? mesageError :  placeholder} />
+                    <Select.ValueText placeholder={isError ? mesageError : placeholder} />
                 </Select.Trigger>
 
                 <Select.IndicatorGroup>

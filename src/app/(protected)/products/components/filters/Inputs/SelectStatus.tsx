@@ -15,7 +15,7 @@ export const SelectStatus = () => {
                 name="status"
                 render={({ field }) => (
                     <SelectBase
-                        size="sm"
+                        size="xs"
                         isMultiple={false}
                         close={true}
                         placeholder="Selecione Status"

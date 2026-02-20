@@ -16,7 +16,7 @@ export const SelectPrice = () => {
                         items={price.items}
                         isMultiple={false}
                         close={true}
-                        size="sm"
+                        size="xs"
                         value={field.value ? [field.value] : []}
                         onChange={(values) => {
                             const value = values[0] ?? null
