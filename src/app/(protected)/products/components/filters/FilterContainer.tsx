@@ -1,4 +1,4 @@
-import { OpcionalView, ButtonFilter, FormField } from "@/ui/index"
+import {  ButtonFilter, FormField, TableText } from "@/ui/index"
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form"
 import { FilterProductsSchema, FilterProductsType } from "../../validations/filter-products"
 import { yupResolver } from "@hookform/resolvers/yup"
@@ -25,10 +25,9 @@ export const FilterContainer = () => {
     }
     return (  
             <FormProvider {...methodos}>
-                <form onSubmit={handleSubmit(onSubmit)} >
-            
+                <form onSubmit={handleSubmit(onSubmit)} >       
                     <Box >
-                        <Flex flexWrap={"wrap"} gap={4} pb={4} alignItems={"start"} >
+                        <Flex flexDirection={"column"}  gap={2} pb={2}  >                                
                             <FormField label="Preço" error={errors.price?.message} >
                                 <SelectPrice />
                             </FormField>

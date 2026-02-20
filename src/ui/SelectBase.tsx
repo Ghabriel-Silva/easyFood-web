@@ -14,6 +14,7 @@ type SelectBaseProps = {
     isLoading?: boolean,
     isError?: boolean,
     mesageError?: string
+    width?: string
 }
 
 export function SelectBase({
@@ -26,12 +27,14 @@ export function SelectBase({
     close = false,
     isLoading,
     isError,
-    mesageError
+    mesageError,
+    width,
 }: SelectBaseProps) {
     const collection = createListCollection({ items })
 
     return (
         <Select.Root
+            w={width}
             invalid={isError}
             closeOnSelect={close}
             multiple={isMultiple ?? true}

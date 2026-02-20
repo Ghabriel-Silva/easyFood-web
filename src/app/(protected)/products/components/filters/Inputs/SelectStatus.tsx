@@ -8,13 +8,13 @@ import { createListCollection, Box } from "@chakra-ui/react"
 export const SelectStatus = () => {
 
     const { control } = useFormContext<FilterProductsType>()
-    return (
-        <Box>
+    return (   
             <Controller
                 control={control}
                 name="status"
                 render={({ field }) => (
                     <SelectBase
+                        width="100%"
                         size="xs"
                         isMultiple={false}
                         close={true}
@@ -27,8 +27,7 @@ export const SelectStatus = () => {
                         }}
                     />
                 )}
-            />
-        </Box>
+            />     
     )
 }
 
