@@ -10,13 +10,14 @@ import { Tooltip } from "@/components/ui/tooltip"
 import { InfoTip } from "@/components/ui/toggle-tip";
 import { InfoNull, FullScreenLoading, StatEmpaty, } from "@/ui/index";
 import { DialogInfoProducts } from "@/app/(protected)/products/components/index";
-
 import { PopovelFilter } from "../filters/PopoverFilter";
-
+import { useFilterStore } from "@/stores/filterStore";
 
 
 export const TableContainer = () => {
-    const { data, isLoading, isError } = useProductsData()
+
+    const filter = useFilterStore((state) => state.filter)
+    const { data, isLoading, isError } = useProductsData(filter)
 
     if (isLoading) return <FullScreenLoading />
     const errorApi = isError && <StatEmpaty title="Nenhum produto encontrado" description="Não foi possível carregar os dados. Tente atualizar a página ou volte mais tarde." />
@@ -35,7 +36,7 @@ export const TableContainer = () => {
 
                 }
                 ,
-                sort: false,
+    
             },
         },
 
@@ -108,7 +109,7 @@ export const TableContainer = () => {
                             )
                     );
                 },
-                sort: false,
+    
 
             }
         },
@@ -141,7 +142,7 @@ export const TableContainer = () => {
         responsive: "standard",
         selectableRows: "none",
         elevation: 0,
-        sort: true,
+        serverSide: true,
         download: true,
         filter: false,
         searchable: false,
@@ -149,8 +150,8 @@ export const TableContainer = () => {
         rowsPerPageOptions: [5, 10, 25, 50],
         print: false,
         storageKey: 'tabela-produtos',
-        customToolbar: () => (           
-                <PopovelFilter />           
+        customToolbar: () => (
+            <PopovelFilter />
         ),
         textLabels: {
             pagination: {

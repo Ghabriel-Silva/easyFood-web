@@ -1,14 +1,15 @@
 import { Button, CloseButton, Dialog, Portal, Badge, HStack, Icon, Stack, Box, SimpleGrid, Flex } from "@chakra-ui/react"
 import { TableText, TableLabel } from "@/ui/index";
 import { MdVisibility } from "react-icons/md";
-import { IProductOutput} from "../../interfaces/products";
+import { IProductOutput } from "../../interfaces/products";
 import { tranformeUniMedida } from "@/helpers/transformeUniMedida";
-import { ValidadeMensage } from "@/app/(protected)/products/components/index"
+import { DialogCreateProducts, ValidadeMensage } from "@/app/(protected)/products/components/index"
+import { useState } from "react";
 interface PropsDialog {
-    product: IProductOutput
-
+    product: IProductOutput,
 }
 export const DialogInfoProducts = ({ product }: PropsDialog) => {
+      const [openEdit, setOpenEdit] = useState<boolean>(false)
     return (
         <Dialog.Root>
             <Dialog.Trigger asChild cursor={"pointer"} >
@@ -109,14 +110,15 @@ export const DialogInfoProducts = ({ product }: PropsDialog) => {
                                         {new Date(product.updated_at).toLocaleString('pr-BR').replace(",", "-")}
                                     </TableLabel>
                                 </Flex>
-
                             </Stack>
                         </Dialog.Body>
                         <Dialog.Footer>
                             <Dialog.ActionTrigger asChild>
                                 <Button variant="outline">Cancelar</Button>
                             </Dialog.ActionTrigger>
-                            <Button colorPalette={"yellow"} >Editar</Button>
+                            <Button colorPalette={"yellow"}
+                                onClick={() => setOpenEdit(true)}
+                            >Editar</Button>
                         </Dialog.Footer>
                         <Dialog.CloseTrigger asChild>
                             <CloseButton size="sm" />

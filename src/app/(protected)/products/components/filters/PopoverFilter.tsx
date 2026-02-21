@@ -1,6 +1,5 @@
 import {
-    IconButton, Popover, PopoverCloseTrigger, Portal, HStack, CloseButton
-} from "@chakra-ui/react"
+    IconButton, Popover, PopoverCloseTrigger, Portal, HStack, CloseButton} from "@chakra-ui/react"
 import { styleIcon } from "../../Styles/IconsStyle"
 import { MdFilterAlt } from "react-icons/md";
 import { FilterContainer } from "./FilterContainer";
@@ -32,8 +31,8 @@ export const PopovelFilter = () => {
                             <Popover.Title >
                                 <HStack justifyContent={"space-between"} >
                                     <TableText>Filtrar Produtos</TableText>
-                                    <PopoverCloseTrigger>
-                                        <CloseButton size="sm" rounded={"full"}/>
+                                    <PopoverCloseTrigger>                                    
+                                            <CloseButton asChild size="sm" rounded={"full"}/>                                    
                                     </PopoverCloseTrigger>
                                 </HStack>
                             </Popover.Title>

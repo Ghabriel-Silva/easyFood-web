@@ -5,15 +5,16 @@ import { useRef, useState } from "react";
 import { UseProductsCreate } from "../../hooks/useProductsCreate";
 
 
+
 export const DialogCreateProducts = () => {
     const { isPending } = UseProductsCreate()
 
     const [open, setOpen] = useState<boolean>(false)
     const formRef = useRef<HTMLFormElement>(null)
 
-    
+
     return (
-        <Dialog.Root closeOnInteractOutside={false} trapFocus={false} open={open} onOpenChange={(detais)=>setOpen(detais.open)}>
+        <Dialog.Root closeOnInteractOutside={false} trapFocus={false} open={open} onOpenChange={(detais) => setOpen(detais.open)}>
             <Dialog.Trigger asChild>
                 <Button bg="blue.600" borderRadius="lg">Novo produto<MdAdd /></Button>
             </Dialog.Trigger>
@@ -23,15 +24,15 @@ export const DialogCreateProducts = () => {
                     <Dialog.Content>
                         <Dialog.Header>
                             {isPending && (
-                                <Spinner size="lg"  />
+                                <Spinner size="lg" />
                             )}
 
                             <Dialog.Title>Add Produto</Dialog.Title>
                         </Dialog.Header>
                         <Dialog.Body>
-                            <FormContainer 
-                            formRef={formRef}
-                            success={()=>setOpen(false)}
+                            <FormContainer
+                                formRef={formRef}
+                                success={() => setOpen(false)}
                             />
                         </Dialog.Body>
                         <Dialog.Footer>
