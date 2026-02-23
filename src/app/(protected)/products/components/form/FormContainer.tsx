@@ -8,6 +8,7 @@ import { useEffect, useState } from "react"
 import { UniMedidaSelect, SwitchInput, QuantityInput } from "@/app/(protected)/products/components/index"
 import { SelectCategoryInput } from "./inputs/SelectCategoryInput"
 import { UseProductsCreate } from "../../hooks/useProductsCreate"
+import { useEditeProduct } from "@/stores/editeProductStore";
 
 
 type formFather = {
@@ -15,7 +16,11 @@ type formFather = {
     success: () => void
 }
 
-export const FormContainer = ({ formRef , success}: formFather) => {
+export const FormContainer = ({ formRef, success }: formFather) => {
+    const getPorducts = useEditeProduct((s) => s.product)
+
+    console.log(getPorducts)
+
     const [checked, setChecked] = useState(false)
 
     const methods = useForm({
@@ -25,9 +30,11 @@ export const FormContainer = ({ formRef , success}: formFather) => {
             expirationDate: null,
             description: null,
             quantity: null,
-            category_id: 'sswswsw'
+            category_id: ''
         }
     })
+
+   
 
     const {
         reset,
@@ -60,7 +67,6 @@ export const FormContainer = ({ formRef , success}: formFather) => {
         })
     }
 
-
     return (
         <FormProvider {...methods}>
             <form ref={formRef} noValidate onSubmit={handleSubmit(OnSubmit)} >
@@ -68,7 +74,7 @@ export const FormContainer = ({ formRef , success}: formFather) => {
                     < Toaster />
                     <HStack align={"start"} flexWrap={"wrap"}>
                         <FormField error={errors.name?.message} label="Nome" isRequired={true}>
-                            <Input {...register('name')} placeholder="X-Calabresa" />
+                            <Input  {...register('name')} placeholder="X-Calabresa" />
                         </FormField>
                         <FormField label="price" error={errors.price?.message} isRequired={true}>
                             <InputGroup startElement="R$" endElement="BLR">

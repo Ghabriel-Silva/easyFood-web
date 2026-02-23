@@ -3,13 +3,15 @@ import { TableText, TableLabel } from "@/ui/index";
 import { MdVisibility } from "react-icons/md";
 import { IProductOutput } from "../../interfaces/products";
 import { tranformeUniMedida } from "@/helpers/transformeUniMedida";
-import { DialogCreateProducts, ValidadeMensage } from "@/app/(protected)/products/components/index"
-import { useState } from "react";
+import { ValidadeMensage } from "@/app/(protected)/products/components/index"
+import { useEditeProduct } from "@/stores/editeProductStore";
 interface PropsDialog {
     product: IProductOutput,
 }
 export const DialogInfoProducts = ({ product }: PropsDialog) => {
-      const [openEdit, setOpenEdit] = useState<boolean>(false)
+    const setEdite = useEditeProduct((state) => state.setEdite)
+    const setProducts = useEditeProduct((state) => state.setProduct)
+
     return (
         <Dialog.Root>
             <Dialog.Trigger asChild cursor={"pointer"} >
@@ -116,10 +118,19 @@ export const DialogInfoProducts = ({ product }: PropsDialog) => {
                             <Dialog.ActionTrigger asChild>
                                 <Button variant="outline">Cancelar</Button>
                             </Dialog.ActionTrigger>
-                            <Button colorPalette={"yellow"}
-                                onClick={() => setOpenEdit(true)}
-                            >Editar</Button>
+                            <Dialog.ActionTrigger asChild>
+                                <Button
+                                    colorPalette="yellow"
+                                    onClick={() => {
+                                        setEdite(true)
+                                        setProducts(product)                               
+                                    }}
+                                >
+                                    Editar
+                                </Button>
+                            </Dialog.ActionTrigger>
                         </Dialog.Footer>
+
                         <Dialog.CloseTrigger asChild>
                             <CloseButton size="sm" />
                         </Dialog.CloseTrigger>
