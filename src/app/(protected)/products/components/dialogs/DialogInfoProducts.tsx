@@ -9,11 +9,13 @@ interface PropsDialog {
     product: IProductOutput,
 }
 export const DialogInfoProducts = ({ product }: PropsDialog) => {
-    const setEdite = useEditeProduct((state) => state.setEdite)
-    const setProducts = useEditeProduct((state) => state.setProduct)
+    const setEdite = useEditeProduct((s) => s.setEdite)
+    const setProducts = useEditeProduct((s) => s.setProduct)
+
+    
 
     return (
-        <Dialog.Root>
+        <Dialog.Root  >
             <Dialog.Trigger asChild cursor={"pointer"} >
                 <Badge gap={2} colorPalette="blue" variant="subtle"   >
                     <HStack _hover={{ borderBottom: "1px solid" }}>

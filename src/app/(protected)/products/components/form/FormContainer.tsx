@@ -19,7 +19,7 @@ type formFather = {
 export const FormContainer = ({ formRef, success }: formFather) => {
     const getPorducts = useEditeProduct((s) => s.product)
 
-    console.log(getPorducts)
+
 
     const [checked, setChecked] = useState(false)
 
@@ -27,14 +27,17 @@ export const FormContainer = ({ formRef, success }: formFather) => {
         resolver: yupResolver(CreateProductsSchema),
         mode: 'onBlur',
         defaultValues: {
+            name: "",
+            price: undefined,
+            uni_medida: undefined,
             expirationDate: null,
             description: null,
             quantity: null,
-            category_id: ''
+            category_id: ""
         }
     })
 
-   
+
 
     const {
         reset,
@@ -44,6 +47,31 @@ export const FormContainer = ({ formRef, success }: formFather) => {
         setValue,
         formState: { errors }
     } = methods
+
+
+
+    useEffect(() => {
+        if (getPorducts) { //Apenas de não for null
+            const expiration = getPorducts.expirationDate
+                ? new Date(getPorducts.expirationDate)
+                : null
+            reset({
+                name: getPorducts.name,
+                price: getPorducts.price,
+                quantity: getPorducts.quantity,
+                expirationDate: expiration,
+                description: getPorducts.description,
+                category_id: getPorducts.category?.id ?? "",
+                uni_medida: getPorducts.uni_medida
+            })
+
+            if (getPorducts.quantity != null) {
+                setChecked(true)
+            }
+        }
+
+    }, [getPorducts, reset])
+
 
     useEffect(() => {
         if (!checked) {

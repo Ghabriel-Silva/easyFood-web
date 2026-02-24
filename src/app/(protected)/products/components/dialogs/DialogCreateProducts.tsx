@@ -12,18 +12,18 @@ export const DialogCreateProducts = () => {
 
     const isEditeP = useEditeProduct((s) => s.IsEdite) //Ao clicar no Edite recebo true
     const setEdite = useEditeProduct((s) => s.setEdite)
-
-    const getPorducts = useEditeProduct((s) => s.product)
-    
-    console.log(getPorducts)
+    const setProduct = useEditeProduct((s) => s.setProduct)
 
     const [open, setOpen] = useState(false)
+
     const formRef = useRef<HTMLFormElement>(null)
 
     // Abre quando entra em modo edição
     useEffect(() => {
         if (isEditeP) setOpen(true) //Se click no botão editar o estado setOpen é true 
     }, [isEditeP])
+
+
     return (
         <Dialog.Root
             closeOnInteractOutside={false}
@@ -31,6 +31,7 @@ export const DialogCreateProducts = () => {
             onOpenChange={(details) => { // details objeto que sabe se o dialog esta aberto ou fechado
                 setOpen(details.open) //aqui digo que o estado do componente             
                 if (!details.open) setEdite(false)
+                setProduct(null) //quando fechar o modal quero que ele seja null
             }}
         >
             <Dialog.Trigger asChild>
