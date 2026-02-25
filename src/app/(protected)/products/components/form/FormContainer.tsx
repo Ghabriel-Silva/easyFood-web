@@ -26,6 +26,7 @@ export const FormContainer = ({ formRef, success }: formFather) => {
     const methods = useForm({
         resolver: yupResolver(CreateProductsSchema),
         mode: 'onBlur',
+        shouldUnregister: false,
         defaultValues: {
             name: "",
             price: undefined,
@@ -53,8 +54,12 @@ export const FormContainer = ({ formRef, success }: formFather) => {
     useEffect(() => {
         if (getPorducts) { //Apenas de não for null
             const expiration = getPorducts.expirationDate
-                ? new Date(getPorducts.expirationDate)
+                ? new Date(getPorducts.expirationDate).toISOString().split('T')[0]
                 : null
+            const hasQuantity = getPorducts.quantity != null
+
+            setChecked(hasQuantity)
+
             reset({
                 name: getPorducts.name,
                 price: getPorducts.price,
@@ -67,15 +72,17 @@ export const FormContainer = ({ formRef, success }: formFather) => {
 
             if (getPorducts.quantity != null) {
                 setChecked(true)
+                console.log(getPorducts.quantity)
             }
         }
 
     }, [getPorducts, reset])
 
 
+    //Bug aqui quando o check é false ele sta o valor como null, verificar o comportamento desse use effect 
     useEffect(() => {
         if (!checked) {
-            setValue('quantity', null, { shouldValidate: true })
+            setValue('quantity', null)
         }
     }, [checked, setValue])
 

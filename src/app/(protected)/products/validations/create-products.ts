@@ -33,7 +33,7 @@ export const CreateProductsSchema = yup.object({
         .oneOf(Object.values(UniMedida))
         .required("A Unidade de medida é obrigatória"),
     expirationDate: yup
-        .date()
+        .string()
         .nullable()
         .transform((value, originalValue) =>
             originalValue === "" ? null : value
