@@ -9,6 +9,8 @@ import { UniMedidaSelect, SwitchInput, QuantityInput } from "@/app/(protected)/p
 import { SelectCategoryInput } from "./inputs/SelectCategoryInput"
 import { UseProductsCreate } from "../../hooks/useProductsCreate"
 import { useEditeProduct } from "@/stores/editeProductStore";
+import { useProductEdite } from "../../hooks/useProductsEdite";
+
 
 
 type formFather = {
@@ -17,9 +19,10 @@ type formFather = {
 }
 
 export const FormContainer = ({ formRef, success }: formFather) => {
-    const getPorducts = useEditeProduct((s) => s.product)
+    const editeProducts = useEditeProduct((s) => s.product)
 
-    const isEditing = !!getPorducts
+    const isEditing = !!editeProducts
+
 
     const [checked, setChecked] = useState(false)
 
@@ -38,8 +41,6 @@ export const FormContainer = ({ formRef, success }: formFather) => {
         }
     })
 
-
-
     const {
         reset,
         register,
@@ -50,44 +51,42 @@ export const FormContainer = ({ formRef, success }: formFather) => {
     } = methods
 
 
-
     useEffect(() => {
-        if (getPorducts) { //Apenas de não for null
-            const expiration = getPorducts.expirationDate
-                ? new Date(getPorducts.expirationDate).toISOString().split('T')[0]
+        if (editeProducts) { //Apenas de não for null
+            const expiration = editeProducts.expirationDate
+                ? new Date(editeProducts.expirationDate).toISOString().split('T')[0]
                 : null
 
-            const hasQuantity = getPorducts.quantity != null
+            const hasQuantity = editeProducts.quantity != null
 
             setChecked(hasQuantity)
 
             reset({
-                name: getPorducts.name,
-                price: getPorducts.price,
-                quantity: getPorducts.quantity,
+                name: editeProducts.name,
+                price: editeProducts.price,
+                quantity: editeProducts.quantity,
                 expirationDate: expiration,
-                description: getPorducts.description,
-                category_id: getPorducts.category?.id ?? "",
-                uni_medida: getPorducts.uni_medida
+                description: editeProducts.description,
+                category_id: editeProducts.category?.id ?? "",
+                uni_medida: editeProducts.uni_medida
             })
 
-            if (getPorducts.quantity !== null) {
+            if (editeProducts.quantity !== null) {
                 setChecked(true)
 
             }
         }
 
-    }, [getPorducts, reset])
+    }, [editeProducts, reset])
 
 
-    //Bug aqui quando o check é false ele sta o valor como null, verificar o comportamento desse use effect 
     useEffect(() => {
         if (!checked && !isEditing) {
             setValue('quantity', null)
-          
+
         }
     }, [checked, setValue, isEditing])
-  
+
 
 
     const uni_Medida = useWatch({
@@ -96,14 +95,34 @@ export const FormContainer = ({ formRef, success }: formFather) => {
     })
 
     const { mutate } = UseProductsCreate()
+    const { mutate: editeMutate } = useProductEdite()
+
+
 
     const OnSubmit: SubmitHandler<CreateProductsInterface> = (data: CreateProductsInterface) => {
-        mutate(data, {
-            onSuccess: () => {
-                reset()
-                success()
+
+        if (isEditing) {
+            const dataAtualizada = {
+                ...data,
+                expirationDate: data.expirationDate
+                    ? new Date(data.expirationDate).toISOString()
+                    : null
             }
-        })
+            editeMutate({
+                data: dataAtualizada,
+                id: editeProducts.id
+            }
+        
+        )
+        } else {
+            mutate(data, {
+                onSuccess: () => {
+                    reset()
+                    success()
+                }
+            })
+        }
+
     }
 
     return (
