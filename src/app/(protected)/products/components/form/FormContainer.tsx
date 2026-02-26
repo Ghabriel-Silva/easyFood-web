@@ -19,7 +19,7 @@ type formFather = {
 export const FormContainer = ({ formRef, success }: formFather) => {
     const getPorducts = useEditeProduct((s) => s.product)
 
-
+    const isEditing = !!getPorducts
 
     const [checked, setChecked] = useState(false)
 
@@ -56,6 +56,7 @@ export const FormContainer = ({ formRef, success }: formFather) => {
             const expiration = getPorducts.expirationDate
                 ? new Date(getPorducts.expirationDate).toISOString().split('T')[0]
                 : null
+
             const hasQuantity = getPorducts.quantity != null
 
             setChecked(hasQuantity)
@@ -70,9 +71,9 @@ export const FormContainer = ({ formRef, success }: formFather) => {
                 uni_medida: getPorducts.uni_medida
             })
 
-            if (getPorducts.quantity != null) {
+            if (getPorducts.quantity !== null) {
                 setChecked(true)
-                console.log(getPorducts.quantity)
+
             }
         }
 
@@ -81,10 +82,13 @@ export const FormContainer = ({ formRef, success }: formFather) => {
 
     //Bug aqui quando o check é false ele sta o valor como null, verificar o comportamento desse use effect 
     useEffect(() => {
-        if (!checked) {
+        if (!checked && !isEditing) {
             setValue('quantity', null)
+          
         }
-    }, [checked, setValue])
+    }, [checked, setValue, isEditing])
+  
+
 
     const uni_Medida = useWatch({
         control,
