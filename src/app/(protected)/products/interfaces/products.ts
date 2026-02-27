@@ -1,4 +1,5 @@
 import { UniMedida } from "@/interfaces/type-uni-medida"
+import { ProductUpdateInterface } from "../validations/editeProducts"
 
 // types/Product.ts
 export interface Product {
@@ -60,3 +61,7 @@ export interface ProductCreateResponse {
   data: boolean
 }
 
+export interface productsEditePayloud {
+  data:ProductUpdateInterface,
+  id:string
+}

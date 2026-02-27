@@ -2,7 +2,6 @@ import { FormProvider, SubmitHandler, useForm, useWatch } from "react-hook-form"
 import { CreateProductsInterface, CreateProductsSchema } from "../../validations/create-products"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { HStack, Input, Stack, InputGroup, Textarea } from "@chakra-ui/react"
-import { Toaster } from "@/components/ui/toaster";
 import { FormField, OpcionalView } from "@/ui/index"
 import { useEffect, useState } from "react"
 import { UniMedidaSelect, SwitchInput, QuantityInput } from "@/app/(protected)/products/components/index"
@@ -10,6 +9,7 @@ import { SelectCategoryInput } from "./inputs/SelectCategoryInput"
 import { UseProductsCreate } from "../../hooks/useProductsCreate"
 import { useEditeProduct } from "@/stores/editeProductStore";
 import { useProductEdite } from "../../hooks/useProductsEdite";
+import { productsEditePayloud } from "../../interfaces/products";
 
 
 
@@ -100,20 +100,22 @@ export const FormContainer = ({ formRef, success }: formFather) => {
 
 
     const OnSubmit: SubmitHandler<CreateProductsInterface> = (data: CreateProductsInterface) => {
-
+        const dataAtualizada = {
+            ...data,
+            expirationDate: data.expirationDate
+                ? new Date(data.expirationDate).toISOString()
+                : null
+        }
         if (isEditing) {
-            const dataAtualizada = {
-                ...data,
-                expirationDate: data.expirationDate
-                    ? new Date(data.expirationDate).toISOString()
-                    : null
-            }
-            editeMutate({
+            if (!editeProducts?.id) return
+            const dataEditePayloud: productsEditePayloud = {
                 data: dataAtualizada,
                 id: editeProducts.id
             }
-        
-        )
+
+            editeMutate(dataEditePayloud, {
+                onSuccess: () => success()
+            })
         } else {
             mutate(data, {
                 onSuccess: () => {
@@ -129,7 +131,6 @@ export const FormContainer = ({ formRef, success }: formFather) => {
         <FormProvider {...methods}>
             <form ref={formRef} noValidate onSubmit={handleSubmit(OnSubmit)} >
                 <Stack>
-                    < Toaster />
                     <HStack align={"start"} flexWrap={"wrap"}>
                         <FormField error={errors.name?.message} label="Nome" isRequired={true}>
                             <Input  {...register('name')} placeholder="X-Calabresa" />

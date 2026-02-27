@@ -8,12 +8,13 @@ import { useEditeProduct } from "@/stores/editeProductStore";
 interface PropsDialog {
     product: IProductOutput,
 }
+
+
+
+
 export const DialogInfoProducts = ({ product }: PropsDialog) => {
     const setEdite = useEditeProduct((s) => s.setEdite)
     const setProducts = useEditeProduct((s) => s.setProduct)
-
-    
-
     return (
         <Dialog.Root  >
             <Dialog.Trigger asChild cursor={"pointer"} >
@@ -125,7 +126,7 @@ export const DialogInfoProducts = ({ product }: PropsDialog) => {
                                     colorPalette="yellow"
                                     onClick={() => {
                                         setEdite(true)
-                                        setProducts(product)                               
+                                        setProducts(product)
                                     }}
                                 >
                                     Editar
