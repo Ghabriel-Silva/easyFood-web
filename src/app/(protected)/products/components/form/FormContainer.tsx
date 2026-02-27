@@ -145,7 +145,7 @@ export const FormContainer = ({ formRef, success }: formFather) => {
                             <QuantityInput typeInput="Input-Decimal" />
                         )
                         }
-                        {["l", "un", "porcao", "fatia", "pedaco", "combo", "none"].includes(uni_Medida) && checked && (
+                        {["l", "un", "porcao", "fatia", "pedaco", "combo"].includes(uni_Medida) && checked && (
                             <QuantityInput typeInput="Input-Interger" />
                         )}
                     </HStack>
