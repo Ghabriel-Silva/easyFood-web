@@ -1,52 +1,56 @@
 import { TableText } from "@/ui/index";
 import { HStack, Badge } from "@chakra-ui/react";
 import { MdOutlineAlarmOff, MdInfoOutline, MdAccessTime } from "react-icons/md";
-
+// Importações do date-fns
+import { parseISO, differenceInCalendarDays, format } from "date-fns";
+import { ptBR } from "date-fns/locale";
 
 interface PropsValidade {
-    date: string | null
+    date: string | null;
 }
 
 export const ValidadeMensage = ({ date }: PropsValidade) => {
+    if (!date) {
+        return (
+            <Badge colorPalette={"green"} gap={2}>
+                <MdAccessTime />
+                Produto Perecível
+            </Badge>
+        );
+    }
 
-    if (!date) return (
-        <Badge colorPalette={"green"} gap={2}>
-            < MdAccessTime />
-            Produto Perecivel
-        </Badge>
-    )
+    // 1. parseISO interpreta "2026-04-28" corretamente sem mudar o dia
+    const dataValidade = parseISO(date);
+    const hoje = new Date();
 
-    const dV = new Date(date) // Data de validade
-    const hoje = new Date()   // Data atual
-
-    // Compara apenas dia com horario default 00:00:00
-    const resetTime = (d: Date) => new Date(d.getFullYear(), d.getMonth(), d.getDate())
-
-    const diffDays = Math.floor( //Aredonda data
-        (resetTime(dV).getTime() - resetTime(hoje).getTime()) / (1000 * 60 * 60 * 24) //get time pega o valores em milesssegundos desde 1970  e divido por 1 dia em milessegundos
-    );
+    // 2. differenceInCalendarDays compara apenas as datas (ignora as horas)
+    // Se hoje é dia 27 e a validade é dia 28, o resultado será 1.
+    const diffDays = differenceInCalendarDays(dataValidade, hoje);
 
     if (diffDays < 0) {
         return (
             <Badge colorPalette={"red"} gap={2}>
                 <MdOutlineAlarmOff />
-
                 Produto Vencido
             </Badge>
-        )
-    } else if (diffDays <= 10) {
+        );
+    }
+
+    if (diffDays <= 10) {
         return (
             <Badge colorPalette={"yellow"} gap={2}>
                 <MdInfoOutline />
                 Faltam {diffDays} dia(s) para vencer
             </Badge>
-        )
-    } else {
-        return (
-            <HStack>
-                <TableText>{dV.toLocaleDateString()}</TableText>
-            </HStack>
-        )
+        );
     }
 
-}
+    return (
+        <HStack>
+            <TableText>
+                {/* Formatação segura e localizada */}
+                {format(dataValidade, "dd/MM/yyyy", { locale: ptBR })}
+            </TableText>
+        </HStack>
+    );
+};

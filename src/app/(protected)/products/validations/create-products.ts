@@ -26,7 +26,7 @@ export const CreateProductsSchema = yup.object({
             return value
         })
         .typeError("A quantida tem que ser um numero")
-        .min(0,"A quantidade não pode ser negativa")
+        .min(0, "A quantidade não pode ser negativa")
         .nullable(),
     uni_medida: yup
         .mixed<UniMedida>()
@@ -42,14 +42,16 @@ export const CreateProductsSchema = yup.object({
             'data-validate-is-before-today',
             'A data de validade não pode ser anterior ao dia de hoje',
             (value) => {
-                if (!value) return true 
-                const dV = new Date(value)
+                if (!value) return true
+                const [year, month, day] = value.split("-").map(Number)
+                const dV = new Date(year, month - 1, day)
                 const hoje = new Date()
                 const resetTime = (d: Date) => new Date(d.getFullYear(), d.getMonth(), d.getDate())
 
                 const diffDays: number = Math.floor(
                     (resetTime(dV).getTime() - resetTime(hoje).getTime()) / (1000 * 60 * 60 * 24)
                 )
+                console.log(dV)
 
                 return diffDays >= 0 // true se for maior ou igual a 0 e retorna false se for menor
             }

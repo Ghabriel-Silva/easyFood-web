@@ -10,19 +10,13 @@ const URL_API = process.env.NEXT_PUBLIC_URL_API
 const editeProducts = async ( dataEditePayloud:productsEditePayloud) => {
     const { data, id } = dataEditePayloud
 
-    const dataAtual = {
-        ...data,
-        expirationDate: data.expirationDate
-            ? new Date(data.expirationDate)
-            : null
-    }
     const response = await fetch(`${URL_API}/product/${id}`, {
         method: "PUT",
         credentials: 'include',
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify(dataAtual)
+        body: JSON.stringify(data)
 
     })
     const body:ProductCreateResponse = await response.json()

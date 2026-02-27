@@ -96,7 +96,7 @@ export const DialogInfoProducts = ({ product }: PropsDialog) => {
                                     <Box>
                                         <TableLabel>Criado em</TableLabel>
                                         <TableText>
-                                            {new Date(product.created_at).toLocaleDateString()}
+                                            {new Date(product.created_at).toLocaleDateString("pt-BR")}
                                         </TableText>
                                     </Box>
 
@@ -112,7 +112,7 @@ export const DialogInfoProducts = ({ product }: PropsDialog) => {
                                 <Flex justify="flex-end">
                                     <TableLabel>
                                         Última atualização:{" "}
-                                        {new Date(product.updated_at).toLocaleString('pr-BR').replace(",", "-")}
+                                        {new Date(product.updated_at).toLocaleString('pt-BR').replace(",", "-")}
                                     </TableLabel>
                                 </Flex>
                             </Stack>

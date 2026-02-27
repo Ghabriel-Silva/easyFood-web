@@ -11,8 +11,6 @@ import { useEditeProduct } from "@/stores/editeProductStore";
 import { useProductEdite } from "../../hooks/useProductsEdite";
 import { productsEditePayloud } from "../../interfaces/products";
 
-
-
 type formFather = {
     formRef: React.RefObject<HTMLFormElement | null>
     success: () => void
@@ -53,10 +51,6 @@ export const FormContainer = ({ formRef, success }: formFather) => {
 
     useEffect(() => {
         if (editeProducts) { //Apenas de não for null
-            const expiration = editeProducts.expirationDate
-                ? new Date(editeProducts.expirationDate).toISOString().split('T')[0]
-                : null
-
             const hasQuantity = editeProducts.quantity != null
 
             setChecked(hasQuantity)
@@ -65,7 +59,7 @@ export const FormContainer = ({ formRef, success }: formFather) => {
                 name: editeProducts.name,
                 price: editeProducts.price,
                 quantity: editeProducts.quantity,
-                expirationDate: expiration,
+                expirationDate: editeProducts.expirationDate,
                 description: editeProducts.description,
                 category_id: editeProducts.category?.id ?? "",
                 uni_medida: editeProducts.uni_medida
@@ -100,16 +94,10 @@ export const FormContainer = ({ formRef, success }: formFather) => {
 
 
     const OnSubmit: SubmitHandler<CreateProductsInterface> = (data: CreateProductsInterface) => {
-        const dataAtualizada = {
-            ...data,
-            expirationDate: data.expirationDate
-                ? new Date(data.expirationDate).toISOString()
-                : null
-        }
         if (isEditing) {
             if (!editeProducts?.id) return
             const dataEditePayloud: productsEditePayloud = {
-                data: dataAtualizada,
+                data: data,
                 id: editeProducts.id
             }
 
@@ -126,7 +114,6 @@ export const FormContainer = ({ formRef, success }: formFather) => {
         }
 
     }
-
     return (
         <FormProvider {...methods}>
             <form ref={formRef} noValidate onSubmit={handleSubmit(OnSubmit)} >

@@ -27,7 +27,7 @@ export function UseProductsCreate() {
         mutationFn: createProducts,
         onSuccess: (_, variables) => {
             queryClient.invalidateQueries({
-                queryKey: ['product-data']
+                queryKey: ["data-products"]
             })
             return toaster.create({
                 description: `Produto  ${variables.name} criado com sucesso`,

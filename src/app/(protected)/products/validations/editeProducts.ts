@@ -21,7 +21,12 @@ export const productUpdateSchema = yup.object({
             "Unidade inválida. Valores aceitos: un, kg, lt, porcao"
         )
         .notRequired(),
-    expirationDate: yup.string().typeError('Data inválida').notRequired(),
+    expirationDate: yup
+        .string()
+        .typeError('Data inválida')
+        .transform((value, originalValue) =>
+            originalValue === "" ? null : value
+        ).notRequired(),
     description: yup.string().notRequired(),
     category_id: yup.string().notRequired(),
 });
