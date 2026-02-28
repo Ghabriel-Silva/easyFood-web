@@ -13,11 +13,30 @@ import { DialogInfoProducts } from "@/app/(protected)/products/components/index"
 import { PopovelFilter } from "../filters/PopoverFilter";
 import { useFilterStore } from "@/stores/filterStore";
 
+import { useSearchParams, useRouter, usePathname } from 'next/navigation'
+
 
 export const TableContainer = () => {
+    const searchParams = useSearchParams()
+    const router = useRouter()
+    const pathname = usePathname()
+
+    const page = Number(searchParams.get('page')) || 1;
+    const rowsPerPage = Number(searchParams.get('limit')) || 10;
+
+    const tablePage = page - 1;
 
     const filter = useFilterStore((state) => state.filter)
-    const { data, isLoading, isError } = useProductsData(filter)
+
+    const { data, isLoading, isError } = useProductsData(
+        filter ?? {},
+        page,
+        rowsPerPage
+    )
+
+    const dataProducts = data?.data.products
+    const countPage = data?.data.total
+
 
     if (isLoading) return <FullScreenLoading />
     const errorApi = isError && <StatEmpaty title="Nenhum produto encontrado" description="Não foi possível carregar os dados. Tente atualizar a página ou volte mais tarde." />
@@ -28,15 +47,15 @@ export const TableContainer = () => {
             label: "Ver Detalhes",
             options: {
                 customBodyRenderLite: (dataIndex: number) => {
-                    if (!data) return null
-                    const row = data[dataIndex]
+                    if (!dataProducts) return null
+                    const row = dataProducts[dataIndex]
                     return (
                         < DialogInfoProducts product={row} />
                     )
 
                 }
                 ,
-    
+
             },
         },
 
@@ -69,8 +88,8 @@ export const TableContainer = () => {
             label: "Preço / Unidade",
             options: {
                 customBodyRenderLite: (dataIndex: number) => {
-                    if (!data) return null
-                    const row = data[dataIndex]; // data é Product[] pego o indice 
+                    if (!dataProducts) return null
+                    const row = dataProducts[dataIndex]; // data é Product[] pego o indice 
                     return (
                         <Flex gap={2}>
                             <Text>R${row.price}</Text>
@@ -109,7 +128,7 @@ export const TableContainer = () => {
                             )
                     );
                 },
-    
+
 
             }
         },
@@ -142,12 +161,30 @@ export const TableContainer = () => {
         responsive: "standard",
         selectableRows: "none",
         elevation: 0,
+        //Paginação 
         serverSide: true,
+        count: countPage,
+        page: tablePage,
+        rowsPerPage: rowsPerPage,
+        rowsPerPageOptions: [10, 25, 50],
+
+        onChangePage: (newPage: number) => {
+            const params = new URLSearchParams(searchParams.toString());
+            params.set("page", String(newPage + 1));
+            router.push(`${pathname}?${params.toString()}`);
+        },
+
+        onChangeRowsPerPage: (newRows: number) => {
+            const params = new URLSearchParams(searchParams.toString());
+            params.set("limit", String(newRows));
+            params.set("page", "1"); // Volta pra primeira página na URL
+            router.push(`${pathname}?${params.toString()}`);
+        },
+
         download: true,
         filter: false,
         searchable: false,
-        search: true,
-        rowsPerPageOptions: [5, 10, 25, 50],
+        search: false,
         print: false,
         storageKey: 'tabela-produtos',
         customToolbar: () => (
@@ -174,20 +211,14 @@ export const TableContainer = () => {
                 titleAria: "Mostrar/Ocultar Colunas da Tabela",
             },
         }
-
-
-
     };
     return (
-
-
         <MuiThemeProvider>
             <MUIDataTable
                 options={options}
-                data={data}
+                data={dataProducts ?? []}
                 columns={columns}
             />
-
         </MuiThemeProvider>
     )
 }

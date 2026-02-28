@@ -11,9 +11,7 @@ export const FilterProductsSchema = yup.object({
         .mixed<status>()
         .oneOf(['active', 'inactive'], 'O Valor tem que ser ou ativo ou inativo')
         .nullable(),
-
-
-
+        
     price: yup
         .mixed<price>()
         .oneOf(['maior', 'menor'], 'o preço pode ser o maior ou menor ')

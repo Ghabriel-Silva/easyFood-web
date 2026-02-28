@@ -62,6 +62,23 @@ export interface ProductCreateResponse {
 }
 
 export interface productsEditePayloud {
-  data:ProductUpdateInterface,
-  id:string
+  data: ProductUpdateInterface,
+  id: string
+}
+
+
+export interface ProductResponse {
+  frete: frete;
+  fromCache: boolean;
+  limit: number;
+  page: number;
+  products: IProductOutput[];
+  total: number;
+  totalPages: number;
+
+}
+
+export interface ProductResponseData {
+  data:ProductResponse, 
+  message:string
 }
