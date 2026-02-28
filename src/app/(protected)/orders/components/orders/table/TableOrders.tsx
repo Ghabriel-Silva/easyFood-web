@@ -65,107 +65,97 @@ export default function TableOrders({
         <>
 
             {isMobile && (
-                <Box display="flex" flexDirection="column" gap={4}>
-                    {paginatedOrders.map((order) => {
-                        const { color, icon } = getStatusOption(order.status);
-
-                        return (
-                            <Box
-                                key={order.id}
-                                borderWidth="1px"
-                                borderRadius="lg"
-                                p={4}
-                                boxShadow="sm"
-                            >
-                                {/* Header */}
-                                <Flex justify="space-between" align="center" mb={3}>
-                                    <HStack flexWrap={"wrap"}>
-                                        <DialogOrder order={order} />
-                                        <Badge
-                                            colorPalette="blue"
-                                            variant="subtle"                                         
-                                        >
-                                            <Center cursor="pointer" w="32px"  _active={{ color: "blue.500"}}>
-                                                <MdPrint
-
-                                                    size={14}
-                                                    onClick={() => handleClick(order.id)} //Impresão do pedido nota
-                                                />
-                                            </Center>
-                                        </Badge>
-                                        {/**Status pedido */}
-                                        <Badge colorPalette={color} variant="subtle">
-                                            <Flex align="center" gap={1}>
-                                                {icon}
-                                                {order.status.toUpperCase()}
-                                            </Flex>
-                                        </Badge>
-                                    </HStack>
-
-
-                                </Flex>
-
-
-                                <Box fontSize="sm">
-                                    <Box fontSize="sm">
-                                        <HStack gap={2}>
-                                            <Text fontWeight="medium">Cliente:</Text>
-                                            {order.customerName?.trim() || <InfoNull />}
-                                        </HStack>
-
-                                        <HStack gap={2}  >
-                                            <Text fontWeight="medium">Telefone:</Text>
-                                            {order.customerPhone?.trim() || <InfoNull />}
-                                        </HStack>
-
-                                        <HStack gap={2}>
-                                            <Text fontWeight="medium">Endereço:</Text>
-                                            {order.customerAddress?.trim() || <InfoNull />}
-                                        </HStack>
-
-                                        <Box mt={2}>
+                <MuiThemeProvider>
+                    <Box display="flex" flexDirection="column" gap={4}>
+                        {paginatedOrders.map((order) => {
+                            const { color, icon } = getStatusOption(order.status);
+                            return (
+                                <Box
+                                    key={order.id}
+                                    borderWidth="1px"
+                                    borderRadius="lg"
+                                    p={4}
+                                    boxShadow="sm"
+                                >
+                                    {/* Header */}
+                                    <Flex justify="space-between" align="center" mb={3}>
+                                        <HStack flexWrap={"wrap"}>
+                                            <DialogOrder order={order} />
                                             <Badge
+                                                colorPalette="blue"
                                                 variant="subtle"
-                                                colorPalette={getPaymentColor(order.paymentMethod)}
                                             >
-                                                {order.paymentMethod.toUpperCase()}
+                                                <Center cursor="pointer" w="32px"  _active={{ color: "blue.500"}}>
+                                                    <MdPrint
+                                                        size={14}
+                                                        onClick={() => handleClick(order.id)} //Impresão do pedido nota
+                                                    />
+                                                </Center>
                                             </Badge>
+                                            {/**Status pedido */}
+                                            <Badge colorPalette={color} variant="subtle">
+                                                <Flex align="center" gap={1}>
+                                                    {icon}
+                                                    {order.status.toUpperCase()}
+                                                </Flex>
+                                            </Badge>
+                                        </HStack>
+                                    </Flex>
+                                    <Box fontSize="sm">
+                                        <Box fontSize="sm">
+                                            <HStack gap={2}>
+                                                <Text fontWeight="medium">Cliente:</Text>
+                                                {order.customerName?.trim() || <InfoNull />}
+                                            </HStack>
+                                            <HStack gap={2}  >
+                                                <Text fontWeight="medium">Telefone:</Text>
+                                                {order.customerPhone?.trim() || <InfoNull />}
+                                            </HStack>
+                                            <HStack gap={2}>
+                                                <Text fontWeight="medium">Endereço:</Text>
+                                                {order.customerAddress?.trim() || <InfoNull />}
+                                            </HStack>
+                                            <Box mt={2}>
+                                                <Badge
+                                                    variant="subtle"
+                                                    colorPalette={getPaymentColor(order.paymentMethod)}
+                                                >
+                                                    {order.paymentMethod.toUpperCase()}
+                                                </Badge>
+                                            </Box>
                                         </Box>
+                                        <Stat.Root mt={3}>
+                                            <Stat.ValueText fontSize="lg">
+                                                <FormatNumber
+                                                    value={parseFloat(order.total)}
+                                                    style="currency"
+                                                    currency="BRL"
+                                                />
+                                            </Stat.ValueText>
+                                        </Stat.Root>
                                     </Box>
-
-                                    <Stat.Root mt={3}>
-                                        <Stat.ValueText fontSize="lg">
-                                            <FormatNumber
-                                                value={parseFloat(order.total)}
-                                                style="currency"
-                                                currency="BRL"
-                                            />
-                                        </Stat.ValueText>
-                                    </Stat.Root>
+                                    {/* Ação */}
+                                    <Box mt={3}>
+                                        <SelectStatus
+                                            status={order.status}
+                                            newStatus={(novoStatus) =>
+                                                updateOrderStatus(order.id, novoStatus)
+                                            }
+                                        />
+                                    </Box>
                                 </Box>
-
-                                {/* Ação */}
-                                <Box mt={3}>
-                                    <SelectStatus
-                                        status={order.status}
-                                        newStatus={(novoStatus) =>
-                                            updateOrderStatus(order.id, novoStatus)
-                                        }
-                                    />
-                                </Box>
-                            </Box>
-                        );
-                    })}
-
-                    <TablePagination
-                        component="div"
-                        count={orders.length}
-                        rowsPerPage={rowsPerPage}
-                        page={page}
-                        onPageChange={handleChangePage}
-                        onRowsPerPageChange={handleChangeRowsPerPage}
-                    />
-                </Box>
+                            );
+                        })}
+                        <TablePagination
+                            component="div"
+                            count={orders.length}
+                            rowsPerPage={rowsPerPage}
+                            page={page}
+                            onPageChange={handleChangePage}
+                            onRowsPerPageChange={handleChangeRowsPerPage}
+                        />
+                    </Box>
+                </MuiThemeProvider>
             )}
 
 
