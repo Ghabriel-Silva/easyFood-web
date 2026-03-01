@@ -1,22 +1,22 @@
 "use client"
 import {
-    Button, HStack, Stack,
+ HStack, Stack,
 } from "@chakra-ui/react"
 import { FormField, OpcionalView } from "@/ui/index"
-import { GroupInput, TextArea, TextInput , WithMaskInput,  SelectPayment,  SelectFrete, SelectStatus ,  SelectProductsQt} from "@/app/(protected)/orders/components/orders/form/index"
+import { GroupInput, TextArea, TextInput, WithMaskInput, SelectPayment, SelectFrete, SelectStatus, SelectProductsQt } from "@/app/(protected)/orders/components/orders/form/index"
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { OrderFormSchema, OrderFormSchemaInterface } from "@/app/(protected)/orders/validations/orders-form"
 import { useOrdersCreate } from "@/app/(protected)/orders/hooks/useOrdersCreate"
 
 type ForFatherProps = {
+    formRef:React.RefObject<HTMLFormElement | null>
     success: () => void
-  
+
 }
 
-export const FormFather = ({ success }: ForFatherProps) => {
-
-
+export const FormFather = ({ success, formRef }: ForFatherProps) => {
+    
     const methods = useForm({
         resolver: yupResolver(OrderFormSchema),
         mode: 'onBlur',
@@ -36,7 +36,6 @@ export const FormFather = ({ success }: ForFatherProps) => {
     const { mutate } = useOrdersCreate()
 
     const OnSubmite: SubmitHandler<OrderFormSchemaInterface> = (data: OrderFormSchemaInterface) => {
-        console.log(data)
         mutate(data, {
             onSuccess: () => {
                 reset({
@@ -60,7 +59,7 @@ export const FormFather = ({ success }: ForFatherProps) => {
 
     return (
         <FormProvider {...methods} >
-            <form onSubmit={handleSubmit(OnSubmite)}>
+            <form ref={formRef} onSubmit={handleSubmit(OnSubmite)}  noValidate >
                 <Stack
                     gap={4}>
                     <HStack flexWrap="wrap" align="flex-start" >
@@ -76,11 +75,11 @@ export const FormFather = ({ success }: ForFatherProps) => {
                     </HStack>
                     <HStack flexWrap={'wrap'} align="flex-start">
 
-                        <FormField label="Método Pagamento" error={errors.paymentMethod?.message}>
+                        <FormField label="Método Pagamento" isRequired error={errors.paymentMethod?.message}>
                             <SelectPayment />
                         </FormField>
 
-                        <FormField label="Frete" error={errors.isFreightApplied?.message}>
+                        <FormField label="Frete" isRequired error={errors.isFreightApplied?.message}>
                             <SelectFrete />
                         </FormField>
 
@@ -88,7 +87,7 @@ export const FormFather = ({ success }: ForFatherProps) => {
                             <SelectStatus />
                         </FormField>
                     </HStack>
-                    <OpcionalView title="Info adicionais">
+                    <OpcionalView title="Info adicionais" >
                         <HStack flexWrap="wrap" align="flex-start">
                             <FormField label="Frete adicional" error={errors.customFreight?.message}>
                                 <GroupInput name="customFreight" />
@@ -101,14 +100,10 @@ export const FormFather = ({ success }: ForFatherProps) => {
                             </FormField>
                         </HStack>
                         <FormField label="Obersevação" fullWidth>
-                            <TextArea {...register('observations')} placeholder="ex: Retirar cebola..." autoresize  />
+                            <TextArea {...register('observations')} placeholder="ex: Retirar cebola..." autoresize />
                         </FormField>
                     </OpcionalView>
-
-                   
-
-                    <SelectProductsQt />
-                    <Button type="submit"   >Enviar</Button>
+                    <SelectProductsQt />                
                 </Stack>
             </form>
         </FormProvider>

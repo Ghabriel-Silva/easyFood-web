@@ -35,13 +35,13 @@ export default function OrderPage() {
   };
 
   return (
-    <Box>
+    <Box  height={"100%"}>
       <Flex justify="space-between"  >
         <Heading size="xl" fontWeight="medium">Pedidos</Heading>
         <ButtonCreateOrders />
         <Toaster />
       </Flex>
-      <OpcionalView title="Filtrar Pedidos">
+      <OpcionalView title="Filtrar Pedidos" openDefault={true} >
         <FilterContainer
           onFilterChange={setFilter}
           isLoadingButton={isLoading}

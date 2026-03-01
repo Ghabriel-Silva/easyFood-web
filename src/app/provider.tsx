@@ -11,7 +11,7 @@ const queryClient = new QueryClient()
 export default function RootLayout(props: { children: React.ReactNode }) {
   return (
     <ChakraProvider value={defaultSystem}>
-      <ThemeProvider forcedTheme="light" attribute="class" disableTransitionOnChange>
+      <ThemeProvider attribute="class" disableTransitionOnChange>
         <QueryClientProvider  client={queryClient}>
           {props.children}
           </QueryClientProvider>

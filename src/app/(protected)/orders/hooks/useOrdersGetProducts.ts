@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query"
-import {ProductsResponse } from "../interfaces/products"
+import {ProductsResponse } from "../../products/interfaces/products"
 
 const fetchData = async (): Promise<ProductsResponse> => {
     const res = await fetch(
-        "http://localhost:8080/product?status=active&price=maior",
+        `${process.env.NEXT_PUBLIC_URL_API}/product?status=active&price=maior`,
         {
             method: "GET",
             credentials: "include",
@@ -13,7 +13,6 @@ const fetchData = async (): Promise<ProductsResponse> => {
         }
     )
     const body = await res.json()
-    console.log(body)
 
     if (!res.ok) {
         throw new Error(body.message || "Erro ao buscar produtos")

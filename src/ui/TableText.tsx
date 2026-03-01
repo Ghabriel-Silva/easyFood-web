@@ -1,5 +1,5 @@
 import { Text } from "@chakra-ui/react"
-import { fontWeigthText, fontText } from "@/themes"
+import { fontWeigthText, fontText } from "@/theme/ChakraUI/themes"
 
 
 export function TableText({

@@ -33,7 +33,7 @@ export default function Login() {
     const onSubmit = async (data: LoginValues) => {
         setLoading(true); //  começa o loading
 
-        const loginPromise = fetch("http://localhost:8080/company/login", {
+        const loginPromise = fetch(`${process.env.NEXT_PUBLIC_URL_API}/company/login`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             credentials: "include",
@@ -61,12 +61,12 @@ export default function Login() {
                 }
             },
             error: (err: unknown) => {
-                const error= err as ErrorResponseLogin
-                return{
+                const error = err as ErrorResponseLogin
+                return {
                     title: "Erro!",
                     closable: true,
                     duration: 2000,
-                    description: error.message || 'Email ou senha incorretos' ,
+                    description: error.message || 'Email ou senha incorretos',
                 }
             },
         });
@@ -78,8 +78,8 @@ export default function Login() {
 
             <Box
                 flex="1"
-                w="50%"               
-                h="100vh"             
+                w="50%"
+                h="100vh"
                 bgSize="cover"
                 backgroundPosition="center"
                 display={{ base: "none", md: "block" }}
@@ -89,8 +89,8 @@ export default function Login() {
                     src={image}
                     alt="Foto"
                     style={{
-                        width: "100%",     
-                        height: "100%",   
+                        width: "100%",
+                        height: "100%",
                         objectFit: "cover" // garante que a imagem preencha sem distorcer
                     }}
                 />

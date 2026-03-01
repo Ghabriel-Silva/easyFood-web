@@ -1,39 +1,59 @@
 // SelectBase.tsx
 "use client"
 
-import { Select, createListCollection, Portal } from "@chakra-ui/react"
+import { Select, createListCollection, Portal, Spinner } from "@chakra-ui/react"
 
-interface SelectBaseProps {
+type SelectBaseProps = {
     onChange: (value: string[]) => void
     value: string[] | null | undefined
     placeholder?: string
     items: { label: string; value: string }[]
+    isMultiple?: boolean,
+    close?: true | false
+    size?: "sm" | "md" | "lg" | 'xs',
+    isLoading?: boolean,
+    isError?: boolean,
+    mesageError?: string
+    width?: string
 }
 
 export function SelectBase({
-    value ,
+    value,
     onChange,
     placeholder,
-    items
+    items,
+    isMultiple,
+    size = 'sm',
+    close = false,
+    isLoading,
+    isError,
+    mesageError,
+    width,
 }: SelectBaseProps) {
     const collection = createListCollection({ items })
 
     return (
         <Select.Root
-            multiple
+            w={width}
+            invalid={isError}
+            closeOnSelect={close}
+            multiple={isMultiple ?? true}
             value={value ?? []}
             onValueChange={(details) => onChange(details.value)} //Mostra o valor selecionado ochange contem o valor do array
             collection={collection}
-            size="sm"
+            size={size}
         >
             <Select.HiddenSelect />
 
             <Select.Control>
                 <Select.Trigger>
-                    <Select.ValueText placeholder={placeholder} />
+                    <Select.ValueText placeholder={isError ? mesageError : placeholder} />
                 </Select.Trigger>
 
                 <Select.IndicatorGroup>
+                    {isLoading && (
+                        <Spinner size="xs" borderWidth="1.5px" color="fg.muted" />
+                    )}
                     <Select.ClearTrigger />
                     <Select.Indicator />
                 </Select.IndicatorGroup>

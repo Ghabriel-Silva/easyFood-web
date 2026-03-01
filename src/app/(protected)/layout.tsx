@@ -1,13 +1,13 @@
 "use client"
 
-
 import { MenuMobile } from "@/ui/MenuMobile";
-import { Box, Heading, Flex, Icon, Stack, Text, Link as ChakraLink } from "@chakra-ui/react"
+import { Box, Flex, Icon, Stack, Text, Link as ChakraLink } from "@chakra-ui/react"
 import NextLink from "next/link"
-
+import { useState } from "react";
+import { BsLayoutSidebarInset } from "react-icons/bs";
+import { usePathname } from "next/navigation"
 
 import {
-    MdOutlineNoFood,
     MdShoppingCart,
     MdCategory,
     MdFastfood,
@@ -16,15 +16,20 @@ import {
     MdLogout,
 } from "react-icons/md";
 
+import { ColorModeButton } from "@/components/ui/color-mode"
+
+
 //apenas login recebe as edições feitas aqui
 export default function RootLayout({
     children,
 }: {
     children: React.ReactNode
 }) {
+    const [slider, setSlider] = useState(false)
 
+    const SIDEBAR_TRANSITION = "0.3s ease";
+    const pathname = usePathname()
     return (
-
         <div suppressHydrationWarning  >
 
             {/**Layout fix mobile  */}
@@ -33,91 +38,163 @@ export default function RootLayout({
                     <MenuMobile  >
                         {(closeMenu) => (
                             <Stack gap={6} color={"fg.muted"} >
-                                {items.map((item, index) => (
-                                    <ChakraLink
-                                        key={index}
-                                        {...cleanLink}
-                                        asChild
-                                    >
-                                        <NextLink href={item.link} onClick={closeMenu}>
-                                            <Flex
-                                                align="center"
-                                                gap={3}
-                                                p="2"
-                                                borderRadius="md"
-                                                cursor="pointer"
-                                                _hover={{ bg: "bg.subtle", color: "blue.400" }}
+                                {items.map((item, index) => {
+                                    const isActive = pathname === item.link
+                                    return (
+                                        (
+                                            <ChakraLink
+                                                key={index}
+                                                {...cleanLink}
+                                                asChild
                                             >
-                                                <Icon fontSize="xl">{item.icon}</Icon>
-                                                <Text fontSize="sm" fontWeight="medium">{item.title}</Text>
-                                            </Flex>
-                                        </NextLink>
-                                    </ChakraLink>
-                                ))}
+                                                <NextLink href={item.link} onClick={closeMenu}>
+                                                    <Flex
+                                                        w={"100%"}
+                                                        bg={isActive ? "blue.600" : "transparent"}
+                                                        color={isActive ? "white" : "fg.muted"}
+                                                        align="center"
+                                                        gap={3}
+                                                        p="2"
+                                                        borderRadius="md"
+                                                        cursor="pointer"
+                                                        _hover={{ bg: "bg.subtle", color: "blue.400" }}
+                                                    >
+                                                        <Icon fontSize="xl">{item.icon}</Icon>
+                                                        <Text fontSize="sm" fontWeight="medium">{item.title}</Text>
+                                                    </Flex>
+                                                </NextLink>
+                                            </ChakraLink>
+                                        )
+                                    )
+                                })}
                             </Stack>
                         )}
                     </MenuMobile>
                 </Box>
 
                 {/**Layout fix desktop*/}
-                <Box display={{ base: "none", md: "block" }} >
+                <Box display={{ base: "none", md: "block" }}  >
                     <Stack
-                        w="200px"
+                        w={slider ? "50px" : "200px"}
+                        transition={`width ${SIDEBAR_TRANSITION}`}
                         height="100vh"
                         color="white"
                         p={2}
-                        position="relative"
                         boxShadow="sm"
                         justify="space-between"
                     >
                         <Box>
-                            <Flex height={"130px"} bg={"blue.600"} align={"flex-end"} justify={"flex-start"} w="100%" borderRadius={"md"} position={"relative"}>
-                                <Flex m="2">
-                                    <Icon size="lg" color="white">
-                                        <MdOutlineNoFood />
-                                    </Icon>
-                                    <Heading fontWeight="normal" pl="2">EasyFood</Heading>
+                            <Flex
+                                h="56px"
+                                align="center"
+                                justify="space-between"
+                                px="2"
+                            >
+                                <Flex
+                                    align="center"
+                                    gap="2"
+                                    overflow="hidden"
+                                    opacity={slider ? 0 : 1}
+                                    transform={slider ? "translateX(-12px)" : "translateX(0)"}
+                                    transition="opacity 0.18s ease, transform 0.18s ease"
+                                    pointerEvents={slider ? "none" : "auto"}
+                                >
+                                    <Text fontWeight="bold" fontSize={"xl"} color="red">
+                                        EasyFood
+                                    </Text>
                                 </Flex>
+                                <Icon
+                                    cursor={"e-resize"}
+                                    onClick={() => setSlider(prev => !prev)}
+                                    color="fg.muted"
+                                    _hover={{ color: "accent.fg" }}
+                                    transition="color 0.2s ease, transform 0.3s ease"
+                                    transform={slider ? "rotate(180deg)" : "rotate(0)"}
+                                >
+                                    <BsLayoutSidebarInset />
+                                </Icon>
                             </Flex>
-                            <Stack pt={6} gap="4" color={"fg.muted"} >
-                                {items.map((item, index) => (
-                                    <ChakraLink
-                                        key={index}
-                                        {...cleanLink}
-                                        asChild
-                                    >
-                                        <NextLink href={item.link}>
-                                            <Flex
-                                                align="center"
-                                                gap="3"
-                                                p="2"
-                                                borderRadius="md"
-                                                cursor="pointer"
-                                                _hover={{ bg: "bg.subtle", color: "blue.400" }}
-                                            >
-                                                <Icon fontSize="xl">{item.icon}</Icon>
-                                                <Text fontSize="sm" fontWeight="medium">{item.title}</Text>
-                                            </Flex>
-                                        </NextLink>
-                                    </ChakraLink>
-                                ))}
+                            <Stack pt={6} gap={4} >
+                                {items.map((item, index) => {
+                                    const isActive = pathname === item.link
+                                    return (
+                                        <ChakraLink
+                                            key={index}
+                                            {...cleanLink}
+                                            asChild
+                                        >
+                                            <NextLink href={item.link}>
+                                                <Flex
+                                                    align="center"
+                                                    gap="3"
+                                                    p="2"
+                                                    borderRadius="md"
+                                                    cursor="pointer"
+                                                    w={slider ? "36px" : "200px"}
+                                                    bg={isActive ? "blue.600" : "transparent"}
+                                                    color={isActive ? "white" : "fg.muted"}
+                                                    overflow="hidden"
+                                                    transition={`width ${SIDEBAR_TRANSITION}, background-color 0.2s, color 0.2s`}
+                                                    _hover={
+                                                        !isActive
+                                                            ? {
+                                                                bg: "bg.subtle",
+                                                                color: "blue.600",
+                                                            }
+                                                            : undefined
+                                                    }
+
+                                                >
+                                                    <Icon fontSize="xl">{item.icon}</Icon>
+                                                    <Text
+                                                        fontSize="sm"
+                                                        fontWeight="medium"
+                                                        opacity={slider ? 0 : 1}
+                                                        transition={`opacity ${SIDEBAR_TRANSITION}`}
+                                                        whiteSpace="nowrap"
+                                                    >
+                                                        {item.title}
+                                                    </Text>
+                                                </Flex>
+                                            </NextLink>
+                                        </ChakraLink>
+                                    )
+                                })}
                             </Stack>
                         </Box>
-                        <Text textStyle="sm" p={2}>
-                            <ChakraLink
-                                {...cleanLink}
-                                asChild>
-                                <NextLink href='/login'>
-                                    <Icon>
-                                        <MdLogout />
-                                    </Icon>
-                                    Sair
-                                </NextLink>
-                            </ChakraLink>
-                        </Text>
+                        <Flex justifyContent={"flex-start"}>
+                            <ColorModeButton />
+                        </Flex>
+                        <Flex
+                            align="center"
+                            px="2"
+                            py="2"
+                            cursor="pointer"
+                            color="fg.muted"
+                            _hover={{
+                                bg: "bg.subtle",
+                                color: "red.400",
+                            }}
+                            transition="background 0.2s, color 0.2s"
+                        >
+                            <Icon fontSize="lg">
+                                <MdLogout />
+                            </Icon>
+                            <Text
+                                ml="3"
+                                whiteSpace="nowrap"
+                                opacity={slider ? 0 : 1}
+                                transform={slider ? "translateX(-12px)" : "translateX(0)"}
+                                transition={`opacity ${SIDEBAR_TRANSITION}, transform ${SIDEBAR_TRANSITION}`}
+                            >
+                                Sair
+                            </Text>
+                        </Flex>
+
                     </Stack>
+
                 </Box>
-                <Box flex="1" overflowY="auto" px={6} py={10} >
+                <Box flex="1" overflowY="auto" py={6} px={4} >
                     {children}
                 </Box>
             </Box>
@@ -165,9 +242,11 @@ const items = [
 ];
 
 const cleanLink = {
+    color: "fg.muted",
     border: "none",
+    borderRadius: "sm",
     textDecoration: "none",
-    _hover: { textDecoration: "none", color: "blue.600" },
+    _hover: { textDecoration: "none" },
     _active: { textDecoration: "none" },
     _focus: { boxShadow: "none", outline: "none" },
     _focusVisible: { boxShadow: "none", outline: "none" },

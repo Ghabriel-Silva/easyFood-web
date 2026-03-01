@@ -13,7 +13,7 @@ export const fontWeigthText: fontWeigthTable = "normal" // Peso da fonte do sist
 export const fontSizeTitleLabel: fontSizeTable = "xs" // Label
 
 //Cor padrao dos labels  do sistema 
-export const ColorLabel = "gray.500" 
+export const ColorLabel = "fg.subtle"
 
 
 

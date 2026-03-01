@@ -1,4 +1,4 @@
-import {fontSizeTitleLabel, fontText } from "@/themes"
+import {fontSizeTitleLabel, fontText } from "@/theme/ChakraUI/themes"
 import { Box, FormatNumber, HStack, Text } from "@chakra-ui/react"
 type OrderSummaryProps = {
     total: number | string

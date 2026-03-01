@@ -1,9 +1,9 @@
 import { Flex, Input, HStack, Box } from "@chakra-ui/react"
-import { ButtonFilter, SelectFilterPayment, SelectFilterStatus, InputInicialDate, InputFinalDate } from "@/app/(protected)/orders/components/orders/filters/index"
+import { SelectFilterPayment, SelectFilterStatus, InputInicialDate, InputFinalDate } from "@/app/(protected)/orders/components/orders/filters/index"
 import { FormProvider, SubmitHandler, useForm, } from "react-hook-form"
 import { filterOrderSchema, FilterOrderSchemaInterface } from "../../../validations/filter-orders"
 import { yupResolver } from "@hookform/resolvers/yup"
-import { FormField } from "@/ui/index"
+import { FormField, ButtonFilter} from "@/ui/index"
 import { getDateToFilter } from "../../../helpers/getDateToFilter"
 
 interface FilterContainerProps {
@@ -48,7 +48,7 @@ export const FilterContainer = ({ onFilterChange, isLoadingButton, isErrorResetF
         <FormProvider {...methods} >
 
             <form onSubmit={handleSubmit(onSubmite)}>
-                <Box p={4} bg={"bg.subtle"} boxShadow={'sm'}>
+                <Box p={2} borderRadius={"sm"} borderWidth={"1px"} mb={2}  >
                     <Flex flexWrap={"wrap"} gap={4} pb={4} alignItems={"start"} >
                         <FormField label="Data inicial" error={errors.startDate?.message}>
                             <InputInicialDate />
