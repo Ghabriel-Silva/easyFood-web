@@ -222,7 +222,7 @@ const items = [
         title: "Categoria",
         text: "Criar Categoria",
         icon: <MdCategory />,
-        link: '/categoria'
+        link: '/category'
     },
 
     {

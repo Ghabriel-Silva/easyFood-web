@@ -11,7 +11,7 @@ export const ProductsPage = () => {
                 <Heading size="xl" fontWeight="medium">Produtos</Heading>
                 <DialogCreateProducts />
             </Flex>
-            <TableContainer  />
+            <TableContainer />
         </Box>
     )
 }
