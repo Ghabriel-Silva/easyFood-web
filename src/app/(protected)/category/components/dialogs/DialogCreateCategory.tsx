@@ -16,7 +16,7 @@ export const DialogCreateCategory = () => {
             <Portal>
                 <Dialog.Backdrop />
                 <Dialog.Positioner>
-                    <Dialog.Content>''
+                    <Dialog.Content>
                         <Dialog.Header>
                             <Dialog.Title>Dialog Title</Dialog.Title>
                         </Dialog.Header>

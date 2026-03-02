@@ -14,6 +14,7 @@ import { PopovelFilter } from "../filters/PopoverFilter";
 import { useFilterStore } from "@/stores/filterStore";
 
 import { useSearchParams, useRouter, usePathname } from 'next/navigation'
+import { defaultOption } from "@/helpers/defaultOpetionTable";
 
 
 export const TableContainer = () => {
@@ -157,12 +158,11 @@ export const TableContainer = () => {
 
 
     const options = {
+        ...defaultOption,
         tableBodyHeight: "calc(100vh - 220px)",
         responsive: "standard",
-        selectableRows: "none",
         elevation: 0,
         //Paginação 
-        serverSide: true,
         count: countPage,
         page: tablePage,
         rowsPerPage: rowsPerPage,
@@ -181,34 +181,14 @@ export const TableContainer = () => {
             router.push(`${pathname}?${params.toString()}`);
         },
 
-        download: true,
-        filter: false,
-        searchable: false,
-        search: false,
-        print: false,
         storageKey: 'tabela-produtos',
         customToolbar: () => (
             <PopovelFilter />
         ),
         textLabels: {
-            pagination: {
-                next: "Próxima Página",
-                previous: "Página Anterior",
-                rowsPerPage: "Linhas por página:",
-                displayRows: "de",
-            },
             body: {
                 noMatch: errorApi,
                 toolTip: "Classificar",
-            },
-            toolbar: {
-                // Muda o texto que aparece ao passar o mouse  no ícone da barra
-                viewColumns: "Exibir Colunas",
-            },
-            viewColumns: {
-                // Muda o título que aparece dentro do menu/modal que abre
-                title: "Mostrar/Ocultar Colunas",
-                titleAria: "Mostrar/Ocultar Colunas da Tabela",
             },
         }
     };

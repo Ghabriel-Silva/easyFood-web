@@ -1,7 +1,7 @@
 "use client"
 
 import { Box, Flex, Heading } from "@chakra-ui/react"
-import { DialogCreateCategory } from "./components/dialogs/DialogCreateCategory"
+import { DialogCreateCategory, TableContainer } from "@/app/(protected)/category/components/index"
 
 export const CategoryPage = () => {
     return (
@@ -10,6 +10,7 @@ export const CategoryPage = () => {
                 <Heading size="xl" fontWeight="medium">Categoria</Heading>
                 <DialogCreateCategory />
             </Flex>
+            <TableContainer />
         </Box>
     )
 }

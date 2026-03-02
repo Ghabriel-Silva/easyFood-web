@@ -1,12 +1,11 @@
 
 export interface CategoryReponseDataAPI {
     id: string,
-    name: string
+    name: string,
     status: boolean,
-    company: {
-        id: string,
-        name: string
-    }
+    is_default: boolean,
+    created_at: string
+    updated_at: string
 
 }
 

@@ -4,9 +4,9 @@ import { SelectBase } from "@/ui/index"
 import { Controller, useFormContext } from "react-hook-form"
 import { CreateProductsInterface } from "../../../validations/create-products"
 import { useMemo } from "react"
-import { useCategoryData } from "../../../hooks/useCategoryData"
+import { useCategoryData } from "../../../../category/hooks/useCategoryData"
 import { createListCollection } from "@chakra-ui/react"
-import { CategoryReponseDataAPI } from "../../../interfaces/categorys"
+import { CategoryReponseDataAPI } from "../../../../category/interfaces/category"
 
 export const SelectCategoryInput = () => {
     const { control } = useFormContext<CreateProductsInterface>()

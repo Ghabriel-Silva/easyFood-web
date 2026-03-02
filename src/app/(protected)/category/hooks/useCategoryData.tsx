@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query"
-import { CategoryReponseAPI } from "../interfaces/categorys"
+import { CategoryReponseAPI } from "../interfaces/category"
 
 
 
@@ -11,6 +11,7 @@ const getCategory = async (): Promise<CategoryReponseAPI> => {
             "Content-Type": "application/json"
         }
     })
+    
 
     const body: CategoryReponseAPI = await response.json()
     if (!response.ok) {
@@ -23,7 +24,7 @@ const getCategory = async (): Promise<CategoryReponseAPI> => {
 
 
 
-export function useCategoryData(){
+export function useCategoryData() {
     return useQuery<CategoryReponseAPI, Error>({
         queryKey: ['category'],
         queryFn: getCategory,
