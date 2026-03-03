@@ -1,6 +1,6 @@
 export {DialogCreateCategory} from "./dialogs/DialogCreateCategory"
 export {TableContainer} from "./table/TableContainer"
-export {} from "./"
+export {SelectStatus} from "./table/inputs/SelectStatus"
 export {} from "./"
 export {} from "./"
 export {} from "./"

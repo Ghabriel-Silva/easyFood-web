@@ -5,14 +5,14 @@ import { MuiThemeProvider } from "@/theme/MuiDatables/providers/MuiThemeProvider
 import MUIDataTable from "mui-datatables"
 import { useCategoryData } from "../../hooks/useCategoryData";
 import { Badge, Text } from "@chakra-ui/react";
-import { MdCheck, MdClear  } from "react-icons/md";
+import { MdCheck, MdClear } from "react-icons/md";
+import { SelectStatus } from "@/app/(protected)/category/components/index";
 
 
 
 export const TableContainer = () => {
 
     const columns = [
-
         {
             name: "name",
             label: "Nome",
@@ -37,14 +37,14 @@ export const TableContainer = () => {
         },
         {
             name: "is_default",
-            label: "Categoria Padrão",
+            label: "Categoria Personalizada",
             options: {
                 customBodyRender: (value: boolean) =>
                     value ? (
-                      <Badge  colorPalette="blue">Sim< MdCheck /></Badge>
+                        <Badge colorPalette="blue">Sim< MdCheck /></Badge>
                     ) :
                         (
-                            <Badge   colorPalette="red">Não <MdClear /></Badge>
+                            <Badge colorPalette="red">Não <MdClear /></Badge>
                         )
 
             }
@@ -76,9 +76,17 @@ export const TableContainer = () => {
             }
 
         },
-        // {
-        //     label: "Mudar Status",
-        // },
+        {
+            name:'',
+            label: "Mudar Status",
+            options: {
+                customBodyRender: () => {
+                    return (
+                        <SelectStatus />
+)
+                }
+            }
+        },
         // {
 
         //     label: "Editar Categoria",
@@ -87,9 +95,6 @@ export const TableContainer = () => {
 
 
     const { data } = useCategoryData()
-    console.log(data)
-
-
     const options = {
         ...defaultOption,
     }
