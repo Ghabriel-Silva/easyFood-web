@@ -8,7 +8,7 @@ import { tranformeUniMedida } from "@/helpers/transformeUniMedida";
 import { MdCheckCircle, MdHighlightOff } from "react-icons/md";
 import { Tooltip } from "@/components/ui/tooltip"
 import { InfoTip } from "@/components/ui/toggle-tip";
-import { InfoNull, FullScreenLoading, StatEmpaty, } from "@/ui/index";
+import { InfoNull, FullScreenLoading, StatEmpaty, TableText, } from "@/ui/index";
 import { DialogInfoProducts } from "@/app/(protected)/products/components/index";
 import { PopovelFilter } from "../filters/PopoverFilter";
 import { useFilterStore } from "@/stores/filterStore";
@@ -68,16 +68,16 @@ export const TableContainer = () => {
             options: {
                 customBodyRender: (value: number | null) =>
                     value ? (
-                        <Text >{value}</Text>
+                        <TableText >{value}</TableText>
                     ) : value === 0 ? (
                         <Tooltip
                             contentProps={{ css: { "--tooltip-bg": "tomato" } }}
                             positioning={{ placement: "right-end" }}
                             showArrow content="Estoque zerado. Reponha ou marque como sem controle">
-                            <Badge colorPalette={"red"}>0</Badge>
+                            <Badge colorPalette={"red"}> <TableText >0</TableText></Badge>
                         </Tooltip>
                     ) : (
-                        <Badge>Sem controle</Badge>
+                        <Badge><TableText>Sem controle</TableText></Badge>
                     )
 
             }
@@ -95,7 +95,7 @@ export const TableContainer = () => {
                         <Flex gap={2}>
                             <Text>R${row.price}</Text>
                             {row.uni_medida !== "none" && (
-                                <Badge>{tranformeUniMedida(row.uni_medida)}</Badge>
+                                <Badge><TableText>{tranformeUniMedida(row.uni_medida)}</TableText></Badge>
                             )}
                         </Flex>
                     );
@@ -118,14 +118,14 @@ export const TableContainer = () => {
                                 <HStack gap={0} flexDirection={"row"}>
                                     <InfoTip
                                         content={value} />
-                                    <Text>
+                                    <TableText>
                                         {value.slice(0, 20)}...
-                                    </Text>
+                                    </TableText>
                                 </HStack>
                             ) : (
-                                <Text>
+                                <TableText>
                                     {value}
-                                </Text>
+                                </TableText>
                             )
                     );
                 },
@@ -142,13 +142,13 @@ export const TableContainer = () => {
                 customBodyRender: (value: boolean) =>
                     value ? (
                         <Badge colorPalette={"green"}>
-                            ATIVO
+                            <TableText>ATIVO</TableText>
                             <MdCheckCircle />
                         </Badge>
                     ) : (
                         <Badge colorPalette={"red"}>
                             <MdHighlightOff />
-                            INATIVO
+                            <TableText>INATIVO</TableText>
                         </Badge>
                     ),
             },
@@ -159,7 +159,7 @@ export const TableContainer = () => {
 
     const options = {
         ...defaultOption,
-        tableBodyHeight: "calc(100vh - 220px)",
+        tableBodyHeight: "calc(100vh - 210px)",
         responsive: "standard",
         elevation: 0,
         //Paginação 

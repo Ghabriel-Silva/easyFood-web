@@ -1,15 +1,28 @@
-"use client"
-
 import { Portal, Select, createListCollection } from "@chakra-ui/react"
+import { useState } from "react"
+
+interface PropsSelectStatus {
+    statusDefault: boolean
+}
+export const SelectStatus = ({ statusDefault }: PropsSelectStatus) => {
+
+    const converteValue: string = statusDefault ? 'active' : 'inactive'
 
 
-export const SelectStatus= () => {
+    const [value, setValue] = useState<string[]>([converteValue])
     return (
-        <Select.Root collection={status} size="xs" width="130px">
+        <Select.Root
+            size={"xs"}
+            maxWidth={"130px"}
+            collection={status}
+            width="320px"
+            value={value}
+            onValueChange={(e) => setValue(e.value)}
+        >
             <Select.HiddenSelect />
             <Select.Control>
                 <Select.Trigger>
-                    <Select.ValueText placeholder="Selecione status" />
+                    <Select.ValueText placeholder="Selecione Status" />
                 </Select.Trigger>
                 <Select.IndicatorGroup>
                     <Select.Indicator />
@@ -30,6 +43,7 @@ export const SelectStatus= () => {
         </Select.Root>
     )
 }
+
 
 const status = createListCollection({
     items: [
