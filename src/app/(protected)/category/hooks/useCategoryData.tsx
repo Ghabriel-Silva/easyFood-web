@@ -17,7 +17,6 @@ const getCategory = async (): Promise<CategoryReponseAPI> => {
     if (!response.ok) {
         throw new Error(body.message || "Erro ao carregar categorias")
     }
-    console.log(body)
 
     return body
 }

@@ -13,3 +13,14 @@ export interface CategoryReponseAPI {
     message?: string,
     data: CategoryReponseDataAPI[]
 }
+
+export interface CategoryResponseUpdateStatus {
+    message:string, 
+    cache: boolean | null, 
+    data: {
+        id:string, 
+        status:boolean,
+    }
+}
+
+

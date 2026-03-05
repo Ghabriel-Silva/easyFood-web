@@ -1,15 +1,24 @@
 import { Portal, Select, createListCollection } from "@chakra-ui/react"
 import { useState } from "react"
+import { useCategoryMutateStatus } from "../../../hooks/useCategoryMutateStatus"
 
 interface PropsSelectStatus {
+    id:string
     statusDefault: boolean
 }
-export const SelectStatus = ({ statusDefault }: PropsSelectStatus) => {
+export const SelectStatus = ({id, statusDefault }: PropsSelectStatus) => {
+
+    const { mutate } = useCategoryMutateStatus()
+
 
     const converteValue: string = statusDefault ? 'active' : 'inactive'
-
-
+    
     const [value, setValue] = useState<string[]>([converteValue])
+
+    const payloudData = {
+        id: id, 
+        status:value[0]
+    } 
     return (
         <Select.Root
             size={"xs"}
@@ -17,7 +26,10 @@ export const SelectStatus = ({ statusDefault }: PropsSelectStatus) => {
             collection={status}
             width="320px"
             value={value}
-            onValueChange={(e) => setValue(e.value)}
+            onValueChange={(e) => {
+                setValue(e.value)
+                mutate(payloudData)
+            }}
         >
             <Select.HiddenSelect />
             <Select.Control>

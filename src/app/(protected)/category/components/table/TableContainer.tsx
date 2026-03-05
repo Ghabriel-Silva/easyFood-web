@@ -94,7 +94,7 @@ export const TableContainer = () => {
                     if (!dataCategory) return null
                     const row = dataCategory[dataIndex]
                     return (
-                        <SelectStatus statusDefault={row.status} />
+                        <SelectStatus statusDefault={row.status} id={row.id} />
                     )
                 }
             }

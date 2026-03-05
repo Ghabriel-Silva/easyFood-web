@@ -7,6 +7,7 @@ interface PropsEditable {
     isDefault?:boolean
 }
 export const InputEditable = ({name, isDefault}:PropsEditable) => {
+    
     return (
         <Editable.Root defaultValue={name} disabled={isDefault} fontSize={fontText}>
             <Editable.Preview  cursor="not-allowed" />
