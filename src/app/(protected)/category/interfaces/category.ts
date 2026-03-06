@@ -23,4 +23,24 @@ export interface CategoryResponseUpdateStatus {
     }
 }
 
+export interface CategoryResponseUpdateName {
+    message:string, 
+    cache: boolean | null, 
+    data: {
+        id:string, 
+        name:string,
+        status:boolean,
+        created_at:string,
+        updated_at:string
+    }
+}
+
+
+export interface sendValorToApi {
+    id: string
+    name: string
+}
+
+
+
 

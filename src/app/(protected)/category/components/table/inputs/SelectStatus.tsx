@@ -3,22 +3,15 @@ import { useState } from "react"
 import { useCategoryMutateStatus } from "../../../hooks/useCategoryMutateStatus"
 
 interface PropsSelectStatus {
-    id:string
+    id: string
     statusDefault: boolean
 }
-export const SelectStatus = ({id, statusDefault }: PropsSelectStatus) => {
-
-    const { mutate } = useCategoryMutateStatus()
-
-
-    const converteValue: string = statusDefault ? 'active' : 'inactive'
-    
+export const SelectStatus = ({ id, statusDefault }: PropsSelectStatus) => {
+    const converteValue = statusDefault ? 'active' : 'inactive'
     const [value, setValue] = useState<string[]>([converteValue])
 
-    const payloudData = {
-        id: id, 
-        status:value[0]
-    } 
+
+    const { mutate } = useCategoryMutateStatus()
     return (
         <Select.Root
             size={"xs"}
@@ -28,7 +21,10 @@ export const SelectStatus = ({id, statusDefault }: PropsSelectStatus) => {
             value={value}
             onValueChange={(e) => {
                 setValue(e.value)
-                mutate(payloudData)
+                mutate({
+                    id: id,
+                    status: e.value[0]
+                })
             }}
         >
             <Select.HiddenSelect />
