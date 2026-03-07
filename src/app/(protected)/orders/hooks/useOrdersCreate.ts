@@ -36,7 +36,7 @@ export function useOrdersCreate() {
 
         onSuccess: () => {
             queryClient.invalidateQueries({
-                queryKey: ["order-data"]
+                queryKey: ["order-data", "data-products"]
             })
 
             toaster.create({

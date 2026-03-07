@@ -9,6 +9,7 @@ import { MdCheck, MdClear } from "react-icons/md";
 import { SelectStatus, InputEditable } from "@/app/(protected)/category/components/index";
 import { TableText } from "@/ui/index";
 import { CategoryReponseDataAPI } from "../../interfaces/category";
+import { PopovelFilter } from "@/app/(protected)/products/components/filters/PopoverFilter";
 
 
 
@@ -26,7 +27,7 @@ export const TableContainer = () => {
                     if (!dataCategory) return null
                     const row = dataCategory[dataIndex]
                     return (
-                        <InputEditable name={row.name} isDefault={row.is_default} />
+                        <InputEditable name={row.name} isDefault={row.is_default} id={row.id} />
                     )
                 }
 
@@ -107,7 +108,10 @@ export const TableContainer = () => {
         tableBodyHeight: "calc(100vh - 210px)",
         responsive: "standard",
         elevation: 0,
-       
+        customToolbar: () => (
+            <PopovelFilter />
+        ),
+
     }
     return (
         <MuiThemeProvider>
@@ -115,7 +119,7 @@ export const TableContainer = () => {
                 data={dataCategory ?? []}
                 columns={columns}
                 options={options}
-                
+
             />
         </MuiThemeProvider>
     )

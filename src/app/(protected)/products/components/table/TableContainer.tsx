@@ -95,7 +95,7 @@ export const TableContainer = () => {
                         <Flex gap={2}>
                             <Text>R${row.price}</Text>
                             {row.uni_medida !== "none" && (
-                                <Badge><TableText>{tranformeUniMedida(row.uni_medida)}</TableText></Badge>
+                                <Badge colorPalette={"yellow"}><TableText>{tranformeUniMedida(row.uni_medida)}</TableText></Badge>
                             )}
                         </Flex>
                     );
@@ -142,13 +142,13 @@ export const TableContainer = () => {
                 customBodyRender: (value: boolean) =>
                     value ? (
                         <Badge colorPalette={"green"}>
-                            <TableText>ATIVO</TableText>
+                            <TableText>Ativo</TableText>
                             <MdCheckCircle />
                         </Badge>
                     ) : (
                         <Badge colorPalette={"red"}>
                             <MdHighlightOff />
-                            <TableText>INATIVO</TableText>
+                            <TableText>Inativo</TableText>
                         </Badge>
                     ),
             },

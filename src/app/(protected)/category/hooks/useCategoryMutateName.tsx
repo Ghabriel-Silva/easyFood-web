@@ -29,12 +29,12 @@ export function useCategoryMutateName() {
 
     return useMutation<CategoryResponseUpdateName, Error, sendValorToApi>({
         mutationFn: updateCategoryName,
-        onSuccess: (data) => {
+        onSuccess: () => {
             queryClient.invalidateQueries({
                 queryKey: ['category']
             })
             return toaster.create({
-                description: `Nome Atualizado com sucesso: ${data.data.name}`,
+                description: `Nome Atualizado com sucesso`,
                 closable: true,
                 duration: 4000,
                 type: 'success'

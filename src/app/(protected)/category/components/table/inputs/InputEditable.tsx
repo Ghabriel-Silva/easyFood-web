@@ -1,16 +1,33 @@
 import { fontText } from "@/theme/ChakraUI/themes"
 import { Editable, IconButton } from "@chakra-ui/react"
 import { LuCheck, LuPencilLine, LuX } from "react-icons/lu"
+import { useCategoryMutateName } from "../../../hooks/useCategoryMutateName"
 
 interface PropsEditable {
-    name:string, 
-    isDefault?:boolean
+    id: string
+    name: string,
+    isDefault?: boolean
 }
-export const InputEditable = ({name, isDefault}:PropsEditable) => {
-    
+export const InputEditable = ({ id, name, isDefault }: PropsEditable) => {
+
+    const { mutate } = useCategoryMutateName()
+
+    const payloudMutateName = {
+        id: id,
+        name: undefined
+    }
+
     return (
-        <Editable.Root defaultValue={name} disabled={isDefault} fontSize={fontText}>
-            <Editable.Preview  cursor="not-allowed" />
+        <Editable.Root
+            defaultValue={name}
+            disabled={isDefault}
+            fontSize={fontText}
+            onValueCommit={(detais) => mutate({
+                ...payloudMutateName,
+                name: detais.value
+            })}
+        >
+            <Editable.Preview cursor="not-allowed" />
             <Editable.Input />
             <Editable.Control>
                 <Editable.EditTrigger asChild>

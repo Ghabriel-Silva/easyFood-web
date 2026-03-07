@@ -92,10 +92,10 @@ export const SelectProductsQt = () => {
 
     const collection = useMemo(() => {
         return createListCollection<Product & { disabled?: boolean }>({
-            items: productArray.map(product => ({ //Aqui receboi o array de product 
+            items: productArray.map(product => ({ //Aqui recebo o array de product 
                 ...product,
                 disabled:
-                    product.quantity === 0 || productsSelectedIds.includes(product.id)
+                  product.quantity === 0 || productsSelectedIds.includes(product.id)
             })),
             itemToString: (product) => product.name,
             itemToValue: (product) => product.id
