@@ -22,6 +22,7 @@ export const FilterContainer = () => {
         handleSubmit,
         formState: { errors }
     } = methodos
+    
     const setFilter = useFilterStore((state) => state.setFilter)
 
     const onSubmit: SubmitHandler<FilterProductsType> = (dataFilter) => {

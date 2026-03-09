@@ -1,33 +1,41 @@
 import { useQuery } from "@tanstack/react-query"
 import { CategoryReponseAPI } from "../interfaces/category"
 
-
-
-const getCategory = async (): Promise<CategoryReponseAPI> => {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_URL_API}/category`, {
-        method: 'GET',
-        credentials: "include",
-        headers: {
-            "Content-Type": "application/json"
-        }
-    })
-    
-
-    const body: CategoryReponseAPI = await response.json()
-    if (!response.ok) {
-        throw new Error(body.message || "Erro ao carregar categorias")
-    }
-
-    return body
+interface Filter {
+  status?: string
 }
 
+const getCategory = async ({ status }: Filter): Promise<CategoryReponseAPI> => {
+    const params = new URLSearchParams()
+    if(status) params.append("status", status)
 
+    const query = params.toString()
 
-export function useCategoryData() {
-    return useQuery<CategoryReponseAPI, Error>({
-        queryKey: ['category'],
-        queryFn: getCategory,
-        refetchOnWindowFocus: true,
-        retry: 1,
-    })
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_URL_API}/category?${query}`,
+    {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  )
+
+  const body: CategoryReponseAPI = await response.json()
+
+  if (!response.ok) {
+    throw new Error(body.message || "Erro ao carregar categorias")
+  }
+
+  return body
+}
+
+export function useCategoryData(status?: string) {
+  return useQuery<CategoryReponseAPI, Error>({
+    queryKey: ["category", status],
+    queryFn: () => getCategory({ status }),
+    refetchOnWindowFocus: true,
+    retry: 1,
+  })
 }

@@ -6,15 +6,19 @@ import MUIDataTable from "mui-datatables"
 import { useCategoryData } from "../../hooks/useCategoryData";
 import { Badge } from "@chakra-ui/react";
 import { MdCheck, MdClear } from "react-icons/md";
-import { SelectStatus, InputEditable } from "@/app/(protected)/category/components/index";
-import { TableText } from "@/ui/index";
+import { SelectStatus, InputEditable, FilterContainer } from "@/app/(protected)/category/components/index";
+import { TableText, PopovelFilter } from "@/ui/index";
 import { CategoryReponseDataAPI } from "../../interfaces/category";
-import { PopovelFilter } from "@/app/(protected)/products/components/filters/PopoverFilter";
+import { useFilterStoreCategory } from "@/stores/filterStoreCstegory";
+
 
 
 
 export const TableContainer = () => {
-    const { data } = useCategoryData()
+    const filter = useFilterStoreCategory((state)=>state.filter)
+
+    const { data } = useCategoryData(filter?.status ?? undefined)
+
     const dataCategory: CategoryReponseDataAPI[] | undefined = data?.data
 
 
@@ -109,7 +113,9 @@ export const TableContainer = () => {
         responsive: "standard",
         elevation: 0,
         customToolbar: () => (
-            <PopovelFilter />
+            <PopovelFilter title="Filtrar categorias">
+                <FilterContainer  />
+            </PopovelFilter>
         ),
 
     }

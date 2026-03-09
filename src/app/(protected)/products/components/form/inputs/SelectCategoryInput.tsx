@@ -10,7 +10,7 @@ import { CategoryReponseDataAPI } from "../../../../category/interfaces/category
 
 export const SelectCategoryInput = () => {
     const { control } = useFormContext<CreateProductsInterface>()
-    const { data, isLoading, isError } = useCategoryData()
+    const { data, isLoading, isError } = useCategoryData("active")
 
 
     const categoryArray = useMemo<CategoryReponseDataAPI[]>(() => {

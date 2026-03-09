@@ -8,11 +8,9 @@ import { tranformeUniMedida } from "@/helpers/transformeUniMedida";
 import { MdCheckCircle, MdHighlightOff } from "react-icons/md";
 import { Tooltip } from "@/components/ui/tooltip"
 import { InfoTip } from "@/components/ui/toggle-tip";
-import { InfoNull, FullScreenLoading, StatEmpaty, TableText, } from "@/ui/index";
-import { DialogInfoProducts } from "@/app/(protected)/products/components/index";
-import { PopovelFilter } from "../filters/PopoverFilter";
+import { InfoNull, FullScreenLoading, StatEmpaty, TableText, PopovelFilter} from "@/ui/index";
+import { DialogInfoProducts, FilterContainer } from "@/app/(protected)/products/components/index";
 import { useFilterStore } from "@/stores/filterStore";
-
 import { useSearchParams, useRouter, usePathname } from 'next/navigation'
 import { defaultOption } from "@/helpers/defaultOpetionTable";
 
@@ -34,6 +32,8 @@ export const TableContainer = () => {
         page,
         rowsPerPage
     )
+
+  
 
     const dataProducts = data?.data.products
     const countPage = data?.data.total
@@ -66,20 +66,46 @@ export const TableContainer = () => {
             name: "quantity",
             label: "Quantidade",
             options: {
-                customBodyRender: (value: number | null) =>
-                    value ? (
-                        <TableText >{value}</TableText>
-                    ) : value === 0 ? (
-                        <Tooltip
-                            contentProps={{ css: { "--tooltip-bg": "tomato" } }}
-                            positioning={{ placement: "right-end" }}
-                            showArrow content="Estoque zerado. Reponha ou marque como sem controle">
-                            <Badge colorPalette={"red"}> <TableText >0</TableText></Badge>
-                        </Tooltip>
-                    ) : (
-                        <Badge><TableText>Sem controle</TableText></Badge>
-                    )
+                customBodyRenderLite: (dataIndex: number) => {
+                    if (!dataProducts) return null
+                    const product = dataProducts[dataIndex]
 
+                    const value = product.quantity
+                    const unit = product.uni_medida
+
+                    if (value === null) {
+                        return (
+                            <Badge>
+                                <TableText>Sem controle</TableText>
+                            </Badge>
+                        )
+                    }
+
+                    const quantity = Number(value)
+
+                    const unitsWithDecimal = ["kg", "g", "none"]
+
+                    const formattedQuantity = unitsWithDecimal.includes(unit)
+                        ? quantity.toFixed(3)
+                        : Math.floor(quantity)
+
+                    if (quantity === 0) {
+                        return (
+                            <Tooltip
+                                contentProps={{ css: { "--tooltip-bg": "tomato" } }}
+                                positioning={{ placement: "right-end" }}
+                                showArrow
+                                content="Estoque zerado. Reponha ou marque como sem controle"
+                            >
+                                <Badge colorPalette="red">
+                                    <TableText>{formattedQuantity}</TableText>
+                                </Badge>
+                            </Tooltip>
+                        )
+                    }
+
+                    return <TableText>{formattedQuantity}</TableText>
+                }
             }
         },
 
@@ -183,7 +209,9 @@ export const TableContainer = () => {
 
         storageKey: 'tabela-produtos',
         customToolbar: () => (
-            <PopovelFilter />
+            <PopovelFilter title="Filtrar Produtos">
+                <FilterContainer />
+            </PopovelFilter>
         ),
         textLabels: {
             body: {
