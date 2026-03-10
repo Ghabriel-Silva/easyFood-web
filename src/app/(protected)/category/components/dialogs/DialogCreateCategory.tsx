@@ -1,10 +1,17 @@
 import { Button, CloseButton, Dialog, Portal } from "@chakra-ui/react"
 import { MdAdd } from "react-icons/md";
+import { FormContainerCategory } from "@/app/(protected)/category/components/index";
+import { useRef, useState } from "react";
 
 
 export const DialogCreateCategory = () => {
+    const formRef = useRef<HTMLFormElement>(null)
+    const [open, setOpen] = useState(false)
     return (
-        <Dialog.Root>
+        <Dialog.Root
+        open={open}
+        onOpenChange={(e)=>setOpen(e.open)}
+        >
             <Dialog.Trigger asChild>
                 <Button
                     bg="blue.600"
@@ -18,19 +25,23 @@ export const DialogCreateCategory = () => {
                 <Dialog.Positioner>
                     <Dialog.Content>
                         <Dialog.Header>
-                            <Dialog.Title>Dialog Title</Dialog.Title>
+                            <Dialog.Title>Criar Categoria</Dialog.Title>
                         </Dialog.Header>
                         <Dialog.Body>
-                            <p>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-                                eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                            </p>
+                            <FormContainerCategory 
+                            formRef={formRef}
+                            success={()=>{
+                                setOpen(false)
+                            }}
+                            />
                         </Dialog.Body>
                         <Dialog.Footer>
                             <Dialog.ActionTrigger asChild>
-                                <Button variant="outline">Cancel</Button>
+                                <Button variant="outline">Cancelar</Button>
                             </Dialog.ActionTrigger>
-                            <Button>Save</Button>
+                            <Button
+                                onClick={() => formRef.current?.requestSubmit()}
+                            >Salvar</Button>
                         </Dialog.Footer>
                         <Dialog.CloseTrigger asChild>
                             <CloseButton size="sm" />

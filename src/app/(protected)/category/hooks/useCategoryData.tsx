@@ -6,15 +6,16 @@ interface Filter {
 }
 
 const getCategory = async ({ status }: Filter): Promise<CategoryReponseAPI> => {
-    const params = new URLSearchParams()
-    if(status) params.append("status", status)
+  const params = new URLSearchParams()
+  if (status) params.append("status", status)
 
-    const query = params.toString()
+  const query = params.toString()
 
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_URL_API}/category?${query}`,
     {
       method: "GET",
+      cache: "no-store",
       credentials: "include",
       headers: {
         "Content-Type": "application/json",
@@ -36,6 +37,8 @@ export function useCategoryData(status?: string) {
     queryKey: ["category", status],
     queryFn: () => getCategory({ status }),
     refetchOnWindowFocus: true,
-    retry: 1,
+    staleTime: 1000 * 60 * 5,
+    retry: 3,
   })
+
 }

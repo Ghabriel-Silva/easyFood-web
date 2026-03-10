@@ -97,8 +97,6 @@ export const FormContainer = ({ formRef, success }: formFather) => {
             editeMutate(dataEditePayloud, {
                 onSuccess: () => success()
             })
-         
-
         } else {
             mutate(data, {
                 onSuccess: () => {

@@ -8,7 +8,7 @@ import { tranformeUniMedida } from "@/helpers/transformeUniMedida";
 import { MdCheckCircle, MdHighlightOff } from "react-icons/md";
 import { Tooltip } from "@/components/ui/tooltip"
 import { InfoTip } from "@/components/ui/toggle-tip";
-import { InfoNull, FullScreenLoading, StatEmpaty, TableText, PopovelFilter} from "@/ui/index";
+import { InfoNull, FullScreenLoading, StatEmpaty, TableText, PopovelFilter } from "@/ui/index";
 import { DialogInfoProducts, FilterContainer } from "@/app/(protected)/products/components/index";
 import { useFilterStore } from "@/stores/filterStore";
 import { useSearchParams, useRouter, usePathname } from 'next/navigation'
@@ -33,7 +33,7 @@ export const TableContainer = () => {
         rowsPerPage
     )
 
-  
+
 
     const dataProducts = data?.data.products
     const countPage = data?.data.total
@@ -185,6 +185,7 @@ export const TableContainer = () => {
 
     const options = {
         ...defaultOption,
+        serverSide: true,
         tableBodyHeight: "calc(100vh - 210px)",
         responsive: "standard",
         elevation: 0,

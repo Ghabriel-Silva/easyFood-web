@@ -2,7 +2,6 @@
 
 
 export const defaultOption = {
-    serverSide: true,
     selectableRows: "none",
     download: true,
     filter: false,

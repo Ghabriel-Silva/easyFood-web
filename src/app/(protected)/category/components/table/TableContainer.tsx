@@ -15,12 +15,11 @@ import { useFilterStoreCategory } from "@/stores/filterStoreCstegory";
 
 
 export const TableContainer = () => {
-    const filter = useFilterStoreCategory((state)=>state.filter)
+    const filter = useFilterStoreCategory((state) => state.filter)
 
     const { data } = useCategoryData(filter?.status ?? undefined)
 
     const dataCategory: CategoryReponseDataAPI[] | undefined = data?.data
-
 
     const columns = [
         {
@@ -109,12 +108,14 @@ export const TableContainer = () => {
 
     const options = {
         ...defaultOption,
+        search: true,
+        searchable: true,
         tableBodyHeight: "calc(100vh - 210px)",
         responsive: "standard",
         elevation: 0,
         customToolbar: () => (
             <PopovelFilter title="Filtrar categorias">
-                <FilterContainer  />
+                <FilterContainer />
             </PopovelFilter>
         ),
 
@@ -122,10 +123,10 @@ export const TableContainer = () => {
     return (
         <MuiThemeProvider>
             <MUIDataTable
+                key={dataCategory?.length}
                 data={dataCategory ?? []}
                 columns={columns}
                 options={options}
-
             />
         </MuiThemeProvider>
     )
