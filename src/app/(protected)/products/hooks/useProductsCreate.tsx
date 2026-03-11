@@ -25,9 +25,12 @@ export function UseProductsCreate() {
     const queryClient = useQueryClient()
     return useMutation<ProductCreateResponse, Error, CreateProductsInterface>({
         mutationFn: createProducts,
-        onSuccess: (_, variables) => {
-            queryClient.invalidateQueries({
-                queryKey: ["data-products"]
+        onSuccess:async  (_, variables) => {
+           await  queryClient.invalidateQueries({
+                queryKey: ["data-products"],
+            })
+           await  queryClient.invalidateQueries({
+                queryKey: ["product-data"],
             })
             return toaster.create({
                 description: `Produto  ${variables.name} criado com sucesso`,

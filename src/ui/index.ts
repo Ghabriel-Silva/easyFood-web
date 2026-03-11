@@ -10,4 +10,6 @@ export {FullScreenLoading} from './FullScreenLoading'
 export {MenuMobile} from "./MenuMobile"
 export {EditableInfo} from "./EditableInfo"
 export {ButtonFilter} from "./ButtonFilter"
+export {PopovelFilter} from "./PopovelFilter"
+
 

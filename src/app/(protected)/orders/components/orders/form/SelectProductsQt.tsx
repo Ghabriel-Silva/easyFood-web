@@ -60,7 +60,6 @@ export const SelectProductsQt = () => {
         return items.reduce((acc, item) => {
             const preco = Number(item.price ?? 0)
             const quantidade = Number(item.quantity ?? 0)
-
             return acc + preco * quantidade
         }, 0)
     }, [items])
@@ -92,10 +91,10 @@ export const SelectProductsQt = () => {
 
     const collection = useMemo(() => {
         return createListCollection<Product & { disabled?: boolean }>({
-            items: productArray.map(product => ({ //Aqui receboi o array de product 
+            items: productArray.map(product => ({ //Aqui recebo o array de product 
                 ...product,
                 disabled:
-                    product.quantity === 0 || productsSelectedIds.includes(product.id)
+                   Number(String(product.quantity).replace(",", ".")) === 0 || productsSelectedIds.includes(product.id)
             })),
             itemToString: (product) => product.name,
             itemToValue: (product) => product.id
@@ -197,7 +196,10 @@ export const SelectProductsQt = () => {
                                                             </Span>
                                                         ) : (
                                                             <Span color="green.500" fontWeight="medium">
-                                                                {product.quantity} disponíveis
+                                                                {["kg", "g", "none"].includes(product.uni_medida) && (
+                                                                    <span>{Number(product.quantity).toFixed(2)}</span>
+                                                                )}
+                                                                {Math.floor(product.quantity)} disponíveis
                                                             </Span>
                                                         )}
 

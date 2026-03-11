@@ -7,6 +7,7 @@ interface PropsSwitch {
     onChange: (value:boolean) => void
 }
 export const SwitchInput = ({checked, onChange}:PropsSwitch) => {
+    
 
     return (
         <Switch.Root size="lg"  checked={checked}

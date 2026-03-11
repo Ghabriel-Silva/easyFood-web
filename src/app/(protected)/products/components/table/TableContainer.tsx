@@ -8,12 +8,11 @@ import { tranformeUniMedida } from "@/helpers/transformeUniMedida";
 import { MdCheckCircle, MdHighlightOff } from "react-icons/md";
 import { Tooltip } from "@/components/ui/tooltip"
 import { InfoTip } from "@/components/ui/toggle-tip";
-import { InfoNull, FullScreenLoading, StatEmpaty, } from "@/ui/index";
-import { DialogInfoProducts } from "@/app/(protected)/products/components/index";
-import { PopovelFilter } from "../filters/PopoverFilter";
+import { InfoNull, FullScreenLoading, StatEmpaty, TableText, PopovelFilter } from "@/ui/index";
+import { DialogInfoProducts, FilterContainer, UpdateStatus } from "@/app/(protected)/products/components/index";
 import { useFilterStore } from "@/stores/filterStore";
-
 import { useSearchParams, useRouter, usePathname } from 'next/navigation'
+import { defaultOption } from "@/helpers/defaultOpetionTable";
 
 
 export const TableContainer = () => {
@@ -33,6 +32,8 @@ export const TableContainer = () => {
         page,
         rowsPerPage
     )
+
+
 
     const dataProducts = data?.data.products
     const countPage = data?.data.total
@@ -65,20 +66,46 @@ export const TableContainer = () => {
             name: "quantity",
             label: "Quantidade",
             options: {
-                customBodyRender: (value: number | null) =>
-                    value ? (
-                        <Text >{value}</Text>
-                    ) : value === 0 ? (
-                        <Tooltip
-                            contentProps={{ css: { "--tooltip-bg": "tomato" } }}
-                            positioning={{ placement: "right-end" }}
-                            showArrow content="Estoque zerado. Reponha ou marque como sem controle">
-                            <Badge colorPalette={"red"}>0</Badge>
-                        </Tooltip>
-                    ) : (
-                        <Badge>Sem controle</Badge>
-                    )
+                customBodyRenderLite: (dataIndex: number) => {
+                    if (!dataProducts) return null
+                    const product = dataProducts[dataIndex]
 
+                    const value = product.quantity
+                    const unit = product.uni_medida
+
+                    if (value === null) {
+                        return (
+                            <Badge>
+                                <TableText>Sem controle</TableText>
+                            </Badge>
+                        )
+                    }
+
+                    const quantity = Number(value)
+
+                    const unitsWithDecimal = ["kg", "g", "none"]
+
+                    const formattedQuantity = unitsWithDecimal.includes(unit)
+                        ? quantity.toFixed(3)
+                        : Math.floor(quantity)
+
+                    if (quantity === 0) {
+                        return (
+                            <Tooltip
+                                contentProps={{ css: { "--tooltip-bg": "tomato" } }}
+                                positioning={{ placement: "right-end" }}
+                                showArrow
+                                content="Estoque zerado. Reponha ou marque como sem controle"
+                            >
+                                <Badge colorPalette="red">
+                                    <TableText>{formattedQuantity}</TableText>
+                                </Badge>
+                            </Tooltip>
+                        )
+                    }
+
+                    return <TableText>{formattedQuantity}</TableText>
+                }
             }
         },
 
@@ -92,9 +119,9 @@ export const TableContainer = () => {
                     const row = dataProducts[dataIndex]; // data é Product[] pego o indice 
                     return (
                         <Flex gap={2}>
-                            <Text>R${row.price}</Text>
+                            <TableText>R${row.price}</TableText>
                             {row.uni_medida !== "none" && (
-                                <Badge>{tranformeUniMedida(row.uni_medida)}</Badge>
+                                <Badge colorPalette={"yellow"}><TableText>{tranformeUniMedida(row.uni_medida)}</TableText></Badge>
                             )}
                         </Flex>
                     );
@@ -117,14 +144,14 @@ export const TableContainer = () => {
                                 <HStack gap={0} flexDirection={"row"}>
                                     <InfoTip
                                         content={value} />
-                                    <Text>
+                                    <TableText>
                                         {value.slice(0, 20)}...
-                                    </Text>
+                                    </TableText>
                                 </HStack>
                             ) : (
-                                <Text>
+                                <TableText>
                                     {value}
-                                </Text>
+                                </TableText>
                             )
                     );
                 },
@@ -141,28 +168,41 @@ export const TableContainer = () => {
                 customBodyRender: (value: boolean) =>
                     value ? (
                         <Badge colorPalette={"green"}>
-                            ATIVO
+                            <TableText>Ativo</TableText>
                             <MdCheckCircle />
                         </Badge>
                     ) : (
                         <Badge colorPalette={"red"}>
                             <MdHighlightOff />
-                            INATIVO
+                            <TableText>Inativo</TableText>
                         </Badge>
                     ),
             },
+        },
+        {
+            name: '',
+            label: "Mudar Status",
+            options: {
+                customBodyRenderLite: (dataIndex: number) => {
+                    if (!dataProducts) return null
+                    const row = dataProducts[dataIndex]
+                    return (
+                        <UpdateStatus statusDefault={row.isAvailable} id={row.id} />
+                    )
+                }
+            }
         },
     ]
 
 
 
     const options = {
-        tableBodyHeight: "calc(100vh - 220px)",
+        ...defaultOption,
+        serverSide: true,
+        tableBodyHeight: "calc(100vh - 210px)",
         responsive: "standard",
-        selectableRows: "none",
         elevation: 0,
         //Paginação 
-        serverSide: true,
         count: countPage,
         page: tablePage,
         rowsPerPage: rowsPerPage,
@@ -181,34 +221,16 @@ export const TableContainer = () => {
             router.push(`${pathname}?${params.toString()}`);
         },
 
-        download: true,
-        filter: false,
-        searchable: false,
-        search: false,
-        print: false,
         storageKey: 'tabela-produtos',
         customToolbar: () => (
-            <PopovelFilter />
+            <PopovelFilter title="Filtrar Produtos">
+                <FilterContainer />
+            </PopovelFilter>
         ),
         textLabels: {
-            pagination: {
-                next: "Próxima Página",
-                previous: "Página Anterior",
-                rowsPerPage: "Linhas por página:",
-                displayRows: "de",
-            },
             body: {
                 noMatch: errorApi,
                 toolTip: "Classificar",
-            },
-            toolbar: {
-                // Muda o texto que aparece ao passar o mouse  no ícone da barra
-                viewColumns: "Exibir Colunas",
-            },
-            viewColumns: {
-                // Muda o título que aparece dentro do menu/modal que abre
-                title: "Mostrar/Ocultar Colunas",
-                titleAria: "Mostrar/Ocultar Colunas da Tabela",
             },
         }
     };

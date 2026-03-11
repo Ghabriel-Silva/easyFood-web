@@ -33,11 +33,20 @@ export function useOrdersCreate() {
 
     return useMutation<IOrder, ApiError, OrderFormSchemaInterface>({
         mutationFn: createOrders,
-
-        onSuccess: () => {
-            queryClient.invalidateQueries({
-                queryKey: ["order-data"]
+        onSuccess: async () => {
+            await queryClient.invalidateQueries({
+                queryKey: ['order-data'],
             })
+            await queryClient.invalidateQueries({
+                queryKey: ['product-data'],
+                exact: false
+            })
+            await queryClient.invalidateQueries({
+                queryKey: ['data-products'],
+                exact: false
+            })
+
+            
 
             toaster.create({
                 title: "Pedido criado",
@@ -51,7 +60,7 @@ export function useOrdersCreate() {
         onError: (error) => {
             toaster.create({
                 title: "Erro ao criar pedido",
-                description: error?.message   ?? "Erro inesperado ao criar o pedido",
+                description: error?.message ?? "Erro inesperado ao criar o pedido",
                 closable: true,
                 duration: 2000,
                 type: "error"

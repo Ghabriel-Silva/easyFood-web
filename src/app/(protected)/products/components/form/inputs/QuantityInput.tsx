@@ -54,15 +54,24 @@ export const QuantityInput = ({ typeInput }: PropsQuantity) => {
                 name="quantity"
                 render={({ field }) => (
                     <NumberInput.Root
+
                         width="100%"
                         min={0}
                         step={1}
                         formatOptions={{
                             maximumFractionDigits: 1,
                         }}
-                        value={field.value?.toString() ?? ""}
+                        pattern="[0-9]*"
+                        value={
+                            field.value !== null && field.value !== undefined
+                                ? Math.round(Number(field.value)).toString()
+                                : ""
+                        }
                         onValueChange={(details) => {
-                            field.onChange(details.value)
+                            const value = Number(details.value)
+                            const integer = Math.round(value)
+
+                            field.onChange(integer)
                         }}
                     >
                         <HStack gap="2">

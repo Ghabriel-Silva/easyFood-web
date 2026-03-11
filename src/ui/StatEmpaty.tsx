@@ -8,7 +8,7 @@ interface PropsStatEmpaty {
 }
 export const StatEmpaty = ({ title, description }: PropsStatEmpaty) => {
     return (
-        <EmptyState.Root>
+        <EmptyState.Root >
             <EmptyState.Content>
                 <EmptyState.Indicator>
                     <HiColorSwatch />

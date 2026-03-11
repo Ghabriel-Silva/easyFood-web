@@ -65,24 +65,18 @@ export const FormContainer = ({ formRef, success }: formFather) => {
                 uni_medida: editeProducts.uni_medida
             })
 
-            if (editeProducts.quantity !== null) {
-                setChecked(true)
-
-            }
+          
         }
 
     }, [editeProducts, reset])
 
-
-    useEffect(() => {
-        if (!checked && !isEditing) {
-            setValue('quantity', null)
-
+    const handleChecked = (value: boolean) => {
+        setChecked(value)
+        if (!value) {
+            setValue("quantity", null)
         }
-    }, [checked, setValue, isEditing])
-
-
-
+    }
+  
     const uni_Medida = useWatch({
         control,
         name: "uni_medida",
@@ -100,7 +94,6 @@ export const FormContainer = ({ formRef, success }: formFather) => {
                 data: data,
                 id: editeProducts.id
             }
-
             editeMutate(dataEditePayloud, {
                 onSuccess: () => success()
             })
@@ -133,7 +126,7 @@ export const FormContainer = ({ formRef, success }: formFather) => {
                     </FormField>
                     <HStack align={"start"}>
                         <FormField label={`Quantidade: ${checked ? "Sim" : "Não"}`} >
-                            <SwitchInput checked={checked} onChange={setChecked} />
+                            <SwitchInput checked={checked} onChange={handleChecked} />
                         </FormField>
                     </HStack>
 

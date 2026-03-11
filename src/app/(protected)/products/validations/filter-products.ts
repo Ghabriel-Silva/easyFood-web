@@ -1,15 +1,12 @@
-
-
 import * as yup from "yup"
 
-type status = 'active' | 'inactive'
+type status = 'active' | 'desactivated' |'all'
 type price = 'menor' | 'maior'
-
 
 export const FilterProductsSchema = yup.object({
     status: yup
         .mixed<status>()
-        .oneOf(['active', 'inactive'], 'O Valor tem que ser ou ativo ou inativo')
+        .oneOf(['active', 'desactivated', 'all'], 'O Valor tem que ser ou ativo ou inativo')
         .nullable(),
         
     price: yup

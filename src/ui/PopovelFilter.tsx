@@ -1,14 +1,18 @@
 import {
-    IconButton, Popover, PopoverCloseTrigger, Portal, HStack, CloseButton} from "@chakra-ui/react"
-import { styleIcon } from "../../Styles/IconsStyle"
+    IconButton, Popover, PopoverCloseTrigger, Portal, HStack, CloseButton
+} from "@chakra-ui/react"
+import { styleIcon } from "@/app/(protected)/products/Styles/IconsStyle"
 import { MdFilterAlt } from "react-icons/md";
-import { FilterContainer } from "./FilterContainer";
-import { useState } from "react"
+import React, { useState } from "react"
 import { TableText } from "@/ui/index";
+import { ReactNode } from "react";
 
 
-
-export const PopovelFilter = () => {
+interface PropsPopover{
+    children?:ReactNode, 
+    title:string
+}
+export const PopovelFilter = ({children, title}:PropsPopover) => {
     const [open, setOpen] = useState(false)
     return (
         <Popover.Root
@@ -30,13 +34,13 @@ export const PopovelFilter = () => {
                         <Popover.Body>
                             <Popover.Title >
                                 <HStack justifyContent={"space-between"} >
-                                    <TableText>Filtrar Produtos</TableText>
-                                    <PopoverCloseTrigger>                                    
-                                            <CloseButton asChild size="sm" rounded={"full"}/>                                    
+                                    <TableText>{title} </TableText>
+                                    <PopoverCloseTrigger>
+                                        <CloseButton asChild size="sm" rounded={"full"} />
                                     </PopoverCloseTrigger>
                                 </HStack>
                             </Popover.Title>
-                            <FilterContainer />
+                           {children}
                         </Popover.Body>
                     </Popover.Content>
                 </Popover.Positioner>

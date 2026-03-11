@@ -10,10 +10,12 @@ interface ProductsParams extends FilterProductsType {
 }
 
 const ProductsData = async (data: ProductsParams): Promise<ProductResponseData> => {
-
-    
     const params = new URLSearchParams()
-    if (data.status) params.append("status", data.status)
+    if (data.status && data.status !== "all") {
+        params.append("status", data.status)
+    }
+
+
     if (data.price) params.append("price", data.price)
 
     params.append("page", String(data.page))
@@ -25,9 +27,11 @@ const ProductsData = async (data: ProductsParams): Promise<ProductResponseData> 
         ? `${process.env.NEXT_PUBLIC_URL_API}/product?${query}`
         : `${process.env.NEXT_PUBLIC_URL_API}/product`
 
+        console.log(url)
     const res = await fetch(url, {
         method: 'GET',
         credentials: "include",
+        cache: "no-store",
         headers: {
             "Content-Type": "application/json"
         }
@@ -56,5 +60,6 @@ export function useProductsData(
                 page: page,
                 limit,
             }),
+        staleTime: 1000 * 60 * 5,
     });
 }

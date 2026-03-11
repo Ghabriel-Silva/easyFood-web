@@ -2,6 +2,7 @@ import { createTheme } from "@mui/material/styles"
 
 export function getMuiTheme(colorMode: "light" | "dark") {
     return createTheme({
+
         palette: {
             mode: colorMode,
             background: {
@@ -23,9 +24,10 @@ export function getMuiTheme(colorMode: "light" | "dark") {
                 styleOverrides: {
                     root: {
                         default: colorMode === "dark" ? "#09090B" : "#ffffff",
-                        color: colorMode === "dark" ? "#fcfcfc" : "#000000",
+                        color: colorMode === "dark" ? "#fcfcfc" : "#000000",           
                     },
                 },
+
             },
 
             MuiTableRow: {

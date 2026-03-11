@@ -6,7 +6,6 @@ import { UseProductsCreate } from "../../hooks/useProductsCreate";
 import { useEditeProduct } from "@/stores/editeProductStore";
 
 
-
 export const DialogCreateProducts = () => {
     const { isPending } = UseProductsCreate()
 
@@ -35,6 +34,7 @@ export const DialogCreateProducts = () => {
             }}
         >
             <Dialog.Trigger asChild>
+
                 <Button
                     bg="blue.600"
                     borderRadius="lg"

@@ -1,0 +1,60 @@
+
+export interface CategoryReponseDataAPI {
+    id: string,
+    name: string,
+    status: boolean,
+    is_default: boolean,
+    created_at: string
+    updated_at: string
+
+}
+
+export interface CategoryReponseAPI {
+    message?: string,
+    data: CategoryReponseDataAPI[]
+}
+
+export interface CategoryResponseUpdateStatus {
+    message: string,
+    cache: boolean | null,
+    data: {
+        id: string,
+        status: boolean,
+    }
+}
+
+export interface CategoryResponseUpdateName {
+    message: string,
+    cache: boolean | null,
+    data: {
+        id: string,
+        name: string,
+        status: boolean,
+        created_at: string,
+        updated_at: string
+    }
+}
+
+
+export interface sendValorToApi {
+    id: string
+    name: string
+}
+
+export interface CreateCategoryResponse {
+    message: string
+    cache: null | unknown
+    data: CategoryResponseDataAPI
+}
+
+export interface CategoryResponseDataAPI {
+    id: string
+    name: string
+    status: boolean
+    is_default: boolean
+    created_at: string
+    updated_at: string
+    company: {
+        id: string
+    }
+}

@@ -189,7 +189,7 @@ export default function TableOrders({
                                     {paginatedOrders.map((order) => {
                                         const { color, icon } = getStatusOption(order.status);
                                         return (
-                                            <TableRow key={order.id} hover>
+                                            <TableRow key={order.id} hover >
                                                 <TableCell>
                                                     <HStack>
                                                         <DialogOrder order={order} />
@@ -322,6 +322,7 @@ export default function TableOrders({
                             </Table>
                         </TableContainer>
                         <TablePagination
+                        
                             rowsPerPageOptions={[5, 10, 25, 50]}
                             component="div"
                             count={orders.length}
