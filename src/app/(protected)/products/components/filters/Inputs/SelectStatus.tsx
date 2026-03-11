@@ -1,7 +1,7 @@
 import { SelectBase } from "@/ui/index"
 import { Controller, useFormContext } from "react-hook-form"
 import { FilterProductsType } from "../../../validations/filter-products"
-import { createListCollection, Box } from "@chakra-ui/react"
+import { createListCollection} from "@chakra-ui/react"
 
 
 
@@ -34,6 +34,7 @@ export const SelectStatus = () => {
 const status = createListCollection({
     items: [
         { label: "Ativo", value: "active" },
-        { label: "Inativo", value: "inactive" }
+        { label: "Inativo", value: "desactivated" },
+        { label: "Todos", value: "all" }
     ]
 })

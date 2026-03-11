@@ -79,6 +79,16 @@ export interface ProductResponse {
 }
 
 export interface ProductResponseData {
-  data:ProductResponse, 
-  message:string
+  data: ProductResponse,
+  message: string
 }
+
+export interface ProductSetStatus {
+  message: string,
+  chache: null,
+  data: {
+    id: string,
+    isAvailable: boolean
+  }
+}
+

@@ -9,7 +9,7 @@ import { MdCheckCircle, MdHighlightOff } from "react-icons/md";
 import { Tooltip } from "@/components/ui/tooltip"
 import { InfoTip } from "@/components/ui/toggle-tip";
 import { InfoNull, FullScreenLoading, StatEmpaty, TableText, PopovelFilter } from "@/ui/index";
-import { DialogInfoProducts, FilterContainer } from "@/app/(protected)/products/components/index";
+import { DialogInfoProducts, FilterContainer, UpdateStatus } from "@/app/(protected)/products/components/index";
 import { useFilterStore } from "@/stores/filterStore";
 import { useSearchParams, useRouter, usePathname } from 'next/navigation'
 import { defaultOption } from "@/helpers/defaultOpetionTable";
@@ -119,7 +119,7 @@ export const TableContainer = () => {
                     const row = dataProducts[dataIndex]; // data é Product[] pego o indice 
                     return (
                         <Flex gap={2}>
-                            <Text>R${row.price}</Text>
+                            <TableText>R${row.price}</TableText>
                             {row.uni_medida !== "none" && (
                                 <Badge colorPalette={"yellow"}><TableText>{tranformeUniMedida(row.uni_medida)}</TableText></Badge>
                             )}
@@ -178,6 +178,19 @@ export const TableContainer = () => {
                         </Badge>
                     ),
             },
+        },
+        {
+            name: '',
+            label: "Mudar Status",
+            options: {
+                customBodyRenderLite: (dataIndex: number) => {
+                    if (!dataProducts) return null
+                    const row = dataProducts[dataIndex]
+                    return (
+                        <UpdateStatus statusDefault={row.isAvailable} id={row.id} />
+                    )
+                }
+            }
         },
     ]
 

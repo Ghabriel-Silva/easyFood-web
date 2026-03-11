@@ -14,6 +14,7 @@ const getCategory = async ({ status }: Filter): Promise<CategoryReponseAPI> => {
   }
 
   const query = params.toString()
+  console.log(query)
 
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_URL_API}/category?${query}`,

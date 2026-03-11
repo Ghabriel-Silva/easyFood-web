@@ -1,7 +1,6 @@
 import { TableText } from "@/ui/index";
 import { HStack, Badge } from "@chakra-ui/react";
 import { MdOutlineAlarmOff, MdInfoOutline, MdAccessTime } from "react-icons/md";
-// Importações do date-fns
 import { parseISO, differenceInCalendarDays, format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 
@@ -19,13 +18,11 @@ export const ValidadeMensage = ({ date }: PropsValidade) => {
         );
     }
 
-    // 1. parseISO interpreta "2026-04-28" corretamente sem mudar o dia
-    const dataValidade = parseISO(date);
-    const hoje = new Date();
+ 
+    const dataValidade = parseISO(date)
+    const hoje = new Date()
 
-    // 2. differenceInCalendarDays compara apenas as datas (ignora as horas)
-    // Se hoje é dia 27 e a validade é dia 28, o resultado será 1.
-    const diffDays = differenceInCalendarDays(dataValidade, hoje);
+    const diffDays = differenceInCalendarDays(dataValidade, hoje)
 
     if (diffDays < 0) {
         return (
@@ -48,7 +45,6 @@ export const ValidadeMensage = ({ date }: PropsValidade) => {
     return (
         <HStack>
             <TableText>
-                {/* Formatação segura e localizada */}
                 {format(dataValidade, "dd/MM/yyyy", { locale: ptBR })}
             </TableText>
         </HStack>

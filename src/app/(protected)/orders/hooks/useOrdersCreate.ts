@@ -39,7 +39,14 @@ export function useOrdersCreate() {
             })
             await queryClient.invalidateQueries({
                 queryKey: ['product-data'],
+                exact: false
             })
+            await queryClient.invalidateQueries({
+                queryKey: ['data-products'],
+                exact: false
+            })
+
+            
 
             toaster.create({
                 title: "Pedido criado",
