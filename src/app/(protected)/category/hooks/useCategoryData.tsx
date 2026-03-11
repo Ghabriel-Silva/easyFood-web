@@ -6,8 +6,12 @@ interface Filter {
 }
 
 const getCategory = async ({ status }: Filter): Promise<CategoryReponseAPI> => {
+
   const params = new URLSearchParams()
-  if (status) params.append("status", status)
+
+  if (status && status !== "all") {
+    params.append("status", status)
+  }
 
   const query = params.toString()
 
@@ -38,7 +42,7 @@ export function useCategoryData(status?: string) {
     queryFn: () => getCategory({ status }),
     refetchOnWindowFocus: true,
     staleTime: 1000 * 60 * 5,
-    retry: 3,
+
   })
 
 }

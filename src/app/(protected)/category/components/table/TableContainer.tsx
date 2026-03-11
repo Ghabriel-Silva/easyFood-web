@@ -7,7 +7,7 @@ import { useCategoryData } from "../../hooks/useCategoryData";
 import { Badge } from "@chakra-ui/react";
 import { MdCheck, MdClear } from "react-icons/md";
 import { SelectStatus, InputEditable, FilterContainer } from "@/app/(protected)/category/components/index";
-import { TableText, PopovelFilter } from "@/ui/index";
+import { TableText, PopovelFilter, FullScreenLoading, StatEmpaty } from "@/ui/index";
 import { CategoryReponseDataAPI } from "../../interfaces/category";
 import { useFilterStoreCategory } from "@/stores/filterStoreCstegory";
 
@@ -17,9 +17,12 @@ import { useFilterStoreCategory } from "@/stores/filterStoreCstegory";
 export const TableContainer = () => {
     const filter = useFilterStoreCategory((state) => state.filter)
 
-    const { data } = useCategoryData(filter?.status ?? undefined)
+    const { data, isLoading, isError } = useCategoryData(filter?.status ?? undefined)
 
     const dataCategory: CategoryReponseDataAPI[] | undefined = data?.data
+
+    if (isLoading) return <FullScreenLoading />
+    const errorApi = isError && <StatEmpaty title="Nenhuma Categoria encontrada" description="Não foi possível carregar os dados. Tente atualizar a página ou volte mais tarde." />
 
     const columns = [
         {
@@ -113,11 +116,18 @@ export const TableContainer = () => {
         tableBodyHeight: "calc(100vh - 210px)",
         responsive: "standard",
         elevation: 0,
+        storageKey: 'tabela-categoria',
         customToolbar: () => (
             <PopovelFilter title="Filtrar categorias">
                 <FilterContainer />
             </PopovelFilter>
         ),
+        textLabels: {
+            body: {
+                noMatch: errorApi,
+                toolTip: "Classificar",
+            },
+        }
 
     }
     return (

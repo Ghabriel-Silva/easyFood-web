@@ -11,7 +11,7 @@ interface ProductsParams extends FilterProductsType {
 
 const ProductsData = async (data: ProductsParams): Promise<ProductResponseData> => {
 
-    
+
     const params = new URLSearchParams()
     if (data.status) params.append("status", data.status)
     if (data.price) params.append("price", data.price)
@@ -28,7 +28,7 @@ const ProductsData = async (data: ProductsParams): Promise<ProductResponseData> 
     const res = await fetch(url, {
         method: 'GET',
         credentials: "include",
-         cache: "no-store",
+        cache: "no-store",
         headers: {
             "Content-Type": "application/json"
         }
@@ -57,5 +57,6 @@ export function useProductsData(
                 page: page,
                 limit,
             }),
+        staleTime: 1000 * 60 * 5,
     });
 }

@@ -13,7 +13,7 @@ export default function RootLayout(props: { children: React.ReactNode }) {
         queries: {
           staleTime: 0,
           refetchOnWindowFocus: true,
-          retry: 3
+          retry: 1
         }
       }
     })

@@ -33,7 +33,8 @@ export const SelectStatusFilter = () => {
 
 const status = createListCollection({
     items: [
+        { label: "Todos", value: "all" },
         { label: "Ativo", value: "active" },
-        { label: "Inativo", value: "inactive" }
+        { label: "Inativo", value: "inactive" },
     ]
 })
