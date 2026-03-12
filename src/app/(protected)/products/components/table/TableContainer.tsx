@@ -3,7 +3,7 @@
 import { MuiThemeProvider } from "@/theme/MuiDatables/providers/MuiThemeProvider";
 import MUIDataTable from "mui-datatables";
 import { useProductsData } from "../../hooks/useProductsData";
-import { Badge, Flex, Text, HStack } from "@chakra-ui/react";
+import { Badge, Flex, HStack } from "@chakra-ui/react";
 import { tranformeUniMedida } from "@/helpers/transformeUniMedida";
 import { MdCheckCircle, MdHighlightOff } from "react-icons/md";
 import { Tooltip } from "@/components/ui/tooltip"
