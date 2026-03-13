@@ -1,0 +1,6 @@
+export {ConfigContainer} from "./ConfigContainer"
+export {ThemeContainer} from "./themeCompontes/ThemeContainer"
+export {FormContainer} from "./form/FormContainer"
+export {AvatarConfig} from "./themeCompontes/AvatarConfig"
+export {ContatoInput} from "./form/inputs/ContatoInput"
+export {} from "./"
