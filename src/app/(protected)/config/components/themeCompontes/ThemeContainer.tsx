@@ -1,14 +1,13 @@
 import { VStack, Heading } from "@chakra-ui/react"
-import { AvatarConfig, FontSizeSelector, CustomColorPicker} from "@/app/(protected)/config/components/index"
+import { AvatarConfig} from "@/app/(protected)/config/components/index"
+import { fontTitle, fontWeigthTitle } from "@/theme/ChakraUI/themes"
 
 
 export const ThemeContainer = () => {
     return (
-        <VStack  flex={1} gap={10} minW={"280px"} p="8" boxShadow={"sm"}>
-            <Heading>Informação de Tema</Heading>
+        <VStack  flex={1} gap={10} p="8" boxShadow={"sm"} >
+            <Heading size={fontTitle} fontWeight={fontWeigthTitle}>Informação de Tema</Heading>
             <AvatarConfig />
-            <FontSizeSelector />
-            <CustomColorPicker />
         </VStack>
     )
 }

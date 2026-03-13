@@ -1,88 +1,94 @@
-import { useState } from "react"
 import {
-    Box,
+    Flex,
     Stack,
     Input,
     SimpleGrid,
     Alert,
-    Heading
+    Heading,
+    Button
 } from "@chakra-ui/react"
-
-import { Field } from "@chakra-ui/react"
+import { FormField } from "@/ui"
+import { fontTitle, fontWeigthTitle } from "@/theme/ChakraUI/themes"
+import { FormProvider, SubmitHandler, useForm } from "react-hook-form"
+import { yupResolver } from "@hookform/resolvers/yup"
+import { EditeInfoUserSchema, EditeInfoUserType } from "../../validations/editeInfos"
+import { ContatoInput } from "@/app/(protected)/config/components/index"
+import { useEditeInfoUser } from "../../hooks/useEditeInfoUser"
 export const FormContainer = () => {
-    // Estado para capturar todos os dados do formulário
-    const [formData, setFormData] = useState({
-        nome: "",
-        telefone: "",
-        email: "",
-        endereco: "",
-        fontSize: "M"
-    })
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target
-        setFormData((prev) => ({ ...prev, [name]: value }))
+    const methodos = useForm({
+        mode: "onBlur",
+        resolver: yupResolver(EditeInfoUserSchema)
+    })
+    const {
+        register,
+        handleSubmit,
+        formState: { errors }
+
+    } = methodos
+
+    const { mutate, isPending } = useEditeInfoUser()
+    const OnSubmite: SubmitHandler<EditeInfoUserType> = (data) => {
+        mutate(data)
     }
 
+
+
     return (
-        <Box flex={2} p="8" minW={"280px"}  boxShadow={"sm"}> 
-            <Heading>Informações de Usuário</Heading>
-            <Stack gap="8" mt={"50px"}>
-                <Stack gap="5">
-                    <Field.Root>
-                        <Field.Label fontWeight="bold">Nome do Estabelecimento</Field.Label>
-                        <Input
-                            name="nome"
-                            placeholder="Ex: EasyFood"
-                            value={formData.nome}
-                            onChange={handleChange}
+        <FormProvider {...methodos}>
+            <Flex flex={3} p="8" boxShadow={"sm"} flexDirection={"column"}  >
+                <form onSubmit={handleSubmit(OnSubmite)} noValidate>
+                    <Heading size={fontTitle} fontWeight={fontWeigthTitle}>Informações de Usuário</Heading>
+                    <Stack gap="8" mt={"50px"}>
+                        <Stack gap="5">
+                            <FormField label="Nome do Estabelecimento" isRequired error={errors.name?.message}>
+                                <Input
+                                    placeholder="Ex: EasyFood"
+                                    {...register('name')}
+                                />
+                                <FormField label="Frete Padrão" isRequired error={errors.defaultFreight?.message}>
+                                    <Input {...register("defaultFreight")}  placeholder="ex:7.00"/>
+                                </FormField>
+                            </FormField>
+                            <Flex  flexWrap={"wrap"} gap="4">
+                                <FormField label="Telefone" isRequired error={errors.customerPhone?.message}>
+                                    <ContatoInput />
+                                </FormField>
 
-                        />
-                    </Field.Root>
+                                <FormField label="E-mail de Contato" >
+                                    <Input disabled
+                                        value={'ghambriel@mgail.com'}
+                                    />
 
-                    <SimpleGrid columns={{ base: 1, md: 2 }} gap="4">
-                        <Field.Root>
-                            <Field.Label fontWeight="bold">Telefone</Field.Label>
-                            <Input
-                                name="telefone"
-                                placeholder="(00) 00000-0000"
-                                value={formData.telefone}
-                                onChange={handleChange}
-                            />
-                        </Field.Root>
-
-                        <Field.Root>
-                            <Field.Label fontWeight="bold">E-mail de Contato</Field.Label>
-                            <Input
-                                name="email"
-                                type="email"
-                                placeholder="contato@loja.com"
-                                value={formData.email}
-                                onChange={handleChange}
-                            />
-                        </Field.Root>
-                    </SimpleGrid>
-
-                    <Field.Root>
-                        <Field.Label fontWeight="bold">Endereço Completo</Field.Label>
-                        <Input
-                            name="endereco"
-                            placeholder="Rua, Número, Bairro, Cidade..."
-                            value={formData.endereco}
-                            onChange={handleChange}
-                        />
-                    </Field.Root>
-
-                    <Alert.Root status="info">
-                        <Alert.Indicator />
-                        <Alert.Description>
-                            As informações acima serão exibidas para seus clientes no checkout e nos recibos de impressão.
-                        </Alert.Description>
-                    </Alert.Root>
-                </Stack>
-
-
-            </Stack>
-        </Box>
+                                </FormField>
+                            </Flex>
+                            <FormField label="Endereço Completo" isRequired error={errors.customerAddress?.message}>
+                                <Input
+                                    {...register('customerAddress')}
+                                    placeholder="Rua, Número, Bairro, Cidade..."
+                                />
+                            </FormField>
+                            <Alert.Root status="info">
+                                <Alert.Indicator />
+                                <Alert.Description>
+                                    As informações acima serão exibidas para seus clientes no checkout e nos recibos de impressão.
+                                </Alert.Description>
+                            </Alert.Root>
+                        </Stack>
+                    </Stack>
+                    <Button
+                        type="submit"
+                        loading={isPending}
+                        loadingText="Salvando Alterações"
+                        spinnerPlacement="start"
+                        mt={"20px"}
+                        bg="blue.600"
+                        borderRadius="lg"
+                    >
+                        Salvar Alterações
+                    </Button>
+                </form>
+            </Flex>
+        </FormProvider>
     )
 }
