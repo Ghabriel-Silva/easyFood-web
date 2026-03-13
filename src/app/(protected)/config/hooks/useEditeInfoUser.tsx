@@ -27,6 +27,9 @@ export function useEditeInfoUser() {
     return useMutation<EditeUserInfo, Error, EditeInfoUserType>({
         mutationFn: editeUser,
         onSuccess: () => {
+            queryClient.invalidateQueries({
+                queryKey:["config"]
+            })
             return toaster.create({
                 description: `Informações atualizadas`,
                 closable: true,

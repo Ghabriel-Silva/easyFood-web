@@ -29,10 +29,17 @@ export const EditeInfoUserSchema = yup.object({
         .nullable()
         .notRequired(),
 
-        defaultFreight: yup
+    defaultFreight: yup
         .number()
+        .typeError('O frete tem que ser um numero')
         .transform(transformeNumber)
+        .notRequired(),
+
+        email: yup
+        .string()
         .notRequired()
+
+
 })
 
 export type EditeInfoUserType = yup.InferType<typeof EditeInfoUserSchema>
