@@ -6,7 +6,7 @@ import {
     Heading,
     Button
 } from "@chakra-ui/react"
-import { FormField, FullScreenLoading } from "@/ui"
+import { FormField, FullScreenLoading } from "@/ui/index"
 import { fontTitle, fontWeigthTitle } from "@/theme/ChakraUI/themes"
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
@@ -32,7 +32,7 @@ export const FormContainer = () => {
 
     const { mutate, isPending } = useEditeInfoUser()
 
-    const { data, isPending: DadosPendente} = useUserData()
+    const { data, isPending: DadosPendente, isError } = useUserData()
 
     const OnSubmite: SubmitHandler<EditeInfoUserType> = (data) => {
         mutate(data)
@@ -47,8 +47,8 @@ export const FormContainer = () => {
         }
     }, [data, reset])
 
-    if(DadosPendente)  return <FullScreenLoading />
-    
+    if (DadosPendente) return <FullScreenLoading />
+
 
     return (
         <FormProvider {...methodos}>
@@ -87,10 +87,13 @@ export const FormContainer = () => {
                                     placeholder="Rua, Número, Bairro, Cidade..."
                                 />
                             </FormField>
-                            <Alert.Root status="info">
+                            <Alert.Root status={!isError ? "info" : "warning"}>
                                 <Alert.Indicator />
                                 <Alert.Description>
-                                    As informações acima serão exibidas para seus clientes no checkout e nos recibos de impressão.
+                                    {!isError ?
+                                        "As informações acima serão exibidas para seus clientes no checkout e nos recibos de impressão."
+                                        : "Erro ao buscar dados, atualize e tente novamente"}
+
                                 </Alert.Description>
                             </Alert.Root>
                         </Stack>

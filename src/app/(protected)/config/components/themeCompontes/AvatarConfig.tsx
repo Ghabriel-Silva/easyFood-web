@@ -11,9 +11,9 @@ export const AvatarConfig = () => {
                 <Avatar.Fallback name={data?.data.name} />
             </Avatar.Root>
             <Stack gap="0">
-                <Text fontWeight="medium" fontSize={fontText} textAlign={"center"}>{data?.data.name} </Text>
+                <Text fontWeight="medium" fontSize={fontText} textAlign={"center"}>{data?.data.name ?? "Não Encontrado"} </Text>
                 <Text color={ColorLabel} textStyle={fontSizeTitleLabel}>
-                    {data?.data.email}
+                    {data?.data.email  ?? "Não Encontrado"}
                 </Text>
             </Stack>
         </VStack>

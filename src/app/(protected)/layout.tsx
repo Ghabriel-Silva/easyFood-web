@@ -230,7 +230,7 @@ const items = [
         title: "Dashabord",
         text: "Métricas",
         icon: <MdDashboard />,
-        link: '/dashabord'
+        link: '/dashboard'
     },
     {
         value: "e",
