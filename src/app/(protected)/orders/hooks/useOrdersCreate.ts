@@ -45,6 +45,10 @@ export function useOrdersCreate() {
                 queryKey: ['data-products'],
                 exact: false
             })
+            await queryClient.invalidateQueries({
+                queryKey: ['dashboard'],
+                exact: false
+            })
 
             
 

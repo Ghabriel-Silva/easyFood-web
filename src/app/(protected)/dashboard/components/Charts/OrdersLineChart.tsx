@@ -1,0 +1,106 @@
+"use client"
+
+import { Chart, useChart } from "@chakra-ui/charts"
+import { VStack} from "@chakra-ui/react"
+import {
+    CartesianGrid,
+    Line,
+    LineChart,
+    Tooltip,
+    XAxis,
+    YAxis,
+
+} from "recharts"
+import { TextTitle } from "@/app/(protected)/dashboard/components/index"
+
+type Props = {
+    data?: {
+        date: string
+        total: number
+    }[]
+}
+
+type FormattedData = {
+    day: string
+    tooltipDate: string
+    total: number
+}
+
+
+const CustomTooltip = ({ active, payload }: any) => {
+    if (!active || !payload || !payload.length) return null
+    const point: FormattedData = payload[0].payload
+    return (
+        <div
+            style={{
+                padding: "6px 10px",
+                border: "1px solid #ccc",
+                borderRadius: 4,
+            }}
+        >
+            {point.tooltipDate}: {point.total} pedidos
+        </div>
+    )
+}
+
+export const OrdersLineChart = ({ data }: Props) => {
+    const safeData = data ?? []
+
+    const formattedData: FormattedData[] = safeData.map((item) => ({
+        day: new Date(item.date).getDate().toString(), 
+        tooltipDate: new Date(item.date).toLocaleDateString("pt-BR", {
+            day: "2-digit",
+            month: "2-digit",
+        }),
+        total: item.total,
+    }))
+
+    const chart = useChart({
+        data: formattedData,
+        series: [{ name: "total", color: "teal.solid" }],
+    })
+
+    if (!data) return null
+
+    return (
+        <VStack
+            p={4}
+            borderRadius="lg"
+            boxShadow="sm"
+            align={"start"}
+        >
+            <TextTitle  title="Evolução de vendas"/>
+            <Chart.Root maxH="xs" chart={chart}>
+                <LineChart data={chart.data} responsive>
+                    <CartesianGrid stroke={chart.color("border")} vertical={false} />
+                    <XAxis
+                        axisLine={false}
+                        dataKey={chart.key("day")}
+                        stroke={chart.color("border")}
+                    />
+                    <YAxis
+                        axisLine={false}
+                        tickLine={false}
+                        tickMargin={10}
+                        stroke={chart.color("border")}
+                    />
+                    <Tooltip
+                        animationDuration={100}
+                        cursor={false}
+                        content={<CustomTooltip />}
+                    />
+                    {chart.series.map((item) => (
+                        <Line
+                            key={item.name}
+                            isAnimationActive={false}
+                            dataKey={chart.key(item.name)}
+                            stroke={chart.color(item.color)}
+                            strokeWidth={2}
+                            dot={false}
+                        />
+                    ))}
+                </LineChart>
+            </Chart.Root>
+        </VStack>
+    )
+}

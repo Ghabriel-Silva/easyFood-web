@@ -1,10 +1,7 @@
 import { useQuery } from "@tanstack/react-query"
+import { DashboardData } from "@/app/(protected)/dashboard/interfaces/dashbordResponse"
 
-
-const getDashboard = async () => {
-
-
-
+const getDashboard = async (): Promise<DashboardData> => {
     const response = await fetch(
         `${process.env.NEXT_PUBLIC_URL_API}/dashboard`,
         {
@@ -17,7 +14,7 @@ const getDashboard = async () => {
         }
     )
 
-    const body  = await response.json()
+    const body = await response.json()
 
     if (!response.ok) {
         throw new Error(body.message || "Erro ao carregar dados de dashboard")
@@ -27,11 +24,10 @@ const getDashboard = async () => {
 }
 
 export function useDashboardData() {
-    return useQuery< Error>({
+    return useQuery<DashboardData>({
         queryKey: ["dashboard"],
-        queryFn: () => getDashboard(),
+        queryFn: getDashboard,
         refetchOnWindowFocus: true,
         staleTime: 1000 * 60 * 5,
     })
-
 }
