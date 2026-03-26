@@ -40,7 +40,7 @@ export const OrdersStatusPieChart = ({ data }: data) => {
             boxShadow="sm"
             flex={"1"}
         >
-            <TextTitle title="Pedidos Todo Periodo" />
+            <TextTitle  title="Pedidos no período"  description="Apresenta o resumo dos pedidos por status (concluídos, pendentes e cancelados) no período selecionado. Por padrão, considera os últimos 30 dias ou o intervalo definido no filtro de datas." />
             <Chart.Root h="250px" mx="auto" chart={chart}>
                 <PieChart responsive>
                     <Tooltip

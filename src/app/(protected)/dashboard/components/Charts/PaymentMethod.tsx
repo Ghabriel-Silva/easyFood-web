@@ -1,6 +1,6 @@
 "use client"
 
-import { Box} from "@chakra-ui/react"
+import { Box } from "@chakra-ui/react"
 import { TextTitle } from "@/app/(protected)/dashboard/components/index"
 
 import { Chart, useChart } from "@chakra-ui/charts"
@@ -24,7 +24,7 @@ type Props = {
 }
 
 export const PaymentMethodsChart = ({ data }: Props) => {
-  
+
   const safeData = data ?? []
 
   const getColorToken = (method: string) => {
@@ -42,26 +42,25 @@ export const PaymentMethodsChart = ({ data }: Props) => {
     colorToken: getColorToken(item.method),
   }))
 
- 
+
   const chart = useChart({
     data: formattedData,
     series: [{ name: "value", color: "blue.500" }],
   })
 
- 
+
   if (safeData.length === 0) return null
 
   return (
     <Box
       w="100%"
-
       p={4}
       borderRadius="lg"
-      boxShadow="sm"  
+      boxShadow="sm"
       flex={"1"}
     >
-      <TextTitle title="Métodos de pagamento" />
-     
+      <TextTitle title="Métodos de pagamento" description="Exibe a distribuição dos pedidos por método de pagamento no período selecionado. Por padrão, considera os últimos 30 dias ou o intervalo definido no filtro de datas." />
+
 
       <Chart.Root h="250px" chart={chart}>
         <BarChart data={chart.data} responsive>

@@ -18,4 +18,4 @@ export function getRandonColor(): string {
   return colors[randonIndex]
 }
 
-// Tipagens 
+ 

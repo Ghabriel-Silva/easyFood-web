@@ -71,7 +71,7 @@ export const TodayOrdersCards = ({ summary }: Props) => {
         <Box
             pt={6}
         >
-            <TextTitle title="Informação Do dia" />
+            <TextTitle title="Informação Do dia"  description="Resumo dos principais indicadores do dia atual."/>
             <SimpleGrid columns={{ base: 2, sm: 3, lg: 6 }} gap={4} w={"100%"}>
                 {cards.map((card) => (
                     <Box

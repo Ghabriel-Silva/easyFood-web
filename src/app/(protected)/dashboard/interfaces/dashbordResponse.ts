@@ -1,4 +1,4 @@
-export interface DashboardData  {
+export interface DashboardData {
     dashboardProductsSummary: {
         kipsProducts: {
             total: string
@@ -15,11 +15,13 @@ export interface DashboardData  {
         topProducts: {
             id: string
             name: string
+            unidade: string
             totalSold: string
         }[]
         lowProducts: {
             id: string
             name: string
+            unidade: string
             totalSold: string
         }[]
     }

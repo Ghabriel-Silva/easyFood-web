@@ -69,7 +69,7 @@ export const OrdersLineChart = ({ data }: Props) => {
             boxShadow="sm"
             align={"start"}
         >
-            <TextTitle  title="Evolução de vendas"/>
+            <TextTitle  title="Evolução de vendas" description="Este gráfico apresenta a evolução dos pedidos ao longo do tempo. Por padrão, exibe os dados diários dos últimos 30 dias. Para períodos superiores a 30 dias, os dados são agrupados e exibidos por mês, facilitando a visualização do desempenho geral." />
             <Chart.Root maxH="xs" chart={chart}>
                 <LineChart data={chart.data} responsive>
                     <CartesianGrid stroke={chart.color("border")} vertical={false} />
