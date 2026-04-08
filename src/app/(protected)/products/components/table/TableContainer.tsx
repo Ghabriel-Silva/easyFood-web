@@ -8,7 +8,7 @@ import { tranformeUniMedida } from "@/helpers/transformeUniMedida";
 import { MdCheckCircle, MdHighlightOff } from "react-icons/md";
 import { Tooltip } from "@/components/ui/tooltip"
 import { InfoTip } from "@/components/ui/toggle-tip";
-import { InfoNull, FullScreenLoading, StatEmpaty, TableText, PopovelFilter } from "@/ui/index";
+import { InfoNull, FullScreenLoading, TableText, PopovelFilter, StatEmpaty } from "@/ui/index";
 import { DialogInfoProducts, FilterContainer, UpdateStatus } from "@/app/(protected)/products/components/index";
 import { useFilterStore } from "@/stores/filterStore";
 import { useSearchParams, useRouter, usePathname } from 'next/navigation'
@@ -32,15 +32,18 @@ export const TableContainer = () => {
         page,
         rowsPerPage
     )
-
-
-
     const dataProducts = data?.data.products
     const countPage = data?.data.total
 
 
     if (isLoading) return <FullScreenLoading />
-    const errorApi = isError && <StatEmpaty title="Nenhum produto encontrado" description="Não foi possível carregar os dados. Tente atualizar a página ou volte mais tarde." />
+    
+    const typeError = dataProducts === undefined ?
+        <StatEmpaty title="Nenhuma Categoria encontrada" description="Não foi possível carregar os dados. Tente atualizar a página ou volte mais tarde." />
+        : isError ? <StatEmpaty
+            title="Erro de Conexão"
+            description="Não foi possível conectar ao servidor. Verifique sua internet ou tente novamente mais tarde."
+        /> : 'Nehum dado encontrado'
 
     const columns = [
         {
@@ -59,8 +62,6 @@ export const TableContainer = () => {
 
             },
         },
-
-
         //Coluna quantidade do produto com regra de negocio
         {
             name: "quantity",
@@ -207,6 +208,27 @@ export const TableContainer = () => {
         page: tablePage,
         rowsPerPage: rowsPerPage,
         rowsPerPageOptions: [10, 25, 50],
+        textLabels: {
+            pagination: {
+                next: "Próxima Página",
+                previous: "Página Anterior",
+                rowsPerPage: "Linhas por página:",
+                displayRows: "de",
+            },
+            body: {
+                toolTip: "Classificar",
+                noMatch: typeError,
+            },
+            toolbar: {
+                // Muda o texto que aparece ao passar o mouse  no ícone da barra
+                viewColumns: "Exibir Colunas",
+            },
+            viewColumns: {
+                // Muda o título que aparece dentro do menu/modal que abre
+                title: "Mostrar/Ocultar Colunas",
+                titleAria: "Mostrar/Ocultar Colunas da Tabela",
+            },
+        },
 
         onChangePage: (newPage: number) => {
             const params = new URLSearchParams(searchParams.toString());
@@ -226,17 +248,12 @@ export const TableContainer = () => {
             <PopovelFilter title="Filtrar Produtos">
                 <FilterContainer />
             </PopovelFilter>
-        ),
-        textLabels: {
-            body: {
-                noMatch: errorApi,
-                toolTip: "Classificar",
-            },
-        }
+        )
     };
     return (
         <MuiThemeProvider>
             <MUIDataTable
+                key={dataProducts ? dataProducts.length : "error"}
                 options={options}
                 data={dataProducts ?? []}
                 columns={columns}

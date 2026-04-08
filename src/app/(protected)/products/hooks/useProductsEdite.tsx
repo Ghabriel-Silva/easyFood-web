@@ -35,6 +35,9 @@ export function useProductEdite() {
             queryClient.invalidateQueries({
                 queryKey: ['data-products']
             })
+            queryClient.invalidateQueries({
+                queryKey: ["dashboard"]
+            })
             return toaster.create({
                 description: `Produto  atualizado com sucesso`,
                 closable: true,

@@ -7,7 +7,7 @@ import { FilterProductsType } from "../validations/filter-products";
 interface ProductsParams extends FilterProductsType {
     page: number;
     limit: number
-}
+}  
 
 const ProductsData = async (data: ProductsParams): Promise<ProductResponseData> => {
     const params = new URLSearchParams()
@@ -27,7 +27,7 @@ const ProductsData = async (data: ProductsParams): Promise<ProductResponseData> 
         ? `${process.env.NEXT_PUBLIC_URL_API}/product?${query}`
         : `${process.env.NEXT_PUBLIC_URL_API}/product`
 
-        console.log(url)
+    
     const res = await fetch(url, {
         method: 'GET',
         credentials: "include",
@@ -37,12 +37,9 @@ const ProductsData = async (data: ProductsParams): Promise<ProductResponseData> 
         }
     })
     const body: ProductResponseData = await res.json()
-
     if (!res.ok) {
         throw new Error(body.message || 'Erro ao Filtrar Produtos')
     }
-    console.log(body)
-
     return body
 }
 

@@ -1,6 +1,6 @@
 "use client"
 
-import { Box } from "@chakra-ui/react"
+import { Box, Text } from "@chakra-ui/react"
 import { TextTitle } from "@/app/(protected)/dashboard/components/index"
 
 import { Chart, useChart } from "@chakra-ui/charts"
@@ -24,8 +24,8 @@ type Props = {
 }
 
 export const PaymentMethodsChart = ({ data }: Props) => {
-
   const safeData = data ?? []
+  const hasData = safeData.length > 0
 
   const getColorToken = (method: string) => {
     switch (method) {
@@ -36,20 +36,24 @@ export const PaymentMethodsChart = ({ data }: Props) => {
     }
   }
 
-  const formattedData = safeData.map((item) => ({
-    type: item.method,
-    value: Number(item.quantity) || 0,
-    colorToken: getColorToken(item.method),
-  }))
-
+  const formattedData = hasData
+    ? safeData.map((item) => ({
+      type: item.method,
+      value: Number(item.quantity) || 0,
+      colorToken: getColorToken(item.method),
+    }))
+    : [
+      {
+        type: "Sem dados",
+        value: 0,
+        colorToken: "gray.300",
+      },
+    ]
 
   const chart = useChart({
     data: formattedData,
     series: [{ name: "value", color: "blue.500" }],
   })
-
-
-  if (safeData.length === 0) return null
 
   return (
     <Box
@@ -58,9 +62,12 @@ export const PaymentMethodsChart = ({ data }: Props) => {
       borderRadius="lg"
       boxShadow="sm"
       flex={"1"}
+      position="relative"
     >
-      <TextTitle title="Métodos de pagamento" description="Exibe a distribuição dos pedidos por método de pagamento no período selecionado. Por padrão, considera os últimos 30 dias ou o intervalo definido no filtro de datas." />
-
+      <TextTitle
+        title="Métodos de pagamento"
+        description="Exibe a distribuição dos pedidos por método de pagamento no período selecionado. Por padrão, considera os últimos 30 dias ou o intervalo definido no filtro de datas."
+      />
 
       <Chart.Root h="250px" chart={chart}>
         <BarChart data={chart.data} responsive>
@@ -102,6 +109,22 @@ export const PaymentMethodsChart = ({ data }: Props) => {
           </Bar>
         </BarChart>
       </Chart.Root>
+
+     
+      {!hasData && (
+        <Box
+          position="absolute"
+          top="50%"
+          left="50%"
+          transform="translate(-50%, -50%)"
+          textAlign="center"
+          pointerEvents="none"
+        >
+          <Text fontSize="sm" >
+            Nenhum dado disponível
+          </Text>
+        </Box>
+      )}
     </Box>
   )
 }

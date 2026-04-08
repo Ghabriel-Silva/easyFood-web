@@ -2,9 +2,12 @@ import { Stack, Box, HStack } from "@chakra-ui/react"
 import { useDashboardData } from "../hooks/useDashboardData"
 import { FullScreenLoading } from "@/ui/index"
 import { OrdersLineChart, TodayOrdersCards, PaymentMethodsChart, OrdersStatusPieChart, TableTopProducts, TableLowProducts } from "@/app/(protected)/dashboard/components/index"
+import { useFilterStoreDashboard } from "@/stores/filterStoreDashbord"
 
 export const Dashboard = () => {
-  const { data, isPending } = useDashboardData()
+  const filter = useFilterStoreDashboard((state)=>state.filter)
+
+  const { data, isPending } = useDashboardData(filter || {})
 
   const OrderToday = data?.todayOrdersSummary
   const orderMonthly = data?.monthlyOrdersSummary

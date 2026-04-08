@@ -36,6 +36,9 @@ export function useMutateSetStatusProducts() {
                 queryKey: ["data-products"],
                 exact: false,
             })
+            queryClient.invalidateQueries({
+                queryKey: ["dashboard"]
+            })
             await queryClient.invalidateQueries({
                 queryKey: ["product-data"],
             })

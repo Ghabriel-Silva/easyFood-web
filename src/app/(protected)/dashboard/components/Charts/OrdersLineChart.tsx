@@ -1,7 +1,7 @@
 "use client"
 
 import { Chart, useChart } from "@chakra-ui/charts"
-import { VStack} from "@chakra-ui/react"
+import { VStack } from "@chakra-ui/react"
 import {
     CartesianGrid,
     Line,
@@ -46,21 +46,41 @@ const CustomTooltip = ({ active, payload }: any) => {
 export const OrdersLineChart = ({ data }: Props) => {
     const safeData = data ?? []
 
-    const formattedData: FormattedData[] = safeData.map((item) => ({
-        day: new Date(item.date).getDate().toString(), 
-        tooltipDate: new Date(item.date).toLocaleDateString("pt-BR", {
-            day: "2-digit",
-            month: "2-digit",
-        }),
-        total: item.total,
-    }))
+    const formattedData: FormattedData[] = safeData.map((item) => {
+        const isMonthly = item.date.length === 7
+
+        let dayLabel: string;
+        let tooltipLabel: string;
+
+        if (isMonthly) {
+            const [year, month] = item.date.split("-");
+            const dateObj = new Date(Number(year), Number(month) - 1);
+
+            dayLabel = dateObj.toLocaleDateString("pt-BR", { month: "short" }).replace(".", "");
+            tooltipLabel = dateObj.toLocaleDateString("pt-BR", { month: "long", year: "numeric" });
+        } else {
+            
+            const dateObj = new Date(item.date);
+            dayLabel = dateObj.getUTCDate().toString();
+            tooltipLabel = dateObj.toLocaleDateString("pt-BR", {
+                day: "2-digit",
+                month: "2-digit",
+            });
+        }
+
+        return {
+            day: dayLabel,
+            tooltipDate: tooltipLabel,
+            total: item.total,
+        };
+    })
 
     const chart = useChart({
         data: formattedData,
         series: [{ name: "total", color: "teal.solid" }],
     })
 
-    if (!data) return null
+    if (!data || data.length === 0) return null;
 
     return (
         <VStack
@@ -69,7 +89,7 @@ export const OrdersLineChart = ({ data }: Props) => {
             boxShadow="sm"
             align={"start"}
         >
-            <TextTitle  title="Evolução de vendas" description="Este gráfico apresenta a evolução dos pedidos ao longo do tempo. Por padrão, exibe os dados diários dos últimos 30 dias. Para períodos superiores a 30 dias, os dados são agrupados e exibidos por mês, facilitando a visualização do desempenho geral." />
+            <TextTitle title="Evolução de vendas" description="Este gráfico apresenta a evolução dos pedidos ao longo do tempo. Por padrão, exibe os dados diários dos últimos 30 dias. Para períodos superiores a 30 dias, os dados são agrupados e exibidos por mês, facilitando a visualização do desempenho geral." />
             <Chart.Root maxH="xs" chart={chart}>
                 <LineChart data={chart.data} responsive>
                     <CartesianGrid stroke={chart.color("border")} vertical={false} />

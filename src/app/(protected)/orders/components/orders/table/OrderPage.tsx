@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Box, Flex, Heading} from "@chakra-ui/react";
+import { Box, Flex, Heading } from "@chakra-ui/react";
 
 import { TableOrders } from "@/app/(protected)/orders/components/orders/table/index";
 import { useOrdersData } from "@/app/(protected)/orders/hooks/index";
@@ -35,7 +35,7 @@ export default function OrderPage() {
   };
 
   return (
-    <Box  height={"100%"}>
+    <Box height={"100%"}>
       <Flex justify="space-between"  >
         <Heading size="xl" fontWeight="medium">Pedidos</Heading>
         <ButtonCreateOrders />
@@ -64,8 +64,17 @@ export default function OrderPage() {
             updateOrderStatus={updateOrderStatus}
           />
 
-          {Array.isArray(data?.data) && data.data.length === 0 && (
-            <StatEmpaty title={'Resultado não encontrado'} description={'Nenhum produto encontrado, para esse Filtro'} />
+          {isError && (
+            <StatEmpaty
+              title="Erro de Conexão"
+              description="Não foi possível conectar ao servidor. Verifique sua internet ou tente novamente mais tarde."
+            />
+          )}
+          {!isError && Array.isArray(data?.data) && data.data.length === 0 && (
+            <StatEmpaty
+              title="Resultado não encontrado"
+              description="Nenhum pedido foi encontrado para os filtros aplicados."
+            />
           )}
         </>
       )}

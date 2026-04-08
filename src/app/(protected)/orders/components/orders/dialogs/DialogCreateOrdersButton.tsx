@@ -9,6 +9,7 @@ export const ButtonCreateOrders = () => {
     const [open, setOpen] = useState(false)
 
     const { isPending } = useOrdersCreate()
+    
     const formRef = useRef<HTMLFormElement>(null)
 
     return (
@@ -29,7 +30,6 @@ export const ButtonCreateOrders = () => {
                         </Dialog.Title>
                     </Dialog.Header>
                     <Dialog.Body >
-                        {/*Aqui rederizo o Formulario  */}
                         <FormFather
                             formRef={formRef}
                             success={() => setOpen(false)}

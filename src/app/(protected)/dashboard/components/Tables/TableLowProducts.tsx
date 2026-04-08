@@ -2,6 +2,7 @@ import { tranformeQuantity } from "@/helpers/transformeQuantity"
 import { tranformeUniMedida } from "@/helpers/transformeUniMedida"
 import { Table, Flex, Box } from "@chakra-ui/react"
 import { TextTitle } from "@/app/(protected)/dashboard/components/index"
+import { StatEmpaty } from "@/ui/index"
 
 type LowProducts = {
     id: string
@@ -14,6 +15,7 @@ interface PropsData {
 }
 
 export const TableLowProducts = ({ data }: PropsData) => {
+    const safeData = data ?? []
 
     return (
         <Flex flex={"1"}>
@@ -23,7 +25,7 @@ export const TableLowProducts = ({ data }: PropsData) => {
                 borderRadius="lg"
                 boxShadow="sm"
             >
-                <TextTitle title={"Menos Vendido"}   description="Apresenta os 5 produtos com menor volume de vendas no período selecionado, com base nos últimos 30 dias ou no intervalo definido no filtro de datas."/>
+                <TextTitle chart="chartLineDow" title={"Menos Vendido"} description="Apresenta os 5 produtos com menor volume de vendas no período selecionado, com base nos últimos 30 dias ou no intervalo definido no filtro de datas." />
                 <Table.Root size="sm" variant={"outline"} >
                     <Table.Header>
                         <Table.Row>
@@ -33,18 +35,32 @@ export const TableLowProducts = ({ data }: PropsData) => {
                         </Table.Row>
                     </Table.Header>
                     <Table.Body>
-                        {data.map((item, index) => {
-                            const count = index + 1
-                            return (
-                                (
+                        {safeData.length === 0 ? (
+                            <Table.Row>
+                                <Table.Cell colSpan={3}>
+                                    <Flex justify="center" align="center">
+                                        <StatEmpaty
+                                            title="Sem dados"
+                                            description="Nenhum dado disponível"
+                                        />
+                                    </Flex>
+                                </Table.Cell>
+                            </Table.Row>
+                        ) : (
+                            safeData.map((item, index) => {
+                                const count = index + 1
+
+                                return (
                                     <Table.Row key={item.id}>
                                         <Table.Cell>{count}</Table.Cell>
-                                        <Table.Cell>{item.name} </Table.Cell>
-                                        <Table.Cell textAlign="end">{tranformeQuantity(item.unidade, item.totalSold)} {tranformeUniMedida(item.unidade)}</Table.Cell>
+                                        <Table.Cell>{item.name}</Table.Cell>
+                                        <Table.Cell textAlign="end">
+                                            {tranformeQuantity(item.unidade, item.totalSold)}{" "}
+                                            {tranformeUniMedida(item.unidade)}
+                                        </Table.Cell>
                                     </Table.Row>
                                 )
-                            )
-                        }
+                            })
                         )}
                     </Table.Body>
                 </Table.Root>

@@ -22,7 +22,10 @@ export const TableContainer = () => {
     const dataCategory: CategoryReponseDataAPI[] | undefined = data?.data
 
     if (isLoading) return <FullScreenLoading />
-    const errorApi = isError && <StatEmpaty title="Nenhuma Categoria encontrada" description="Não foi possível carregar os dados. Tente atualizar a página ou volte mais tarde." />
+    const errorApi = isError && <StatEmpaty
+        title="Erro de Conexão"
+        description="Não foi possível conectar ao servidor. Verifique sua internet ou tente novamente mais tarde."
+    />
 
     const columns = [
         {
@@ -123,11 +126,26 @@ export const TableContainer = () => {
             </PopovelFilter>
         ),
         textLabels: {
-            body: {
-                noMatch: errorApi,
-                toolTip: "Classificar",
+            pagination: {
+                next: "Próxima Página",
+                previous: "Página Anterior",
+                rowsPerPage: "Linhas por página:",
+                displayRows: "de",
             },
-        }
+            body: {
+                toolTip: "Classificar",
+                noMatch: errorApi || 'Dados não encontrados',
+            },
+            toolbar: {
+                // Muda o texto que aparece ao passar o mouse  no ícone da barra
+                viewColumns: "Exibir Colunas",
+            },
+            viewColumns: {
+                // Muda o título que aparece dentro do menu/modal que abre
+                title: "Mostrar/Ocultar Colunas",
+                titleAria: "Mostrar/Ocultar Colunas da Tabela",
+            },
+        },
 
     }
     return (

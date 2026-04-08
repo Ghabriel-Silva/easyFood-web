@@ -11,6 +11,8 @@ export interface DashboardData {
             name: string
             quantity: string
             uni_medida: string
+            createdAt: string     
+            updatedAt: string    
         }[]
         topProducts: {
             id: string
