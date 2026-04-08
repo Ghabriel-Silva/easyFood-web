@@ -1,5 +1,6 @@
 "use client"
 
+import { Suspense } from 'react'
 import { MuiThemeProvider } from "@/theme/MuiDatables/providers/MuiThemeProvider";
 import MUIDataTable from "mui-datatables";
 import { useProductsData } from "../../hooks/useProductsData";
@@ -15,7 +16,7 @@ import { useSearchParams, useRouter, usePathname } from 'next/navigation'
 import { defaultOption } from "@/helpers/defaultOpetionTable";
 
 
-export const TableContainer = () => {
+const TableContainerContent = () => {
     const searchParams = useSearchParams()
     const router = useRouter()
     const pathname = usePathname()
@@ -37,7 +38,7 @@ export const TableContainer = () => {
 
 
     if (isLoading) return <FullScreenLoading />
-    
+
     const typeError = dataProducts === undefined ?
         <StatEmpaty title="Nenhuma Categoria encontrada" description="Não foi possível carregar os dados. Tente atualizar a página ou volte mais tarde." />
         : isError ? <StatEmpaty
@@ -56,13 +57,9 @@ export const TableContainer = () => {
                     return (
                         < DialogInfoProducts product={row} />
                     )
-
-                }
-                ,
-
+                },
             },
         },
-        //Coluna quantidade do produto com regra de negocio
         {
             name: "quantity",
             label: "Quantidade",
@@ -70,7 +67,6 @@ export const TableContainer = () => {
                 customBodyRenderLite: (dataIndex: number) => {
                     if (!dataProducts) return null
                     const product = dataProducts[dataIndex]
-
                     const value = product.quantity
                     const unit = product.uni_medida
 
@@ -83,9 +79,7 @@ export const TableContainer = () => {
                     }
 
                     const quantity = Number(value)
-
                     const unitsWithDecimal = ["kg", "g", "none"]
-
                     const formattedQuantity = unitsWithDecimal.includes(unit)
                         ? quantity.toFixed(3)
                         : Math.floor(quantity)
@@ -109,15 +103,13 @@ export const TableContainer = () => {
                 }
             }
         },
-
-        //Coluna preço + unidade
         {
             name: 'price',
             label: "Preço / Unidade",
             options: {
                 customBodyRenderLite: (dataIndex: number) => {
                     if (!dataProducts) return null
-                    const row = dataProducts[dataIndex]; // data é Product[] pego o indice 
+                    const row = dataProducts[dataIndex];
                     return (
                         <Flex gap={2}>
                             <TableText>R${row.price}</TableText>
@@ -129,7 +121,6 @@ export const TableContainer = () => {
                 },
             }
         },
-        //Coluna description
         {
             name: "description",
             label: "Descrição",
@@ -143,8 +134,7 @@ export const TableContainer = () => {
                         ) : value.length > 10 ?
                             (
                                 <HStack gap={0} flexDirection={"row"}>
-                                    <InfoTip
-                                        content={value} />
+                                    <InfoTip content={value} />
                                     <TableText>
                                         {value.slice(0, 20)}...
                                     </TableText>
@@ -156,12 +146,8 @@ export const TableContainer = () => {
                             )
                     );
                 },
-
-
             }
         },
-
-        //Coluna Status ativo ou inativo
         {
             name: "isAvailable",
             label: "Status",
@@ -195,15 +181,12 @@ export const TableContainer = () => {
         },
     ]
 
-
-
     const options = {
         ...defaultOption,
         serverSide: true,
         tableBodyHeight: "calc(100vh - 210px)",
         responsive: "standard",
         elevation: 0,
-        //Paginação 
         count: countPage,
         page: tablePage,
         rowsPerPage: rowsPerPage,
@@ -220,29 +203,24 @@ export const TableContainer = () => {
                 noMatch: typeError,
             },
             toolbar: {
-                // Muda o texto que aparece ao passar o mouse  no ícone da barra
                 viewColumns: "Exibir Colunas",
             },
             viewColumns: {
-                // Muda o título que aparece dentro do menu/modal que abre
                 title: "Mostrar/Ocultar Colunas",
                 titleAria: "Mostrar/Ocultar Colunas da Tabela",
             },
         },
-
         onChangePage: (newPage: number) => {
             const params = new URLSearchParams(searchParams.toString());
             params.set("page", String(newPage + 1));
             router.push(`${pathname}?${params.toString()}`);
         },
-
         onChangeRowsPerPage: (newRows: number) => {
             const params = new URLSearchParams(searchParams.toString());
             params.set("limit", String(newRows));
-            params.set("page", "1"); // Volta pra primeira página na URL
+            params.set("page", "1");
             router.push(`${pathname}?${params.toString()}`);
         },
-
         storageKey: 'tabela-produtos',
         customToolbar: () => (
             <PopovelFilter title="Filtrar Produtos">
@@ -250,6 +228,7 @@ export const TableContainer = () => {
             </PopovelFilter>
         )
     };
+
     return (
         <MuiThemeProvider>
             <MUIDataTable
@@ -259,5 +238,13 @@ export const TableContainer = () => {
                 columns={columns}
             />
         </MuiThemeProvider>
+    )
+}
+
+export const TableContainer = () => {
+    return (
+        <Suspense fallback={<FullScreenLoading />}>
+            <TableContainerContent />
+        </Suspense>
     )
 }
