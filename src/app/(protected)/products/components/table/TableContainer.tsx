@@ -242,9 +242,5 @@ const TableContainerContent = () => {
 }
 
 export const TableContainer = () => {
-    return (
-        <Suspense fallback={<FullScreenLoading />}>
-            <TableContainerContent />
-        </Suspense>
-    )
+    return <TableContainerContent />
 }
