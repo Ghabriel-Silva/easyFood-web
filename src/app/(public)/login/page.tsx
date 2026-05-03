@@ -52,7 +52,7 @@ export default function Login() {
         return toaster.promise(loginPromise, {
             loading: { title: "Validando Login...", description: "Aguarde um momento" },
             success: (data) => {
-                router.push("/orders")
+                window.location.href = "/orders"  
                 return {
                     title: "Sucesso!",
                     description: data.message,
