@@ -9,23 +9,18 @@ const publicRoutes = [
 // Rota para onde redirecionar quando NÃO está autenticado
 const REDIRECT_WHEN_NOT_AUTHENTICATED = "/login";
 
-// Chave secreta (NÃO use NEXT_PUBLIC aqui)
-const SECRET = new TextEncoder().encode(process.env.JWT_SECRET);
 
 export async function middleware(request: NextRequest) {
 
-
-
+    const SECRET = new TextEncoder().encode(process.env.JWT_SECRET);
 
     const path = request.nextUrl.pathname;
-
     const publicRoute = publicRoutes.find((route) => route.path === path);
     const authToken = request.cookies.get("token")?.value;
 
-
     console.log("PATH:", path)
     console.log("TOKEN:", authToken ? "existe" : "não existe")
-
+    console.log("SECRET:", process.env.JWT_SECRET ? "existe" : "UNDEFINED")
 
     // 1 Se NÃO tem token e está tentando acessar rota pública → OK pode passar 
     if (!authToken && publicRoute) {
