@@ -11,6 +11,7 @@ const REDIRECT_WHEN_NOT_AUTHENTICATED = "/login";
 
 
 export async function middleware(request: NextRequest) {
+    console.log("MIDDLEWARE RODOU:", request.nextUrl.pathname)
 
     const SECRET = new TextEncoder().encode(process.env.JWT_SECRET);
 
