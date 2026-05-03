@@ -1,51 +1,91 @@
 import { NextResponse, type NextRequest, type MiddlewareConfig } from "next/server";
+import { jwtVerify } from "jose";
 
+// Rotas públicas (não exigem login)
 const publicRoutes = [
     { path: "/login", whenAuthenticatedRedirectTo: "/orders" },
 ];
 
+// Rota para onde redirecionar quando NÃO está autenticado
 const REDIRECT_WHEN_NOT_AUTHENTICATED = "/login";
 
+
+
 export async function middleware(request: NextRequest) {
+    // Chave secreta (NÃO use NEXT_PUBLIC aqui)
+    const SECRET = new TextEncoder().encode(process.env.JWT_SECRET);
     const path = request.nextUrl.pathname;
+
     const publicRoute = publicRoutes.find((route) => route.path === path);
     const authToken = request.cookies.get("token")?.value;
 
-    if (!authToken && publicRoute) return NextResponse.next();
+    // 1 Se NÃO tem token e está tentando acessar rota pública → OK pode passar 
+    if (!authToken && publicRoute) {
+        return NextResponse.next();
+    }
 
+    // se não tem token e está tentando acessar rota PRIVADA → REDIRECT
     if (!authToken && !publicRoute) {
-        const redirectUrl = request.nextUrl.clone();
+        const redirectUrl = request.nextUrl.clone(); //defino uma copia para do objeto next url e atribuo a rota de login
         redirectUrl.pathname = REDIRECT_WHEN_NOT_AUTHENTICATED;
         return NextResponse.redirect(redirectUrl);
     }
 
+    // se tem token **e está na rota pública** (ex: /login)
     if (authToken && publicRoute) {
-        const redirectUrl = request.nextUrl.clone();
-        redirectUrl.pathname = publicRoute.whenAuthenticatedRedirectTo!;
-        return NextResponse.redirect(redirectUrl);
-    }
+        // Se rota diz que usuário autenticado deve ser redirecionado
+        if (publicRoute.whenAuthenticatedRedirectTo) {
+            const redirectUrl = request.nextUrl.clone();
+            redirectUrl.pathname = publicRoute.whenAuthenticatedRedirectTo;
+            return NextResponse.redirect(redirectUrl);
+        }
 
-    // valida o token chamando o backend
+        return NextResponse.next();
+    }
     if (authToken && !publicRoute) {
         try {
             const res = await fetch(`${process.env.NEXT_PUBLIC_URL_API}/company/me`, {
                 headers: {
-                    Cookie: `token=${authToken}` // envia o token pro backend validar
+                    Cookie: `token=${authToken}`
                 }
             })
 
+            console.log("STATUS /me:", res.status) // ← adiciona isso
+            console.log("TOKEN ENVIADO:", authToken?.substring(0, 20)) // ← e isso
+
             if (res.ok) return NextResponse.next();
             throw new Error("invalido")
-        } catch {
-            const redirectUrl = request.nextUrl.clone();
-            redirectUrl.pathname = REDIRECT_WHEN_NOT_AUTHENTICATED;
-            const response = NextResponse.redirect(redirectUrl);
-            response.cookies.set("token", "", { maxAge: 0, path: "/" });
-            return response;
+        } catch (err) {
+            console.log("ERRO FETCH /me:", err) // ← e isso
+            // ...
         }
     }
+
+    // se tem token e está em rota privada → verificar JWT
+    if (authToken && !publicRoute) {
+        try {
+            await jwtVerify(authToken, SECRET);
+            return NextResponse.next();
+        } catch (err) {
+            const redirectUrl = request.nextUrl.clone();
+            redirectUrl.pathname = REDIRECT_WHEN_NOT_AUTHENTICATED;
+            console.log(err)
+
+            const response = NextResponse.redirect(redirectUrl);
+
+            response.cookies.set("token", "", {
+                maxAge: 0,
+                path: '/'
+            })
+            return response
+        }
+    }
+
 }
 
+// MATCHER GLOBAL (pega toda sua aplicação) 
 export const config: MiddlewareConfig = {
-    matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
+    matcher: [
+        "/((?!api|_next/static|_next/image|favicon.ico).*)",
+    ],
 };
