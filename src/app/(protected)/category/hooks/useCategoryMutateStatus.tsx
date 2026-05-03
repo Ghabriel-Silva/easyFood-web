@@ -6,21 +6,14 @@ interface sendStatus {
     id: string
     status: string
 }
-export const setStatus = async ({ id, status }: sendStatus): Promise<CategoryResponseUpdateStatus> => {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_URL_API}/category/${id}/status`, {
+const setStatus = async ({ id, status }: sendStatus): Promise<CategoryResponseUpdateStatus> => {
+    const response = await fetch(`/api/proxy/category/${id}/status`, {
         method: 'PATCH',
-        credentials: 'include',
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            status: status
-        })
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status })
     })
     const body: CategoryResponseUpdateStatus = await response.json()
-    if (!response.ok) {
-        throw new Error(body.message || 'Erro ao mudar status')
-    }
+    if (!response.ok) throw new Error(body.message || 'Erro ao mudar status')
     return body
 }
 

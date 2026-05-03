@@ -6,34 +6,17 @@ interface Filter {
 }
 
 const getCategory = async ({ status }: Filter): Promise<CategoryReponseAPI> => {
-
   const params = new URLSearchParams()
-
-  if (status && status !== "all") {
-    params.append("status", status)
-  }
-
+  if (status && status !== "all") params.append("status", status)
   const query = params.toString()
-  console.log(query)
 
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_URL_API}/category?${query}`,
-    {
-      method: "GET",
-      cache: "no-store",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }
-  )
-
+  const response = await fetch(`/api/proxy/category?${query}`, {
+    method: "GET",
+    cache: "no-store",
+    headers: { "Content-Type": "application/json" },
+  })
   const body: CategoryReponseAPI = await response.json()
-
-  if (!response.ok) {
-    throw new Error(body.message || "Erro ao carregar categorias")
-  }
-
+  if (!response.ok) throw new Error(body.message || "Erro ao carregar categorias")
   return body
 }
 

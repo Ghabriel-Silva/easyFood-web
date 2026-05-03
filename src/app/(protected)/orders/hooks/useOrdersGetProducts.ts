@@ -1,23 +1,13 @@
 import { useQuery } from "@tanstack/react-query"
-import {ProductsResponse } from "../../products/interfaces/products"
+import { ProductsResponse } from "../../products/interfaces/products"
 
 const fetchData = async (): Promise<ProductsResponse> => {
-    const res = await fetch(
-        `${process.env.NEXT_PUBLIC_URL_API}/product?status=active&price=maior`,
-        {
-            method: "GET",
-            credentials: "include",
-            headers: {
-                "Content-Type": "application/json",
-            },
-        }
-    )
+    const res = await fetch(`/api/proxy/product?status=active&price=maior`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+    })
     const body = await res.json()
-
-    if (!res.ok) {
-        throw new Error(body.message || "Erro ao buscar produtos")
-    }
-
+    if (!res.ok) throw new Error(body.message || "Erro ao buscar produtos")
     return {
         data: body.data.products ?? [],
         frete: body.data.frete,

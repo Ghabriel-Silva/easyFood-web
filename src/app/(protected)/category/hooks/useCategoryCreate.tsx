@@ -9,25 +9,15 @@ interface categoryResponse {
 }
 
 const createCategory = async ({ name }: categoryResponse): Promise<CreateCategoryResponse> => {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_URL_API}/category`, {
+    const response = await fetch(`/api/proxy/category`, {
         method: 'POST',
-        credentials: 'include',
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            name: name
-        })
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name })
     })
     const body: CreateCategoryResponse = await response.json()
-
-    if (!response.ok) {
-        throw new Error(body.message || "Erro ao criar Categoria")
-    }
-
+    if (!response.ok) throw new Error(body.message || "Erro ao criar Categoria")
     return body
 }
-
 export function useCategoryCreate() {
     const queryClient = useQueryClient()
 

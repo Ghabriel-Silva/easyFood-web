@@ -5,24 +5,15 @@ import { toaster } from "@/components/ui/toaster";
 
 
 const updateCategoryName = async ({ id, name }: sendValorToApi): Promise<CategoryResponseUpdateName> => {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_URL_API}/category/${id}`, {
+    const response = await fetch(`/api/proxy/category/${id}`, {
         method: "PUT",
-        credentials: "include",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            name: name
-        })
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name })
     })
-
     const body: CategoryResponseUpdateName = await response.json()
-    if (!response.ok) {
-        throw new Error(body.message || `Erro ao editar nome da categoria para ${name}`)
-    }
+    if (!response.ok) throw new Error(body.message || `Erro ao editar nome da categoria`)
     return body
 }
-
 
 export function useCategoryMutateName() {
     const queryClient = useQueryClient()

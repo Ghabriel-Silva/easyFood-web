@@ -3,26 +3,15 @@ import { toaster } from "@/components/ui/toaster";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 
-const URL_API = process.env.NEXT_PUBLIC_URL_API
-
-
-const setNewStatus = async (orderId: string, novoStatus: string,) => {
-    const res = await fetch(`${URL_API}/order/${orderId}/status`, {
+const setNewStatus = async (orderId: string, novoStatus: string) => {
+    const res = await fetch(`/api/proxy/order/${orderId}/status`, {
         method: "PATCH",
-        credentials: 'include',
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            status: novoStatus
-        })
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: novoStatus })
     })
-    if (!res.ok) {
-        throw new Error('Erro na api')
-    }
+    if (!res.ok) throw new Error('Erro na api')
     return res.json()
 }
-
 
 export function useOrdersMutade() {
     const queryClient = useQueryClient();

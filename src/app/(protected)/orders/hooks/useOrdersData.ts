@@ -3,12 +3,9 @@ import { useQuery } from "@tanstack/react-query";
 import { FilterOrderSchemaInterface } from "../validations/filter-orders";
 import { getDateToFilter } from "../helpers/getDateToFilter";
 
-const URL_API = process.env.NEXT_PUBLIC_URL_API
-
 const fetchData = async (filters: FilterOrderSchemaInterface): Promise<IOrderResponse> => {
     const today: Date = getDateToFilter(0)
     const berforeToday: Date = getDateToFilter(1)
-
 
     const filterDefault = {
         startDate: berforeToday,
@@ -16,21 +13,14 @@ const fetchData = async (filters: FilterOrderSchemaInterface): Promise<IOrderRes
         ...filters
     }
 
-    const res = await fetch(`${URL_API}/order/filter`, {
+    const res = await fetch(`/api/proxy/order/filter`, {
         method: "POST",
-        credentials: 'include',
         cache: "no-store",
-        headers: {
-            "Content-Type": "application/json"
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(filterDefault),
-    });
+    })
     const body = await res.json()
-
-    if (!res.ok) {
-        throw new Error(body.message || "Erro ao buscar produtos")
-    }
-
+    if (!res.ok) throw new Error(body.message || "Erro ao buscar pedidos")
     return body ?? []
 }
 

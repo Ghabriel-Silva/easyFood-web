@@ -4,29 +4,20 @@ import { toaster } from "@/components/ui/toaster"
 import { IOrder } from "../interfaces/orders-data"
 import { OrderFormSchemaInterface } from "../validations/orders-form"
 import { ApiError } from "@/interfaces/api-error"
-const URL_API = process.env.NEXT_PUBLIC_URL_API
 
 
 
 
 const createOrders = async (data: OrderFormSchemaInterface) => {
-    const res = await fetch(`${URL_API}/order`, {
+    const res = await fetch(`/api/proxy/order`, {
         method: 'POST',
-        credentials: "include",
-        headers: {
-            "Content-Type": "application/json"
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data)
     })
     const body = await res.json()
-
-    if (!res.ok) {
-        throw body as ApiError
-    }
-
+    if (!res.ok) throw body as ApiError
     return body
 }
-
 
 export function useOrdersCreate() {
     const queryClient = useQueryClient()
@@ -50,7 +41,7 @@ export function useOrdersCreate() {
                 exact: false
             })
 
-            
+
 
             toaster.create({
                 title: "Pedido criado",
