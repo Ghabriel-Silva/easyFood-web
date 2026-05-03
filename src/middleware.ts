@@ -14,10 +14,18 @@ const SECRET = new TextEncoder().encode(process.env.JWT_SECRET);
 
 export async function middleware(request: NextRequest) {
 
+
+
+
     const path = request.nextUrl.pathname;
 
     const publicRoute = publicRoutes.find((route) => route.path === path);
     const authToken = request.cookies.get("token")?.value;
+
+
+    console.log("PATH:", path)
+    console.log("TOKEN:", authToken ? "existe" : "não existe")
+
 
     // 1 Se NÃO tem token e está tentando acessar rota pública → OK pode passar 
     if (!authToken && publicRoute) {
