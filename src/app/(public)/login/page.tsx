@@ -15,7 +15,6 @@ import { ErrorResponseLogin } from "./type";
 
 export default function Login() {
 
-    const router = useRouter()
     const numeroWhatss: string | undefined = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER
     const message: string = "Olá! Preciso de ajuda para entrar no Sistema.";
     const url: string = `https://wa.me/${numeroWhatss}?text=${encodeURIComponent(message)}`;

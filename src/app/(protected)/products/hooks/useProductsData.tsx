@@ -30,7 +30,7 @@ const ProductsData = async (data: ProductsParams): Promise<ProductResponseData> 
     
     const res = await fetch(url, {
         method: 'GET',
-        credentials: "include",
+        // credentials: "include",
         cache: "no-store",
         headers: {
             "Content-Type": "application/json"
