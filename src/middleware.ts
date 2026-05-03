@@ -12,8 +12,8 @@ const REDIRECT_WHEN_NOT_AUTHENTICATED = "/login";
 
 
 export async function middleware(request: NextRequest) {
-    // Chave secreta (NÃO use NEXT_PUBLIC aqui)
-    const SECRET = new TextEncoder().encode(process.env.JWT_SECRET);
+// Chave secreta (NÃO use NEXT_PUBLIC aqui)
+const SECRET = new TextEncoder().encode(process.env.JWT_SECRET);
     const path = request.nextUrl.pathname;
 
     const publicRoute = publicRoutes.find((route) => route.path === path);
@@ -41,24 +41,6 @@ export async function middleware(request: NextRequest) {
         }
 
         return NextResponse.next();
-    }
-    if (authToken && !publicRoute) {
-        try {
-            const res = await fetch(`${process.env.NEXT_PUBLIC_URL_API}/company/me`, {
-                headers: {
-                    Cookie: `token=${authToken}`
-                }
-            })
-
-            console.log("STATUS /me:", res.status) // ← adiciona isso
-            console.log("TOKEN ENVIADO:", authToken?.substring(0, 20)) // ← e isso
-
-            if (res.ok) return NextResponse.next();
-            throw new Error("invalido")
-        } catch (err) {
-            console.log("ERRO FETCH /me:", err) // ← e isso
-            // ...
-        }
     }
 
     // se tem token e está em rota privada → verificar JWT

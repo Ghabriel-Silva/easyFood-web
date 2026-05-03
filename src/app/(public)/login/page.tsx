@@ -33,10 +33,9 @@ export default function Login() {
     const onSubmit = async (data: LoginValues) => {
         setLoading(true); //  começa o loading
 
-        const loginPromise = fetch(`${process.env.NEXT_PUBLIC_URL_API}/company/login`, {
+        const loginPromise = fetch(`/api/auth/login`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            credentials: "include",
             body: JSON.stringify(data),
         })
             .then(async (res) => {
@@ -54,7 +53,7 @@ export default function Login() {
             success: (data) => {
                 setTimeout(() => {
                     window.location.href = "/orders"
-                }, 1500) 
+                }, 1500)
                 return {
                     title: "Sucesso!",
                     description: data.message,
