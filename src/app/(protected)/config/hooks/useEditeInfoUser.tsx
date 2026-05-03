@@ -6,9 +6,8 @@ import { toaster } from "@/components/ui/toaster";
 
 
 const editeUser = async (infoData: EditeInfoUserType): Promise<EditeUserInfo> => {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_URL_API}/config`, {
+    const response = await fetch(`/api/proxy/config`, {
         method: "PATCH",
-        credentials: "include",
         headers: {
             "Content-Type": "application/json"
         },
@@ -21,14 +20,13 @@ const editeUser = async (infoData: EditeInfoUserType): Promise<EditeUserInfo> =>
     return body
 }
 
-
 export function useEditeInfoUser() {
     const queryClient = useQueryClient()
     return useMutation<EditeUserInfo, Error, EditeInfoUserType>({
         mutationFn: editeUser,
         onSuccess: () => {
             queryClient.invalidateQueries({
-                queryKey:["config"]
+                queryKey: ["config"]
             })
             return toaster.create({
                 description: `Informações atualizadas`,
