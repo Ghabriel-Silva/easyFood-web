@@ -17,7 +17,7 @@ const ProductsData = async (data: ProductsParams): Promise<ProductResponseData> 
     params.append("limit", String(data.limit))
 
     const query = params.toString()
-    const url = query ? `/api/proxy/product?${query}` : `/api/proxy/product`
+    const url = query ? `/api/proxy/products?${query}` : `/api/proxy/product`
 
     const res = await fetch(url, {
         method: 'GET',

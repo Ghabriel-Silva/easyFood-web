@@ -5,7 +5,7 @@ import { toaster } from "@/components/ui/toaster"
 
 
 const createProducts = async (data: CreateProductsInterface): Promise<ProductCreateResponse> => {
-    const response = await fetch(`/api/proxy/product`, {
+    const response = await fetch(`/api/proxy/products`, {
         method: 'POST',
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data)

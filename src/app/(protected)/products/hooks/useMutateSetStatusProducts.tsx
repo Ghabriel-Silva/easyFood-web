@@ -7,7 +7,7 @@ interface sendStatus {
     status: string
 }
 export const setStatus = async ({ id, status }: sendStatus): Promise<ProductSetStatus> => {
-    const response = await fetch(`/api/proxy/product/${id}/status`, {
+    const response = await fetch(`/api/proxy/products/${id}/status`, {
         method: 'PATCH',
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ status })

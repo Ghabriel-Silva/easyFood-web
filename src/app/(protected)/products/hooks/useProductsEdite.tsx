@@ -6,7 +6,7 @@ import { toaster } from "@/components/ui/toaster";
 
 const editeProducts = async (dataEditePayloud: productsEditePayloud) => {
     const { data, id } = dataEditePayloud
-    const response = await fetch(`/api/proxy/product/${id}`, {
+    const response = await fetch(`/api/proxy/products/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data)
