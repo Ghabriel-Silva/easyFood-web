@@ -7,7 +7,6 @@ import { useState } from "react";
 import { toaster, Toaster } from "@/components/ui/toaster";
 import image from "@/assets/image2.jpg"
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { LoginValues } from "./type";
 import { ErrorResponseLogin } from "./type";
 

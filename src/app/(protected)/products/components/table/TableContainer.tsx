@@ -221,7 +221,7 @@ const TableContainerContent = () => {
             params.set("page", "1");
             router.push(`${pathname}?${params.toString()}`);
         },
-      
+        storageKey: 'tabela-produtos',
         customToolbar: () => (
             <PopovelFilter title="Filtrar Produtos">
                 <FilterContainer />
